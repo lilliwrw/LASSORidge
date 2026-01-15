@@ -3,4 +3,5 @@ title: "Dokumentation"
 output: html_document
 ---
 
-14.01.25: Projekt erstellt
+14.01.26: Projekt erstellt
+15.01.26: Rstudio mit Github verknüpft (von Adina ;) und Jahreszahl in der Dokumentation geändert ;)) *Dieser Eintrag kann gerne gelöscht werden, ist nur ein Test, ob ich pullen und pushen kann*
