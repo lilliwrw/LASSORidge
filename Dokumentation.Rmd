@@ -3,5 +3,5 @@ title: "Dokumentation"
 output: html_document
 ---
 
-14.01.25: Projekt erstellt
-test
+14.01.26: Projekt erstellt
+19.01.26: Juliana ~ Funktion standardize_data.R erstellt
