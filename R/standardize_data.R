@@ -59,8 +59,8 @@ standardize_data <- function(X, y, center = TRUE, scale = TRUE){
   list(
     X = X_scaled,
     y = y_centered,
-    X_mean = X_means,
-    X_scale = X_scales,
+    X_means = X_means,
+    X_scales = X_scales,
     y_mean = y_mean
   )
 }
