@@ -5,4 +5,4 @@ output: html_document
 
 14.01.26: Projekt erstellt
 19.01.26: Juliana ~ Funktion standardize_data.R erstellt 
-21.01.26: Juliana ~ Tests für standardize_data erstellt, Funktion soft_threshold.R + Tests erstellt
+21.01.26: Juliana ~ Tests für standardize_data erstellt, Funktion soft_threshold.R + Tests erstellt, Funktion lasso_cd.R + Tests erstellt

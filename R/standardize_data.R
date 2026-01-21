@@ -24,9 +24,9 @@
 #' X <- matrix(rnorm(20*5), nrow = 20, ncol = 5)
 #' y <- rnorm(20)
 #' std <- standardize_data(X, y)
-#' colMeans(std$X)       # Should be ~0
-#' colSums(std$X^2)      # Should be ~1
-#' mean(std$y)           # Should be ~0
+#' colMeans(std$X)       # Should be about 0
+#' colSums(std$X^2)      # Should be 1
+#' mean(std$y)           # Should be about 0
 standardize_data <- function(X, y, center = TRUE, scale = TRUE){
   if(!is.matrix(X))X <- as.matrix(X)
   n <- nrow(X)  # Anzahl der Beobachtungen
@@ -56,11 +56,9 @@ standardize_data <- function(X, y, center = TRUE, scale = TRUE){
   }
 
   #Ausgabe
-  list(
-    X = X_scaled,
+  list(X = X_scaled,
     y = y_centered,
     X_means = X_means,
     X_scales = X_scales,
-    y_mean = y_mean
-  )
+    y_mean = y_mean)
 }
