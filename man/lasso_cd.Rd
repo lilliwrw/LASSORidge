@@ -7,7 +7,7 @@
 lasso_cd(X, y, lambda, tol = 1e-06, max_iter = 1000)
 }
 \arguments{
-\item{X}{Numeric matrix of predictors (n x p), should be centered and optionally scaled.}
+\item{X}{Numeric matrix of predictors (n x p), should be standardized.}
 
 \item{y}{Numeric response vector of length n, should be centered.}
 

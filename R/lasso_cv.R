@@ -2,7 +2,7 @@
 #'
 #' Performs K-fold (default 5-fold) cross-validation to select the optimal lambda.
 #'
-#' @param X Numeric matrix of predictors (n x p), centered and optionally scaled.
+#' @param X Numeric matrix of predictors (n x p), standardized.
 #' @param y Numeric response vector of length n, centered.
 #' @param n_folds Number of folds for cross-validation, default 5.
 #' @param n_lambda Number of lambda values to evaluate, default 100.

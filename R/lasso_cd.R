@@ -2,7 +2,7 @@
 #'
 #' Fits a LASSO regression model using coordinate descent.
 #'
-#' @param X Numeric matrix of predictors (n x p), should be centered and optionally scaled.
+#' @param X Numeric matrix of predictors (n x p), should be standardized.
 #' @param y Numeric response vector of length n, should be centered.
 #' @param lambda Non-negative regularization parameter.
 #' @param tol Convergence tolerance, default 1e-6.
