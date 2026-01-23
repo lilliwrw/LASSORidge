@@ -15,7 +15,7 @@ lasso_cv(
 )
 }
 \arguments{
-\item{X}{Numeric matrix of predictors (n x p), centered and optionally scaled.}
+\item{X}{Numeric matrix of predictors (n x p), standardized.}
 
 \item{y}{Numeric response vector of length n, centered.}
 
