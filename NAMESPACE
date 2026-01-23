@@ -2,5 +2,6 @@
 
 export(lambda_sequence)
 export(lasso_cd)
+export(lasso_cv)
 export(soft_threshold)
 export(standardize_data)
