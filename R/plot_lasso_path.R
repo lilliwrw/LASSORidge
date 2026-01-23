@@ -9,6 +9,8 @@
 #' @param xlab Label for x-axis, default "log(lambda)".
 #' @param ylab Label for y-axis, default "Coefficients".
 #' @param col Color vector for the lines. Default NULL (R default palette).
+#' @importFrom grDevices rainbow
+#' @importFrom graphics plot lines abline legend
 #' @export
 #'
 #' @examples
@@ -18,6 +20,7 @@
 #' std <- standardize_data(X, y)
 #' path <- lasso_path(std$X, std$y, n_lambda=10)
 #' plot_lasso_path(path$beta, path$lambda_seq)
+
 plot_lasso_path <- function(beta, lambda_seq, log_x=TRUE, main="LASSO Path",xlab="log(lambda)",
                             ylab="Coefficients", col=NULL) {
   p <- nrow(beta)
