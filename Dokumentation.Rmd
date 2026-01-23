@@ -6,4 +6,4 @@ output: html_document
 14.01.26: Lilli ~ Projekt erstellt
 19.01.26: Juliana ~ Funktion standardize_data.R erstellt 
 21.01.26: Juliana ~ Tests für standardize_data erstellt, Funktion soft_threshold.R + Tests erstellt, Funktion lasso_cd.R + Tests erstellt, Funktion lambda_sequence.R + Tests erstellt
-23.01.26: Juliana ~ lasso_cv.R + Test erstellt, lasso_path.R + Test erstellt
+23.01.26: Juliana ~ lasso_cv.R + Test erstellt, lasso_path.R + Test erstellt, plot_lasso_path.R + Test erstellt
