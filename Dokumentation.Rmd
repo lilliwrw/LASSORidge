@@ -8,3 +8,4 @@ output: html_document
 21.01.26: Juliana ~ Tests für standardize_data erstellt, Funktion soft_threshold.R + Tests erstellt, Funktion lasso_cd.R + Tests erstellt, Funktion lambda_sequence.R + Tests erstellt
 23.01.26: Juliana ~ lasso_path.R + Test erstellt, plot_lasso_path.R + Test erstellt
 24.01.26: Juliana ~ simulate_lasso_data.R + Test erstellt
+26.01.26: Felix ~ Created basic function for forward_stepwise_selection (status: basic functionality working, no tests or input validation implemented)
