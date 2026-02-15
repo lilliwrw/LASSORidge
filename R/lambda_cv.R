@@ -35,7 +35,7 @@ lambda_CV <- function(X,y,M = 5, e){
   for (l in seq_along(lambda_seq)){ #geht das ? Kein integer Vektor?
     res <- 0
     for (m in 1:M){
-      X_train <- X[fold_index != m,]
+      X_train <- X[fold_index != m,] #hier Drop False?
       X_test <- X[fold_index == m,]
       y_train <- y[fold_index != m]
       y_test <- y[fold_index == m]
@@ -62,3 +62,4 @@ lambda_CV <- function(X,y,M = 5, e){
     lambda_seq = lambda_seq
   ))
 }
+#! noch Fehler drin (und statt e evtl. method oder so)
