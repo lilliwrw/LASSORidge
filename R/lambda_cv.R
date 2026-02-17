@@ -14,7 +14,7 @@
 #'   \item{lambda_seq}{All testet regularization parameters.}
 #' }
 #'
-#' @export ????
+#' @export
 #'
 #' @examples ????
 #'
