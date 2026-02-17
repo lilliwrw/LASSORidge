@@ -62,7 +62,7 @@ forward_stepwise_selection <- function(data, input, output, subset, weights, npa
   }
 
   # Remove unwanted parts of the return list
-  # TBD
+  res <- res[as.character(nparam)]
 
   return(res)
 }
