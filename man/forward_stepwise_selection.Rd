@@ -4,7 +4,15 @@
 \alias{forward_stepwise_selection}
 \title{Forward stepwise selection of coefficients}
 \usage{
-forward_stepwise_selection(data, input, output, subset, weights, nparam = NULL)
+forward_stepwise_selection(
+  data,
+  input,
+  output,
+  subset,
+  weights,
+  nparam = NULL,
+  unlist_return_value = FALSE
+)
 }
 \arguments{
 \item{data}{data frame containing the data to be used for the linear regression}
@@ -12,6 +20,14 @@ forward_stepwise_selection(data, input, output, subset, weights, nparam = NULL)
 \item{input}{character vector: names of the coefficients}
 
 \item{output}{character vector of length 1: name of the column containing the output data}
+
+\item{subset}{TBD}
+
+\item{weights}{TBD}
+
+\item{nparam}{Numeric vector of the sizes of the subsets, that should be returned, default: all subset sizes are returned}
+
+\item{unlist_return_value}{If set to TRUE and nparam only contains one subset size, return result as character vector}
 }
 \value{
 A list of models indexed by the number of parameters used in the model
