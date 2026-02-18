@@ -29,6 +29,9 @@
 #' mean(std$y)           # Should be about 0
 standardize_data <- function(X, y, center = TRUE, scale = TRUE){
   if(!is.matrix(X))X <- as.matrix(X)
+  if (!is.numeric(X)) stop("X must be numeric")
+  if (!is.numeric(y)) stop("y must be numeric")
+  if (anyNA(X) || anyNA(y))stop("NA in Data not allowed")
   n <- nrow(X)  # Anzahl der Beobachtungen
   p <- ncol(X)
   if (length(y) != n)stop('Length of y must match number of rows of X')
