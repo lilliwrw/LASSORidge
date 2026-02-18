@@ -2,6 +2,7 @@
 
 S3method(plot,lasso_model)
 export(coef_lasso)
+export(compute_correlations)
 export(forward_stepwise_selection)
 export(lambda_CV)
 export(lambda_sequence)

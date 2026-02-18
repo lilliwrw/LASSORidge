@@ -21,5 +21,6 @@ test_that("plot.lasso_model runs without error for n_lambda = 1", {
 test_that("plot.lasso_model fails for wrong input class", {
   not_fit <- list(beta = matrix(1, 5, 5), lambda_seq = 1:5)
   #keine lasso_model Klasse
+  class(not_fit) <- "not_lasso"
   expect_error(plot.lasso_model(not_fit), "x must be a lasso_model object")
 })

@@ -21,8 +21,8 @@
 plot.lasso_model <- function(x, ...) {
   if(!inherits(x, "lasso_model")) stop("x must be a lasso_model object")
 
-  fit$beta <- as.matrix(fit$beta)
-  fit$lambda_seq <- as.numeric(fit$lambda_seq)
+  x$beta <- as.matrix(x$beta)
+  x$lambda_seq <- as.numeric(x$lambda_seq)
   #bestehende plot_lasso_path Funktion aufrufen
   plot_lasso_path(beta = x$beta, lambda_seq = x$lambda_seq, ...)
 }
