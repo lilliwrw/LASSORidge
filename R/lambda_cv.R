@@ -16,7 +16,15 @@
 #'
 #' @export
 #'
-#' @examples ????
+#' @examples
+#' set.seed(123)
+#' n <- 100
+#' p <- 20
+#' X <- matrix(rnorm(n*p), n, p)
+#' beta_true <- c(3, -2, 1.5, rep(0, p-3))
+#' y <- X %*% beta_true + rnorm(n)
+#' std <- standardize_data(X,y)
+#' lambda_CV(std$X,std$y,e=1)
 #'
 lambda_CV <- function(X,y,M = 5, e){
   M <- as.integer(M)
@@ -30,13 +38,13 @@ lambda_CV <- function(X,y,M = 5, e){
   #eher bei bsp, oder?  set.seed(1) # statt mit 1 evtl. mit seed arbeiten (wenn NULL, dann "echtere" Zufallszahl)
   fold_index <- sample(rep(1:M, length.out = n), #length out führt dazu, dass immer n zugordnet werden könnnen, auch wenn M gar kein Teiler von n ist (dann die vorderen Indexmengen etwas größer, d.h. nicht exkat gleich groß, reicht aber)
                        size = n, replace = FALSE)
-  lambda_seq <- lambda_sequence(X,y) #warum mit x und y?
-  #cv <- rep(0,length(lambda_seq)) #muss ja theoretisch nicht..
+  lambda_seq <- lambda_sequence(X,y)
+  cv <- numeric(length(lambda_seq))
   for (l in seq_along(lambda_seq)){ #geht das ? Kein integer Vektor?
     res <- 0
     for (m in 1:M){
-      X_train <- X[fold_index != m,] #hier Drop False?
-      X_test <- X[fold_index == m,]
+      X_train <- X[fold_index != m, , drop = FALSE]
+      X_test <- X[fold_index == m, , drop =  FALSE]
       y_train <- y[fold_index != m]
       y_test <- y[fold_index == m]
       if(e==1){
@@ -45,16 +53,18 @@ lambda_CV <- function(X,y,M = 5, e){
       if(e==2){
         beta <- ridge_cd(X_train, y_train, lambda_seq[l])$beta #heißt die Funktion so?
       }
-      y_pred <- beta[1] + X_test %*% beta[-1] #Skalarprodukt Name der Variable?
+      #y_pred <-  X_test %*% beta #Skalarprodukt Name der Variable?
 
-      res <- res + sum((y_test - y_pred)^2)
+      #res <- res + sum((y_test - y_pred)^2)
 
       #Alternativ (nahe an der Definition)
-      #res <- res + sum(sapply(which(fold_index == m), function(i){
-      #  (y[i] - (beta[1] + sum(beta[-1]*X[i,])))^2 #das ist L(Yi,f schlange von Xi)
-      #}))
-    }
+      res <- res + sum(sapply(which(fold_index == m), function(i){
+        (y[i] - beta %*% X[i,])^2
+       #(y[i] - (beta[1] + sum(beta[-1]*X[i,])))^2 #das ist L(Yi,f schlange von Xi)
+        #etwas Verwirrung, aber bei Standartisierung ist wohl beta0 =0, d.h. die erste Komponente wird meistens weggelassen (sogenanntes intercept)
+      }))
     cv[l] <- 1/n*res
+    }
   }
   return(list(
     lambda_opt = lambda_seq[which.min(cv)],
@@ -62,4 +72,4 @@ lambda_CV <- function(X,y,M = 5, e){
     lambda_seq = lambda_seq
   ))
 }
-#! noch Fehler drin (und statt e evtl. method oder so)
+# statt e evtl. method und mit character statt Zahl?
