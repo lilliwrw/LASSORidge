@@ -11,4 +11,4 @@ output: html_document
 26.01.26: Felix ~ Created basic function for forward_stepwise_selection (status: basic functionality working, no tests or input validation implemented)
 17.02.26: Juliana ~ kleine Änderungen lambda_sequence.R, lasso_cd.R,lasso_fit.R, coef_lasso.R, predict_lasso.R +Tests für user-freundlichere Benutzung + plot Funktion für S3-Klasse lasso_model
 17.02.26: Felix ~ Forward selection: Small functionality upgrades, first test function, input validation
-18.02.26: Juliana ~ Fehlerchecks standardize_data.R, kleine Fehlerbehebung plot.lasso_model.R, compute_correlations.R+Test, active_set.R+Tests, equiangular_dirrection.R+Test, step_size_gamma.R+Tests
+18.02.26: Juliana ~ Fehlerchecks, kleine Änderung standardize_data.R, kleine Fehlerbehebung plot.lasso_model.R, compute_correlations.R+Test, active_set.R+Tests, equiangular_dirrection.R+Test, step_size_gamma.R+Tests

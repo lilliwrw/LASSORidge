@@ -19,14 +19,10 @@
 lambda_sequence <- function(X, y, n_lambda = 100, lambda_min_ratio = 0.01) {
   if(!is.matrix(X)) stop('X must be a matrix')
   if(length(y) != nrow(X)) stop('y length must be nrow(X)')
-
-  std <- standardize_data(X, y)
-  X <- std$X
-  y <- std$y
   n <- nrow(X)
 
   #max lambda
-  lambda_max <- max(abs(crossprod(X,y))/n)
+  lambda_max <- max(abs(crossprod(X,y)))/n
   lambda_max <- max(lambda_max, 1e-4)
 
   #min lambda
