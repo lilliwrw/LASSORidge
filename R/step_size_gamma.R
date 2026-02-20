@@ -20,7 +20,7 @@
 #' set.seed(1)
 #' X <- matrix(rnorm(20), 5, 4)
 #' active <- c(2)
-#' eq <- equangular_direction(X, active)
+#' eq <- equiangular_direction(X, active)
 #' corrs <- compute_correlations(X, rnorm(5))
 #' step_size_gamma(X, eq$u, corrs, active)
 step_size_gamma <- function(X, u, correlations, active_indices) {

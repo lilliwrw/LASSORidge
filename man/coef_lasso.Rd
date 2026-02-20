@@ -21,6 +21,6 @@ Returns coefficient estimates from a fitted LASSO model.
 set.seed(1)
 X <- matrix(rnorm(20*5, sd=2), 20, 5)
 y <- rnorm(20, sd=2)
-fit <- lasso_fit(X, y)
+fit <- lasso(X, y)
 coef_lasso(fit)
 }
