@@ -6,7 +6,7 @@
 #' @param y A numeric response vector of length n.
 #' @param lambda Non-negative regularization parameter.
 #'
-#' @returns TRUE if all checks pass, else an informative error.
+#' @returns \code{TRUE} if all checks pass, else an informative error.
 #' @export
 #'
 #' @examples

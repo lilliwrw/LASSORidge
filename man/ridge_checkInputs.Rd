@@ -14,7 +14,7 @@ ridge_checkInputs(X, y, lambda)
 \item{lambda}{Non-negative regularization parameter.}
 }
 \value{
-TRUE if all checks pass, else an informative error.
+\code{TRUE} if all checks pass, else an informative error.
 }
 \description{
 Performs basic consistency checks for the ridge regression estimator.
