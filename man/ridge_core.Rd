@@ -14,7 +14,7 @@ ridge_core(X, y, lambda)
 \item{lambda}{Non-negative regularization parameter.}
 }
 \value{
-A numeric vector of length p containing the ridge coefficients.
+A numeric vector of length d containing the ridge coefficients.
 }
 \description{
 Computes the ridge regression estimator in closed form.

@@ -29,6 +29,9 @@
 #' out$beta
 #' out$r
 update_coefficients <- function(beta, active_indices, w, gamma, r, u) {
+  gamma <- as.numeric(gamma)
+  w <- drop(as.matrix(w))      #drop() sodass W und u Vektoren sind
+  u <- drop(as.matrix(u))
   beta[active_indices] <- beta[active_indices] + gamma * w
   r <- r - gamma * u
 
