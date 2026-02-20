@@ -11,12 +11,12 @@
 #' set.seed(1)
 #' X <- matrix(rnorm(50*5), 50, 5)
 #' y <- rnorm(50)
-#' fit <- lasso_fit(X, y, n_lambda = 10)
+#' fit <- lasso(X, y, n_lambda = 10)
 #'
-#' # Basic plot using S3-method
+#' #Basic plot using S3-method
 #' plot(fit)
 #'
-#' # Customized title and colors
+#' #Customized title and colors
 #' plot(fit, main = "Mein LASSO Pfad", col = rainbow(ncol(fit$beta)))
 plot.lasso_model <- function(x, ...) {
   if(!inherits(x, "lasso_model")) stop("x must be a lasso_model object")

@@ -3,7 +3,7 @@ test_that("predict_lasso returns correct length", {
   X <- matrix(rnorm(20*5), 20, 5)
   y <- rnorm(20)
 
-  fit <- lasso_fit(X, y, n_lambda = 5)
+  fit <- lasso(X, y, n_lambda = 5)
 
   X_new <- matrix(rnorm(10*5), 10, 5)
   pred <- predict_lasso(fit, X_new)
