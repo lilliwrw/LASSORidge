@@ -2,13 +2,13 @@
 % Please edit documentation in R/ridge_inverseTransform.R
 \name{ridge_inverseTransform}
 \alias{ridge_inverseTransform}
-\title{Recover Coefficients on Original Scale}
+\title{Transform Coefficients to Original Scale}
 \usage{
 ridge_inverseTransform(beta_scaled, x_means, x_sds, y_mean)
 }
 \arguments{
 \item{beta_scaled}{A numeric vector of ridge coefficients
-estimated from standardized predictors.}
+estimated from standardized data.}
 
 \item{x_means}{A numeric vector of column means of the
 original design matrix \code{X}.}
@@ -26,8 +26,8 @@ A list containing:
 }
 }
 \description{
-Transforms ridge regression coefficients obtained from
-standardized data back to the original data scale
+Recovers ridge regression coefficients obtained from
+standardized data back on the original data scale
 and computes the corresponding intercept.
 }
 \examples{
