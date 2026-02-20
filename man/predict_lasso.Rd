@@ -23,7 +23,7 @@ Generates predictions for new data using a fitted LASSO model.
 set.seed(1)
 X <- matrix(rnorm(20*5, sd=2), 20, 5)
 y <- rnorm(20, sd=2)
-fit <- lasso_fit(X, y)
+fit <- lasso(X, y)
 X_new <- matrix(rnorm(10*5), 10, 5)
 predict_lasso(fit, X_new)
 }

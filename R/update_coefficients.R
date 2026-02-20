@@ -24,7 +24,7 @@
 #' beta <- rep(0, 4)
 #' r <- rnorm(5)
 #' active <- c(2)
-#' eq <- equangular_direction(X, active)
+#' eq <- equiangular_direction(X, active)
 #' out <- update_coefficients(beta, active, eq$w, 0.1, r, eq$u)
 #' out$beta
 #' out$r

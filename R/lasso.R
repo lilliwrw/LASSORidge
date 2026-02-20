@@ -25,7 +25,7 @@
 #' fit <- lasso(X, y, n_lambda=10)
 lasso <- function(X, y, n_lambda=100, lambda_min_ratio=0.01,
                       tol=1e-6, max_iter=1000, standardize=TRUE) {
-  #Standartisieren, dalls standardize=TRUE
+  #Standartisieren, falls standardize=TRUE
   if(standardize) {
     std <- standardize_data(X, y)
     X_use <- std$X
