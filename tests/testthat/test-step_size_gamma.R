@@ -2,7 +2,7 @@ test_that("step_size_gamma returns gamma and next_index", {
   set.seed(1)
   X <- matrix(rnorm(20), 5, 4)
   active <- c(2)
-  eq <- equangular_direction(X, active)
+  eq <- equiangular_direction(X, active)
   corrs <- compute_correlations(X, rnorm(5))
   step <- step_size_gamma(X, eq$u, corrs, active)
 
@@ -18,7 +18,7 @@ test_that("gamma is minimal positive step", {
   set.seed(2)
   X <- matrix(rnorm(15), 5, 3)
   active <- c(1)
-  eq <- equangular_direction(X, active)
+  eq <- equiangular_direction(X, active)
   corrs <- compute_correlations(X, rnorm(5))
   step <- step_size_gamma(X, eq$u, corrs, active)
 
