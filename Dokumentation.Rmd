@@ -13,3 +13,4 @@ output: html_document
 17.02.26: Felix ~ Forward selection: Small functionality upgrades, first test function, input validation
 18.02.26: Juliana ~ Fehlerchecks, kleine Änderung standardize_data.R, kleine Fehlerbehebung plot.lasso_model.R, compute_correlations.R+Test, active_set.R+Tests, equiangular_dirrection.R+Test, step_size_gamma.R+Tests
 20.02.26: Juliana ~ kleine Änderungen step_size_gamma.R,equiangular dirrection.R, update_coefficients.R+ Tests, lar_path.R+Test
+21.02.26: Juliana ~ lar.R+Tests
