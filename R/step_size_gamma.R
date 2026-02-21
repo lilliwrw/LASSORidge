@@ -20,13 +20,13 @@
 #' set.seed(1)
 #' X <- matrix(rnorm(20), 5, 4)
 #' active <- c(2)
-#' eq <- equiangular_direction(X, active)
 #' corrs <- compute_correlations(X, rnorm(5))
+#' eq <- equiangular_direction(X, active,corrs)
 #' step_size_gamma(X, eq$u, corrs, active)
 step_size_gamma <- function(X, u, correlations, active_indices) {
   inactive <- setdiff(seq_len(ncol(X)), active_indices) #Spalten die noch nicht im aktiven Set sind
   if(length(inactive) == 0) return(list(gamma = 0, next_index = NA)) #alle Variablen aktiv
-  C <- max(abs(correlations[active_indices])) #Maximum der Korrelation der aktiven Variablen
+  C <- max(abs(correlations[active_indices])) #Maximum der Korrelation aller Variablen
 
   a <- drop(crossprod(X[, inactive, drop=FALSE], u)) #aj=Xj^Tu (Matrixeigenschaft fallen lassen)
   c_inactive <- correlations[inactive]
@@ -43,8 +43,10 @@ step_size_gamma <- function(X, u, correlations, active_indices) {
   } else {
     gamma <- min(gamma_candidates)
     #den Index der nächsten Variable bestimmen
-    next_index <- inactive[which.min(pmin((C - c_inactive)/(1 - a), (C + c_inactive)/(1 + a)))]
-  }
+    ratio1 <- (C - c_inactive)/(1 - a)
+    ratio2 <- (C + c_inactive)/(1 + a)
+    next_index <- inactive[which.min(pmin(ratio1, ratio2))]
+    }
 
   #Ausgabe
   list(gamma = gamma, next_index = next_index)

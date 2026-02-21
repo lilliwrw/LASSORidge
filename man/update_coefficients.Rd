@@ -36,7 +36,8 @@ X <- matrix(rnorm(20), 5, 4)
 beta <- rep(0, 4)
 r <- rnorm(5)
 active <- c(2)
-eq <- equiangular_direction(X, active)
+corrs <- compute_correlations(X, r)
+eq <- equiangular_direction(X, active,corrs)
 out <- update_coefficients(beta, active, eq$w, 0.1, r, eq$u)
 out$beta
 out$r
