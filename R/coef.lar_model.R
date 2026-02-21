@@ -26,14 +26,14 @@
 #' #Coefficients at step 3
 #' coef(fit, step = 3)
 coef.lar_model <- function(object, step = NULL, ...) {
-  beta <- object$beta
+  beta <- object$beta #Dimendion: px(max_steps+1)
 
   # Wenn step angegeben: gültigen Bereich prüfen
   if (!is.null(step)) {
     if (step < 1 || step > ncol(beta)) {
       stop("step must be between 1 and the number of steps in your path")
     }
-    return(beta[, step])
+    return(beta[,step])
   }
 
   #ganze Koeffizientenmatrix zurückgeben

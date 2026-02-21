@@ -24,16 +24,18 @@
 #' beta <- rep(0, 4)
 #' r <- rnorm(5)
 #' active <- c(2)
-#' eq <- equiangular_direction(X, active)
+#' corrs <- compute_correlations(X, r)
+#' eq <- equiangular_direction(X, active,corrs)
 #' out <- update_coefficients(beta, active, eq$w, 0.1, r, eq$u)
 #' out$beta
 #' out$r
 update_coefficients <- function(beta, active_indices, w, gamma, r, u) {
+  if(length(w) != length(active_indices)) stop("length of w does not match active indices")
   gamma <- as.numeric(gamma)
   w <- drop(as.matrix(w))      #drop() sodass W und u Vektoren sind
   u <- drop(as.matrix(u))
-  beta[active_indices] <- beta[active_indices] + gamma * w
-  r <- r - gamma * u
+  beta[active_indices] <- beta[active_indices] + (gamma * w)
+  r <- r - (gamma * u)
 
   list(beta = beta, r = r)
 }

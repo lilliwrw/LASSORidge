@@ -4,19 +4,21 @@
 \alias{equiangular_direction}
 \title{Compute equiangular direction for active predictors}
 \usage{
-equiangular_direction(X, active_indices)
+equiangular_direction(X, active_indices, c_vec)
 }
 \arguments{
 \item{X}{Numeric predictor matrix (standardized).}
 
 \item{active_indices}{Integer vector of column indices of active predictors.}
+
+\item{c_vec}{Numeric vector of current correlations X^T r.}
 }
 \value{
 A list with components:
 \describe{
 \item{u}{Equiangular direction vector (n × 1).}
 \item{w}{Weights of active predictors.}
-\item{A}{Normalization factor.}
+\item{s}{Numeric vector. Sign vector of active correlations.}
 }
 }
 \description{
@@ -25,10 +27,11 @@ the current active set of predictors.
 }
 \examples{
 set.seed(1)
-X <- matrix(rnorm(20), 5, 4)
-active <- c(2,3)
-equi <- equiangular_direction(X, active)
-equi$u
-equi$w
-equi$A
+X <- matrix(rnorm(20 * 3), 20, 3)
+y <- rnorm(20)
+beta <- rep(0, 3)
+r <- y - X \%*\% beta
+c_vec <- as.vector(crossprod(X, r))
+active <- which.max(abs(c_vec))
+equiangular_direction(X, active, c_vec)
 }
