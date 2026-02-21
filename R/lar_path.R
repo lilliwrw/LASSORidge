@@ -32,8 +32,8 @@ lar_path <- function(X, y, max_steps = ncol(X)) {
   beta <- rep(0, p)
   r <- y #y-Xbeta=y (wg. beta=0)
 
-  beta_path <- matrix(0, nrow = p, ncol = max_steps + 1)
-  beta_path[, 1] <- beta #Spalte 1 als 'Startpunkt'
+  beta_path <- matrix(0, nrow = p, ncol = max_steps+1)
+  beta_path[,1] <- beta #Spalte 1 als 'Startpunkt' (mit 0 als Eintrag)
 
   #Aktive Menge (zu Beginn leere Menge)
   active <- integer(0)
@@ -41,21 +41,21 @@ lar_path <- function(X, y, max_steps = ncol(X)) {
 
   for (k in seq_len(max_steps)) {
 
-    #Korrelationen: cj=xj^T r (welche Variable geht am stärksten Richtung r)
-    c <- compute_correlations(X, r)
-    C_max <- max(abs(c)) #größte absoulute Relation
+    #Residuum und Korrelationen
+    c_vec <- drop(crossprod(X, r))
+    C_max <- max(abs(c_vec)) #größte absoulute Relation
 
     if (C_max < .Machine$double.eps) break #wenn C_max=0 haben Lösung erreicht
 
     #neue Variablen hinzufügen, die mit größter Korrelation
-    new_active <- which(abs(c) == C_max)
+    new_active <- which(abs(c_vec) == C_max)
     active <- union(active, new_active)
 
     #equiangular_direction()
-    eq <- equiangular_direction(X, active)
+    eq <- equiangular_direction(X, active, c_vec)
 
     #step_size_gamma()
-    gamma_info <- step_size_gamma(X, eq$u, c, active)
+    gamma_info <- step_size_gamma(X, eq$u, c_vec, active)
     gamma <- gamma_info$gamma
     next_index <- gamma_info$next_index
 
@@ -65,14 +65,14 @@ lar_path <- function(X, y, max_steps = ncol(X)) {
     r <- upd$r
 
     #an richtiger Stelle in Matrix speichern
-    beta_path[, k + 1] <- beta
+    beta_path[,k + 1] <- beta
     active_sets[[k + 1]] <- active
 
   }
 
   #Ausgabe
   list(
-    beta_path = beta_path,
+    beta_path = beta_path, #Spalten = Schritte, Zeilen = Variablen
     active_sets = active_sets
   )
 }
