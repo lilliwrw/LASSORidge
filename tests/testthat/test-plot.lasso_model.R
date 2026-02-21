@@ -3,7 +3,7 @@ test_that("plot.lasso_model runs without error for multiple lambdas", {
   X <- matrix(rnorm(50*5), 50, 5)
   y <- rnorm(50)
 
-  fit <- lasso_fit(X, y, n_lambda = 5)
+  fit <- lasso(X, y, n_lambda = 5)
 
   expect_silent(plot(fit))
 })
@@ -13,7 +13,7 @@ test_that("plot.lasso_model runs without error for n_lambda = 1", {
   X <- matrix(rnorm(20*5), 20, 5)
   y <- rnorm(20)
 
-  fit <- lasso_fit(X, y, n_lambda = 1)
+  fit <- lasso(X, y, n_lambda = 1)
 
   expect_silent(plot(fit))
 })

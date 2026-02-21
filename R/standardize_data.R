@@ -50,7 +50,7 @@ standardize_data <- function(X, y, center = TRUE, scale = TRUE){
 
   #Skalieren der Eingaben, falls scale=TRUE (default)
   if (scale) {
-    X_scales <- sqrt(colSums(X_centered^2))
+    X_scales <- sqrt(colSums(X_centered^2) / n)
     X_scales[X_scales == 0] <- 1 # Norm von konstanten Spalten auf 1 setzen um Division durch 0 zu vermeiden
     X_scaled <- sweep(X_centered, 2, X_scales, FUN = "/")
   } else {

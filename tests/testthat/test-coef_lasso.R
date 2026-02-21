@@ -3,7 +3,7 @@ test_that("coef_lasso extracts correct column", {
   X <- matrix(rnorm(20*5), 20, 5)
   y <- rnorm(20)
 
-  fit <- lasso_fit(X, y, n_lambda = 4)
+  fit <- lasso(X, y, n_lambda = 4)
 
   coefs_last <- coef_lasso(fit)
   expect_equal(dim(coefs_last), c(5, 1))

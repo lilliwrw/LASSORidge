@@ -22,10 +22,10 @@
 #' set.seed(1)
 #' X <- matrix(rnorm(50*5), 50, 5)
 #' y <- rnorm(50)
-#' fit <- lasso_fit(X, y, n_lambda=10)
-lasso_fit <- function(X, y, n_lambda=100, lambda_min_ratio=0.01,
+#' fit <- lasso(X, y, n_lambda=10)
+lasso <- function(X, y, n_lambda=100, lambda_min_ratio=0.01,
                       tol=1e-6, max_iter=1000, standardize=TRUE) {
-  # optional standardization
+  #Standartisieren, falls standardize=TRUE
   if(standardize) {
     std <- standardize_data(X, y)
     X_use <- std$X
@@ -35,19 +35,16 @@ lasso_fit <- function(X, y, n_lambda=100, lambda_min_ratio=0.01,
     y_use <- y
   }
 
-  # compute LASSO path
+  #Lasso_path
   path <- lasso_path(X_use, y_use, n_lambda, lambda_min_ratio, tol, max_iter)
 
-  # ensure beta is numeric matrix
+  #Sicherstellen, dass beta Matrix ist
   beta_mat <- path$beta
   if(!is.matrix(beta_mat)) beta_mat <- matrix(beta_mat, nrow=ncol(X_use), ncol=length(path$lambda_seq))
 
-  # return minimal info for user
+  #Ausgabe
   structure(
-    list(
-      beta = beta_mat,
-      lambda_seq = path$lambda_seq
-    ),
-    class = "lasso_model"
-  )
+    list(beta = beta_mat,
+      lambda_seq = path$lambda_seq),
+    class = "lasso_model")
 }
