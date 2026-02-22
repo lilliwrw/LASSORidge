@@ -9,8 +9,11 @@ output: html_document
 23.01.26: Juliana ~ lasso_path.R + Test erstellt, plot_lasso_path.R + Test erstellt
 24.01.26: Juliana ~ simulate_lasso_data.R + Test erstellt
 26.01.26: Felix ~ Created basic function for forward_stepwise_selection (status: basic functionality working, no tests or input validation implemented)
+15.02.26: Adina ~ erstellen der Funktion lambda_CV.R in einer noch unfertigen Fassung
 17.02.26: Juliana ~ kleine Änderungen lambda_sequence.R, lasso_cd.R,lasso_fit.R, coef_lasso.R, predict_lasso.R +Tests für user-freundlichere Benutzung + plot Funktion für S3-Klasse lasso_model
 17.02.26: Felix ~ Forward selection: Small functionality upgrades, first test function, input validation
+18.02.26: Adina ~ Weiterarbeiten an lambda.CV
 18.02.26: Juliana ~ Fehlerchecks, kleine Änderung standardize_data.R, kleine Fehlerbehebung plot.lasso_model.R, compute_correlations.R+Test, active_set.R+Tests, equiangular_dirrection.R+Test, step_size_gamma.R+Tests
 20.02.26: Juliana ~ kleine Änderungen step_size_gamma.R,equiangular dirrection.R, update_coefficients.R+ Tests, lar_path.R+Test
 21.02.26: Juliana ~ lar.R+Tests, plot Funktionen für lar, coef.lar_model.R, predict.lar_model()
+21.02.25: Adina ~ Weiterarbeiten an lambda_CV (einarbeiten von ridge und Fehlerbehebungen, bzw. Suchen nach Fehlern)
