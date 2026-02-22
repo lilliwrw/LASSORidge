@@ -43,7 +43,7 @@ lambda_CV <- function(X, y, M = 5, method){
   #  std <- standardize_data(X, y)
     lambda_seq <- lambda_sequence(std$X, std$y)
   } else if(method == "ridge"){
-    lambda_seq <- lambda_sequence_ridge(X,y)
+    lambda_seq <- lambda_sequence_ridge(X,y) #ist in der Datei: test_CV (nicht im Porjekt)
   }
 
   cv <- numeric(length(lambda_seq))
