@@ -4,7 +4,7 @@
 #'
 #' @param n Number of observations (rows of X)
 #' @param p Number of predictors (columns of X)
-#' @param n_active Number of non-zero coefficients in beta
+#' @param n_active Number of non-zero coefficients in beta (default 3)
 #' @param beta_values Optional numeric vector for non-zero coefficients (length = n_active)
 #' @param sigma Standard deviation of Gaussian noise (default 1)
 #' @param seed Optional random seed for reproducibility
@@ -21,7 +21,7 @@
 #' @examples
 #' data <- simulate_lasso_data(n=50, p=10, n_active=3, sigma=1, seed=1)
 #' str(data)
-simulate_lasso_data <- function(n, p, n_active, beta_values=NULL, sigma=1, seed=NULL) {
+simulate_lasso_data <- function(n, p, n_active = 3, beta_values=NULL, sigma=1, seed=NULL) {
   if(!is.null(seed)) set.seed(seed) #Reprudierzierbarkeit der Ergebnisse
   beta <- rep(0, p) #alle Koeffizienten 0
 
