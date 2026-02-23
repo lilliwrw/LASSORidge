@@ -32,9 +32,8 @@ step_size_gamma <- function(X, u, correlations, active_indices) {
   c_inactive <- correlations[inactive]
 
   #Berechnen der möglichen Schrittweiten (wähle dann die kleinste positive weite)
-  gamma_candidates <- c((C - c_inactive) / (1 - a),
-                        (C + c_inactive) / (1 + a))
-
+  gamma_candidates <- c((C - c_inactive)/(1 - a),
+                        (C + c_inactive)/(1 + a))
   gamma_candidates <- gamma_candidates[gamma_candidates > 0 & is.finite(gamma_candidates)]
 
   if(length(gamma_candidates) == 0) {
@@ -43,9 +42,7 @@ step_size_gamma <- function(X, u, correlations, active_indices) {
   } else {
     gamma <- min(gamma_candidates)
     #den Index der nächsten Variable bestimmen
-    ratio1 <- (C - c_inactive)/(1 - a)
-    ratio2 <- (C + c_inactive)/(1 + a)
-    next_index <- inactive[which.min(pmin(ratio1, ratio2))]
+    next_index <- inactive[which.min(pmin((C - c_inactive)/(1 - a), (C + c_inactive)/(1 + a)))]
     }
 
   #Ausgabe

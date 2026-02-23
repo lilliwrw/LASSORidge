@@ -21,3 +21,5 @@ output: html_document
 21.02.26: Juliana ~ lar.R+Tests, plot Funktionen für lar, coef.lar_model.R, predict.lar_model()
 21.02.26: Adina ~ Weiterarbeiten an lambda_CV (einarbeiten von ridge und Fehlerbehebungen, bzw. Suchen nach Fehlern)
 22.02.26: Adina ~ Fehlersuche bei lambda_CV und Erstellen von plot_cv
+23.02.26: Lilli ~ kleine Änderungen an ridge.R und Tests zu allen Hilfsfunktionen + ridge
+23.02.26: Juliana ~ Fehlersuche in step_size_gamma.R und update_coefficients.R
