@@ -22,3 +22,4 @@ output: html_document
 21.02.26: Adina ~ Weiterarbeiten an lambda_CV (einarbeiten von ridge und Fehlerbehebungen, bzw. Suchen nach Fehlern)
 22.02.26: Adina ~ Fehlersuche bei lambda_CV und Erstellen von plot_cv
 23.02.26: Lilli ~ kleine Änderungen an ridge.R und Tests zu allen Hilfsfunktionen + ridge
+23.02.26: Adina ~ plot.cv: Überarbeitung, Help-Seite; erstellen lambda_sequence_ridge; lambda_CV: Überarbeiten, genauere Beschreibung
