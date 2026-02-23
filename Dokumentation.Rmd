@@ -14,6 +14,9 @@ output: html_document
 17.02.26: Felix ~ Forward selection: Small functionality upgrades, first test function, input validation
 18.02.26: Adina ~ Weiterarbeiten an lambda.CV
 18.02.26: Juliana ~ Fehlerchecks, kleine Änderung standardize_data.R, kleine Fehlerbehebung plot.lasso_model.R, compute_correlations.R+Test, active_set.R+Tests, equiangular_dirrection.R+Test, step_size_gamma.R+Tests
+18.02.26: Lilli ~ ridge_core, ridge_checkInputs erstellt
+19.02.26: Lilli ~ ridge_standardizeData, ridge_inverseTransform erstellt
+20.02.26: Lilli ~ ridge.R aus Hilfsfunktionen zusammengestellt
 20.02.26: Juliana ~ kleine Änderungen step_size_gamma.R,equiangular dirrection.R, update_coefficients.R+ Tests, lar_path.R+Test
 21.02.26: Juliana ~ lar.R+Tests, plot Funktionen für lar, coef.lar_model.R, predict.lar_model()
 21.02.26: Adina ~ Weiterarbeiten an lambda_CV (einarbeiten von ridge und Fehlerbehebungen, bzw. Suchen nach Fehlern)
