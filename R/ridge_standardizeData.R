@@ -9,8 +9,8 @@
 #' \itemize{
 #'   \item \code{Xs} — standardized design matrix
 #'   \item \code{ys} — centered response vector
-#'   \item \code{x_means} — column means of \code{X}
-#'   \item \code{x_sds} — column standard deviations of \code{X}
+#'   \item \code{X_means} — column means of \code{X}
+#'   \item \code{X_sds} — column standard deviations of \code{X}
 #'   \item \code{y_mean} — mean of \code{y}
 #' }
 #' @export
@@ -21,9 +21,9 @@
 #' y <- rnorm(10)
 #' ridge_standardizeData(X, y)
 ridge_standardizeData <- function(X, y){
-  x_means <- colMeans(X)
-  x_sds <- apply(X, 2, sd)
-  Xs <- scale(X)
+  X_means <- colMeans(X)
+  X_sds <- apply(X, 2, sd)
+  Xs <- scale(X, center = X_means, scale = X_sds)
 
   y_mean <- mean(y)
   ys <- y-y_mean
@@ -32,8 +32,8 @@ ridge_standardizeData <- function(X, y){
   list(
     Xs = Xs,
     ys = ys,
-    x_means = x_means,
-    x_sds = x_sds,
+    X_means = X_means,
+    X_sds = X_sds,
     y_mean = y_mean
   )
 }
