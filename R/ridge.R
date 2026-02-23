@@ -10,8 +10,7 @@
 #'
 #' @returns An object of class \code{"ridge"} containing:
 #' \itemize{
-#'   \item \code{coefficients} — regression coefficients
-#'   \item \code{intercept} — intercept term
+#'   \item \code{coefficients} — named vector of regression coefficients including intercept
 #'   \item \code{lambda} — regularization parameter
 #'   \item \code{fitted.values} — fitted values
 #'   \item \code{residuals} — residuals
@@ -28,6 +27,11 @@
 ridge <- function(X, y, lambda){
   ridge_checkInputs(X, y, lambda)
 
+  coef_names <- colnames(X)
+  if (is.null(coef_names)) {
+    coef_names <- paste0("X", seq_len(ncol(X)))
+  }
+
   std <- ridge_standardizeData(X, y)
 
   beta_scaled <- ridge_core(
@@ -38,23 +42,25 @@ ridge <- function(X, y, lambda){
 
   recovered <- ridge_inverseTransform(
     beta_scaled,
-    std$x_means,
-    std$x_sds,
+    std$X_means,
+    std$X_sds,
     std$y_mean
   )
 
-  beta <- recovered$beta
-  intercept <- recovered$intercept
+  beta <- as.vector(recovered$beta)
+  names(beta) <- coef_names
+  intercept <- as.numeric(recovered$intercept)
 
-  fitted <- intercept + X %*% beta
+  coef_full <- c("(Intercept)" = intercept, beta)
+
+  fitted <- as.vector(intercept + X %*% beta)
   residuals <- y - fitted
 
   result <- list(
-    coefficients = as.vector(beta),
-    intercept = intercept,
+    coefficients = coef_full,
     lambda = lambda,
-    fitted.values = as.vector(fitted),
-    residuals = as.vector(residuals),
+    fitted.values = fitted,
+    residuals = residuals,
     call = match.call()
   )
 
