@@ -52,7 +52,8 @@ plot_cv <- function(lambda_seq, cv_values, lambda_opt, log_scale = TRUE, main = 
        main = main)
 
   # Marking the optimal lambda with a red vertical line
-  abline(v = if (log_scale) log10(lambda_opt) else lambda_opt, col = "red", lty =2)
+  abline(v = if (log_scale) log10(lambda_opt) else lambda_opt,
+         col = "red", lty =2)
 
   # Label indicating the optimal value in the bottom left corner
   usr <- par("usr")  # c(x1, x2, y1, y2)
