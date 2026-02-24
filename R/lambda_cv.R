@@ -23,11 +23,11 @@
 #' X <- matrix(rnorm(n*p), n, p)
 #' beta_true <- c(3, -2, 1.5, rep(0, p-3))
 #' y <- X %*% beta_true + rnorm(n)
-#' lambda_CV(X,y,method="lasso")
-#' lambda_CV(X,y,method="ridge")
+#' lambda_cv(X,y,method="lasso")
+#' lambda_cv(X,y,method="ridge")
 #'
-##aktueller Stand: Lasso stimmt perfekt mit glmnet überein, ridge gar nicht (obwohl korrekte Lambda Wert, oder zumindest Bereich dort, mitgetestest wurde)
-lambda_CV <- function(X, y, M = 5, method){
+## lasso stimmt mit glmnet überein, bei ridge nicht, das liegt aber an einer anderen Zielfunktion bei glmnet für ridge
+lambda_cv <- function(X, y, M = 5, method){
   M <- as.integer(M)
   if(M <= 0) stop("M musst be a positive number")
   stopifnot("method musst bei lasso or ridge" = (method %in% c("lasso","ridge")))
