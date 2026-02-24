@@ -25,7 +25,7 @@ lambda_sequence_ridge <- function(X, n_lambda = 100, lambda_min_ratio = 1e-4) {
   #minimum lambda
   lambda_min <- max(lambda_max * lambda_min_ratio, 1e-4)
 
-  if(lambda_max <= lambda_min) { lambda_min <- lambda_max * 0.5}
+  if(lambda_max < lambda_min) { lambda_min <- lambda_max * 0.5}
 
   #Logarithmically distributed from largest to smallest
   lambda_seq <- exp(seq(log(lambda_max), log(lambda_min), length.out = n_lambda))
