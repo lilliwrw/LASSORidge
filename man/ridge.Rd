@@ -16,8 +16,7 @@ ridge(X, y, lambda)
 \value{
 An object of class \code{"ridge"} containing:
 \itemize{
-\item \code{coefficients} — regression coefficients
-\item \code{intercept} — intercept term
+\item \code{coefficients} — named vector of regression coefficients including intercept
 \item \code{lambda} — regularization parameter
 \item \code{fitted.values} — fitted values
 \item \code{residuals} — residuals

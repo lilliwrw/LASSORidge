@@ -24,3 +24,4 @@ output: html_document
 23.02.26: Lilli ~ kleine Änderungen an ridge.R und Tests zu allen Hilfsfunktionen + ridge
 23.02.26: Juliana ~ Fehlersuche in step_size_gamma.R und update_coefficients.R
 23.02.26: Adina ~ plot.cv: Überarbeitung, Help-Seite; erstellen lambda_sequence_ridge; lambda_CV: Überarbeiten, genauere Beschreibung
+24.02.26: Lilli ~ S3 Methoden print, coef, fitted, residuals und predict für ridge erstellt + tests

@@ -4,16 +4,16 @@
 \alias{lambda_CV}
 \title{Cross Validation for LASSO or Ridge}
 \usage{
-lambda_CV(X, y, M = 5, e)
+lambda_CV(X, y, M = 5, method)
 }
 \arguments{
 \item{X}{Numeric matrix of predictors (n x p), should be standardized.}
 
 \item{y}{Numeric response vector of length n, should be centered.}
 
-\item{M}{Positive natural number (Number of Unterteilungen von den Beobachtungen???)}
+\item{M}{Positive number, should be an integer, but it will be converted to an integer as long as possible.}
 
-\item{e}{1 or 2 for LASSO or Ridge estimation ?? (wie bei mapply)}
+\item{method}{character vector ("lasso" or "ridge")}
 }
 \value{
 A list with:
@@ -27,6 +27,13 @@ A list with:
 Searchs an optimal regularization parameter for the LASSO or Ridge Estimation
 }
 \examples{
-????
+set.seed(123)
+n <- 100
+p <- 20
+X <- matrix(rnorm(n*p), n, p)
+beta_true <- c(3, -2, 1.5, rep(0, p-3))
+y <- X \%*\% beta_true + rnorm(n)
+lambda_CV(X,y,method="lasso")
+lambda_CV(X,y,method="ridge")
 
 }

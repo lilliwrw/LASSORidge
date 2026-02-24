@@ -16,8 +16,8 @@ A list containing:
 \itemize{
 \item \code{Xs} — standardized design matrix
 \item \code{ys} — centered response vector
-\item \code{x_means} — column means of \code{X}
-\item \code{x_sds} — column standard deviations of \code{X}
+\item \code{X_means} — column means of \code{X}
+\item \code{X_sds} — column standard deviations of \code{X}
 \item \code{y_mean} — mean of \code{y}
 }
 }
