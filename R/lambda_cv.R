@@ -1,6 +1,6 @@
 #' Cross Validation for LASSO or Ridge
 #'
-#' Searchs an optimal regularization parameter for the LASSO or Ridge Estimation
+#' Searching an optimal regularization parameter for the LASSO or Ridge Estimation
 #'
 #' @param X Numeric matrix of predictors (n x p), should be standardized.
 #' @param y Numeric response vector of length n, should be centered.
