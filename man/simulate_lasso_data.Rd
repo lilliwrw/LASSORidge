@@ -4,14 +4,21 @@
 \alias{simulate_lasso_data}
 \title{Simulate LASSO data}
 \usage{
-simulate_lasso_data(n, p, n_active, beta_values = NULL, sigma = 1, seed = NULL)
+simulate_lasso_data(
+  n,
+  p,
+  n_active = 3,
+  beta_values = NULL,
+  sigma = 1,
+  seed = NULL
+)
 }
 \arguments{
 \item{n}{Number of observations (rows of X)}
 
 \item{p}{Number of predictors (columns of X)}
 
-\item{n_active}{Number of non-zero coefficients in beta}
+\item{n_active}{Number of non-zero coefficients in beta (default 3)}
 
 \item{beta_values}{Optional numeric vector for non-zero coefficients (length = n_active)}
 

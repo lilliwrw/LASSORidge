@@ -4,16 +4,16 @@
 \alias{ridge_inverseTransform}
 \title{Transform Coefficients to Original Scale}
 \usage{
-ridge_inverseTransform(beta_scaled, x_means, x_sds, y_mean)
+ridge_inverseTransform(beta_scaled, X_means, X_sds, y_mean)
 }
 \arguments{
 \item{beta_scaled}{A numeric vector of ridge coefficients
 estimated from standardized data.}
 
-\item{x_means}{A numeric vector of column means of the
+\item{X_means}{A numeric vector of column means of the
 original design matrix \code{X}.}
 
-\item{x_sds}{A numeric vector of column standard deviations
+\item{X_sds}{A numeric vector of column standard deviations
 of the original design matrix \code{X}.}
 
 \item{y_mean}{The mean of the original response vector \code{y}.}
@@ -32,8 +32,8 @@ and computes the corresponding intercept.
 }
 \examples{
 beta_scaled <- c(0.5, -1.2)
-x_means <- c(2, 3)
-x_sds <- c(1, 2)
+X_means <- c(2, 3)
+X_sds <- c(1, 2)
 y_mean <- 5
-ridge_inverseTransform(beta_scaled, x_means, x_sds, y_mean)
+ridge_inverseTransform(beta_scaled, X_means, X_sds, y_mean)
 }
