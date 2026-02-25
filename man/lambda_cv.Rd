@@ -7,9 +7,9 @@
 lambda_cv(X, y, M = 5, method)
 }
 \arguments{
-\item{X}{Numeric matrix of predictors (n x p), should be standardized.}
+\item{X}{Numeric matrix of predictors (n x p).}
 
-\item{y}{Numeric response vector of length n, should be centered.}
+\item{y}{Numeric response vector of length n.}
 
 \item{M}{Positive number, should be an integer, but it will be converted to an integer as long as possible.}
 
@@ -18,7 +18,7 @@ lambda_cv(X, y, M = 5, method)
 \value{
 A list with:
 \describe{
-\item{lambda_opt}{The regularization parameter with the lowest cv fault from all parameter through lambda_sequence?}
+\item{lambda_opt}{The regularization parameter with the lowest cv fault from all parameter through lambda_sequence}
 \item{cv_values}{CV faults for all tested regularization parameters.}
 \item{lambda_seq}{All testet regularization parameters.}
 }

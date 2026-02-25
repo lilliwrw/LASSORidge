@@ -39,8 +39,10 @@ test_that("lambda_cv returns correct structure for ridge", {
 
 test_that("lambda_cv fails for invalid inputs", {
   set.seed(1)
-  X <- matrix(rnorm(20 * 3), 20, 3)
-  y <- rnorm(20)
+  n <- 20
+  p <- 3
+  X <- matrix(rnorm(n * p), n, p)
+  y <- rnorm(n)
 
   for (method in c("lasso", "ridge")) {
 
