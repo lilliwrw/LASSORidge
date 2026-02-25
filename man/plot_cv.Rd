@@ -4,9 +4,21 @@
 \alias{plot_cv}
 \title{Plot Cross Validation}
 \usage{
-plot_cv(cv_result, log_scale = TRUE, main = "Cross Validation")
+plot_cv(
+  lambda_seq,
+  cv_values,
+  lambda_opt,
+  log_scale = TRUE,
+  main = "Cross Validation"
+)
 }
 \arguments{
+\item{lambda_seq}{Numeric vector of lambda values used in cross-validation.}
+
+\item{cv_values}{Numeric vector of CV errors corresponding to each lambda.}
+
+\item{lambda_opt}{Numeric scalar of the lambda value with minimal CV error.}
+
 \item{log_scale}{Logical, whether to plot log(lambda) on x-axis. Default TRUE.}
 
 \item{main}{Character; main title of the plot. Default is "Cross Validation".}
@@ -22,6 +34,7 @@ set.seed(123)
 n <- 100; p <- 4
 X <- matrix(rnorm(n*p), nrow=n, ncol=p)
 y <- rnorm(n)
-cv_result <- lambda_CV(X, y, method = "lasso")
-plot_cv(cv_result)
+cv_result <- lambda_cv(X, y, method = "lasso")
+plot_cv(cv_result$lambda_seq, cv_result$cv_values, cv_result$lambda_opt)
+
 }
