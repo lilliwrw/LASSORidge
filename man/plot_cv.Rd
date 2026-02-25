@@ -19,7 +19,8 @@ plot_cv(
 
 \item{lambda_opt}{Numeric scalar of the lambda value with minimal CV error.}
 
-\item{log_scale}{Logical, whether to plot log(lambda) on x-axis. Default TRUE.}
+\item{log_scale}{Logical, whether to plot log(lambda) on x-axis. Default
+TRUE.}
 
 \item{main}{Character; main title of the plot. Default is "Cross Validation".}
 }
@@ -27,7 +28,8 @@ plot_cv(
 None (invisible NULL). Produces a plot.
 }
 \description{
-Plots the cv_error for a sequence of lambda values and marks the optimal lambda.
+Plots the cv_error for a sequence of lambda values and marks the optimal
+lambda.
 }
 \examples{
 set.seed(123)

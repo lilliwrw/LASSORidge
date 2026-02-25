@@ -8,7 +8,7 @@
 #'
 #' @returns Numeric vector of length n_lambda (descending from lambda_max to
 #'   lambda_min)
-#'
+#' @export
 #' @examples
 #' set.seed(1)
 #' X <- matrix(rnorm(20*5), nrow=20)

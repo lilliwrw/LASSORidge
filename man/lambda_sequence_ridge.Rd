@@ -14,7 +14,8 @@ lambda_sequence_ridge(X, n_lambda = 100, lambda_min_ratio = 1e-04)
 \item{lambda_min_ratio}{Ratio of min lambda to max lambda, default 1e-4.}
 }
 \value{
-Numeric vector of length n_lambda (descending from lambda_max to lambda_min)
+Numeric vector of length n_lambda (descending from lambda_max to
+lambda_min)
 }
 \description{
 Creates a logarithmically spaced sequence of regularization parameters.
