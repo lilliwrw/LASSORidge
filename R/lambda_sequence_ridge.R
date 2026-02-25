@@ -6,8 +6,8 @@
 #' @param n_lambda Number of lambda values to generate, default 100.
 #' @param lambda_min_ratio Ratio of min lambda to max lambda, default 1e-4.
 #'
-#' @returns Numeric vector of length n_lambda (descending from lambda_max to lambda_min)
-#' @export
+#' @returns Numeric vector of length n_lambda (descending from lambda_max to
+#'   lambda_min)
 #'
 #' @examples
 #' set.seed(1)
