@@ -2,14 +2,14 @@
 #'
 #' Searching an optimal regularization parameter for the LASSO or Ridge Estimation
 #'
-#' @param X Numeric matrix of predictors (n x p), should be standardized.
-#' @param y Numeric response vector of length n, should be centered.
+#' @param X Numeric matrix of predictors (n x p).
+#' @param y Numeric response vector of length n.
 #' @param M Positive number, should be an integer, but it will be converted to an integer as long as possible.
 #' @param method character vector ("lasso" or "ridge")
 #'
 #' @returns A list with:
 #' \describe{
-#'   \item{lambda_opt}{The regularization parameter with the lowest cv fault from all parameter through lambda_sequence?}
+#'   \item{lambda_opt}{The regularization parameter with the lowest cv fault from all parameter through lambda_sequence}
 #'   \item{cv_values}{CV faults for all tested regularization parameters.}
 #'   \item{lambda_seq}{All testet regularization parameters.}
 #' }
