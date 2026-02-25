@@ -11,7 +11,9 @@ forward_stepwise_selection(
   subset,
   weights,
   nparam = NULL,
-  unlist_return_value = FALSE
+  unlist_return_value = FALSE,
+  interactions = FALSE,
+  intercept = TRUE
 )
 }
 \arguments{
@@ -28,6 +30,10 @@ forward_stepwise_selection(
 \item{nparam}{Numeric vector of the sizes of the subsets, that should be returned, default: all subset sizes are returned}
 
 \item{unlist_return_value}{If set to TRUE and nparam only contains one subset size, return result as character vector}
+
+\item{interactions}{Use interaction terms for the coefficients (default: FALSE)}
+
+\item{intercept}{Toggle, if an intercept term should be used in the linear model (default: TRUE).}
 }
 \value{
 A list of models indexed by the number of parameters used in the model
