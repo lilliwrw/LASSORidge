@@ -1,6 +1,8 @@
 #' Forward stepwise selection of coefficients
 #'
-#' Returns a sequence of models for nested subsets of coefficients with increasing size by forward-stepwise selection.
+#'
+#' Returns a sequence of models for nested subsets of coefficients with increasing
+#' size by forward-stepwise selection.
 #'
 #' @param data data frame containing the data to be used for the linear regression
 #' @param input character vector: names of the coefficients
@@ -9,18 +11,25 @@
 #' @param weights TBD
 #' @param nparam Numeric vector of the sizes of the subsets, that should be returned, default: all subset sizes are returned
 #' @param unlist_return_value If set to TRUE and nparam only contains one subset size, return result as character vector
-#' @param interactions Use interaction terms for the coefficients (default: FALSE)
-#' @param intercept Toggle, if an intercept term should be used in the linear model (default: TRUE).
+#' @param interactions Use interaction terms for the coefficients. (default: FALSE)
+#' @param intercept Toggle, if an intercept term should be used in the linear model. (default: TRUE)
+#' @param return_lm If TRUE, return a list of models for each specified number of coefficients instead. (default: FALSE)
 #'
 #'
-#' @return A list of models indexed by the number of parameters used in the model
+#' @return A list of character vectors indexed by the number of coefficients used
+#' in the model. The character vectors contain the names of the coefficients used.
+#' If the toggle 'return_lm' is used, the function returns a list of models (lm-objects) instead.
 #'
 #' @export
 #'
 #' @examples
 #' # TBD
 #'
-forward_stepwise_selection <- function(data, input, output, subset, weights, nparam = NULL, unlist_return_value = FALSE, interactions = FALSE, intercept = TRUE) {
+forward_stepwise_selection <- function(data, input, output, subset, weights, nparam = NULL, unlist_return_value = FALSE, interactions = FALSE, intercept = TRUE, return_lm = FALSE) {
+  ##############################################################################
+  # Input validation                                                           #
+  ##############################################################################
+
   # Check variable data for malformed input
   tryCatch(data <- as.data.frame(data), error = function(e) stop("data is not a data frame and cannot be coerced."))
   stopifnot("'data' contains NA" = !any(is.na.data.frame(data)))
@@ -48,6 +57,10 @@ forward_stepwise_selection <- function(data, input, output, subset, weights, npa
   stopifnot("'intercept' must be logical" = is.logical(intercept),
             "'intercept' must have length 1" = length(intercept) == 1)
 
+  # Check variable return_lm for malformed input
+  stopifnot("'return_lm' must be logical" = is.logical(return_lm),
+            "'return_lm' must have length 1" = length(return_lm) == 1)
+
   # Check variable nparam for malformed input and correct if possible, sort by subset size
   # default: return subset of coefficients for every size of subsets
   if(is.null(nparam)) nparam <- 1:length(input)
@@ -69,6 +82,11 @@ forward_stepwise_selection <- function(data, input, output, subset, weights, npa
 
   # Check other variables for malformed input
   # TBD
+
+
+  ##############################################################################
+  # Computational part                                                         #
+  ##############################################################################
 
   # Set maximum number of parameters, which should be used
   # default: full subset of parameters
@@ -92,6 +110,7 @@ forward_stepwise_selection <- function(data, input, output, subset, weights, npa
     # Create variables to store the best next param to used and its RSS
     next_param <- NULL
     best_rss <- Inf
+    best_model <- NULL
 
     # For every parameter not used calculate the regression including that parameter, then test against the previous best parameter to add an overwrite, if it has lower RSS
     for (param in (input[!input %in% used_params])) {
@@ -100,18 +119,27 @@ forward_stepwise_selection <- function(data, input, output, subset, weights, npa
       if (rss < best_rss) {
          best_rss <- rss
          next_param <- param
+         best_model <- model
       }
     }
 
     # Add best parameter to result and prepare formula_string for the next iteration
     used_params <- c(used_params, next_param)
-    res[[i+1]] <- used_params
+    if (return_lm) {
+      res[[i+1]] <- best_model
+    } else {
+      res[[i+1]] <- used_params
+    }
     if (interactions) {
       formula_string <- paste0(formula_string, next_param, " * ")
     } else {
       formula_string <- paste0(formula_string, next_param, " + ")
     }
   }
+
+  ##############################################################################
+  # Format return value                                                        #
+  ##############################################################################
 
   # Remove unwanted parts of the return list
   res <- res[as.character(nparam)]

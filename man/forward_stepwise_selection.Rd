@@ -13,7 +13,8 @@ forward_stepwise_selection(
   nparam = NULL,
   unlist_return_value = FALSE,
   interactions = FALSE,
-  intercept = TRUE
+  intercept = TRUE,
+  return_lm = FALSE
 )
 }
 \arguments{
@@ -31,15 +32,20 @@ forward_stepwise_selection(
 
 \item{unlist_return_value}{If set to TRUE and nparam only contains one subset size, return result as character vector}
 
-\item{interactions}{Use interaction terms for the coefficients (default: FALSE)}
+\item{interactions}{Use interaction terms for the coefficients. (default: FALSE)}
 
-\item{intercept}{Toggle, if an intercept term should be used in the linear model (default: TRUE).}
+\item{intercept}{Toggle, if an intercept term should be used in the linear model. (default: TRUE)}
+
+\item{return_lm}{If TRUE, return a list of models for each specified number of coefficients instead. (default: FALSE)}
 }
 \value{
-A list of models indexed by the number of parameters used in the model
+A list of character vectors indexed by the number of coefficients used
+in the model. The character vectors contain the names of the coefficients used.
+If the toggle 'return_lm' is used, the function returns a list of models (lm-objects) instead.
 }
 \description{
-Returns a sequence of models for nested subsets of coefficients with increasing size by forward-stepwise selection.
+Returns a sequence of models for nested subsets of coefficients with increasing
+size by forward-stepwise selection.
 }
 \examples{
 # TBD

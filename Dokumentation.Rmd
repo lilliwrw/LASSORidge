@@ -3,6 +3,7 @@ title: "Dokumentation"
 output: html_document
 ---
 
+
 - **14.01.26 — Lilli**
   - Projekt erstellt
 
@@ -101,3 +102,5 @@ output: html_document
 - **25.02.26 — Lilli**
   - `ridge_path` erstellt
   - S3-Methoden `print`, `coef` ergänzt + Tests
+
+25.02.26: Felix ~ A row of QoL implementations for forward stepwise selection (toggled by an argument)
