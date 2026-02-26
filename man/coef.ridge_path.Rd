@@ -2,11 +2,7 @@
 % Please edit documentation in R/coef.ridge_path.R
 \name{coef.ridge_path}
 \alias{coef.ridge_path}
-<<<<<<< HEAD
 \title{Extract Coefficients from Ridge Path (S3 Method)}
-=======
-\title{Extract Coefficients from Ridge Path}
->>>>>>> b98a7339e9ee71bde3f5138c8bbe549672bdc80b
 \usage{
 \method{coef}{ridge_path}(object, step = NULL, ...)
 }

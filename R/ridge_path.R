@@ -37,6 +37,7 @@ ridge_path <- function(X, y, lambda){
   }
 
   colnames(coef_mat) <- paste0("lambda=", lambda)
+  rownames(coef_mat) <- names(ridge(X, y, lambda[1])$coefficients)
 
   result <- list(
     lambda = lambda,
