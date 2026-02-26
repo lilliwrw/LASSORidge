@@ -111,4 +111,3 @@ output: html_document
 
 - **26.02.26 — Lilli**
   - S3 Methode `plot` für `ridge_path` erstellt + Tests
-  
