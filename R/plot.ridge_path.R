@@ -47,7 +47,7 @@ plot.ridge_path <- function(x,
   if (is.null(ylab)) {
     ylab <- "Coefficients"
   }
-  #TODO plottet nur eine Linie
+
   plot(lambda_vals,
        coef_mat[1, ],
        type = type,
@@ -55,6 +55,8 @@ plot.ridge_path <- function(x,
        col = col[1],
        xlab = xlab,
        ylab = ylab,
+       main = main,
+       ylim = range(coef_mat),
        ...)
 
   if (nrow(coef_mat) > 1) {
