@@ -1,1 +1,1 @@
-Sys.time()
+now <- Sys.time()

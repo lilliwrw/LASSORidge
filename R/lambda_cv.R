@@ -2,14 +2,14 @@
 #'
 #' Searching an optimal regularization parameter for the LASSO or Ridge Estimation
 #'
-#' @param X Numeric matrix of predictors (n x p), should be standardized.
-#' @param y Numeric response vector of length n, should be centered.
+#' @param X Numeric matrix of predictors (n x p).
+#' @param y Numeric response vector of length n.
 #' @param M Positive number, should be an integer, but it will be converted to an integer as long as possible.
 #' @param method character vector ("lasso" or "ridge")
 #'
 #' @returns A list with:
 #' \describe{
-#'   \item{lambda_opt}{The regularization parameter with the lowest cv fault from all parameter through lambda_sequence?}
+#'   \item{lambda_opt}{The regularization parameter with the lowest cv fault from all parameter through lambda_sequence}
 #'   \item{cv_values}{CV faults for all tested regularization parameters.}
 #'   \item{lambda_seq}{All testet regularization parameters.}
 #' }
@@ -29,12 +29,21 @@
 ## lasso stimmt mit glmnet überein, bei ridge nicht, das liegt aber an einer anderen Zielfunktion bei glmnet für ridge
 lambda_cv <- function(X, y, M = 5, method){
   M <- as.integer(M)
-  if(M <= 0) stop("M musst be a positive number")
-  stopifnot("method musst bei lasso or ridge" = (method %in% c("lasso","ridge")))
+  if(M <= 0) stop("M must be a positive number")
+  stopifnot("method must bei lasso or ridge" = (method %in% c("lasso","ridge")))
+  if (!is.matrix(X)) {
+    X <- tryCatch(as.matrix(X), error = function(e) {
+      stop("X must be a matrix or coercible to a matrix.")
+    })
+  }
+
+  n <- nrow(X)
+  if (M > n)  stop("M must be smaller or equal (leave-one-out cross validation) to nrow(X)")
 
   # Index for spliting the data into K roughly equal-sized parts
   ## random assignment, but if M is no divisor of n, the first parts are a bit bigger
   n <- nrow(X)
+
   fold_index <- sample(rep(1:M, length.out = n),
                        size = n, replace = FALSE)
 

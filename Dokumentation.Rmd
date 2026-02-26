@@ -3,27 +3,108 @@ title: "Dokumentation"
 output: html_document
 ---
 
-14.01.26: Lilli ~ Projekt erstellt
-19.01.26: Juliana ~ Funktion standardize_data.R erstellt 
-21.01.26: Juliana ~ Tests für standardize_data erstellt, Funktion soft_threshold.R + Tests erstellt, Funktion lasso_cd.R + Tests erstellt, Funktion lambda_sequence.R + Tests erstellt
-23.01.26: Juliana ~ lasso_path.R + Test erstellt, plot_lasso_path.R + Test erstellt
-24.01.26: Juliana ~ simulate_lasso_data.R + Test erstellt
-26.01.26: Felix ~ Created basic function for forward_stepwise_selection (status: basic functionality working, no tests or input validation implemented)
-15.02.26: Adina ~ erstellen der Funktion lambda_CV.R in einer noch unfertigen Fassung
-17.02.26: Juliana ~ kleine Änderungen lambda_sequence.R, lasso_cd.R,lasso_fit.R, coef_lasso.R, predict_lasso.R +Tests für user-freundlichere Benutzung + plot Funktion für S3-Klasse lasso_model
-17.02.26: Felix ~ Forward selection: Small functionality upgrades, first test function, input validation
-18.02.26: Adina ~ Weiterarbeiten an lambda.CV
-18.02.26: Juliana ~ Fehlerchecks, kleine Änderung standardize_data.R, kleine Fehlerbehebung plot.lasso_model.R, compute_correlations.R+Test, active_set.R+Tests, equiangular_dirrection.R+Test, step_size_gamma.R+Tests
-18.02.26: Lilli ~ ridge_core, ridge_checkInputs erstellt
-19.02.26: Lilli ~ ridge_standardizeData, ridge_inverseTransform erstellt
-20.02.26: Lilli ~ ridge.R aus Hilfsfunktionen zusammengestellt
-20.02.26: Juliana ~ kleine Änderungen step_size_gamma.R,equiangular dirrection.R, update_coefficients.R+ Tests, lar_path.R+Test
-21.02.26: Juliana ~ lar.R+Tests, plot Funktionen für lar, coef.lar_model.R, predict.lar_model()
-21.02.26: Adina ~ Weiterarbeiten an lambda_CV (einarbeiten von ridge und Fehlerbehebungen, bzw. Suchen nach Fehlern)
-22.02.26: Adina ~ Fehlersuche bei lambda_CV und Erstellen von plot_cv
-23.02.26: Lilli ~ kleine Änderungen an ridge.R und Tests zu allen Hilfsfunktionen + ridge
-23.02.26: Juliana ~ Fehlersuche in step_size_gamma.R und update_coefficients.R
-23.02.26: Adina ~ plot.cv: Überarbeitung, Help-Seite; erstellen lambda_sequence_ridge; lambda_CV: Überarbeiten, genauere Beschreibung
-24.02.26: Lilli ~ S3 Methoden print, coef, fitted, residuals und predict für ridge erstellt + tests
-24.02.26: Adina ~ Tests erstellt
-25.02.26: Lilli ~ ridge_path und S3 Methoden print, coef erstellt + tests
+
+- **14.01.26 — Lilli**
+  - Projekt erstellt
+
+- **19.01.26 — Juliana**
+  - Funktion `standardize_data.R` erstellt
+
+- **21.01.26 — Juliana**
+  - Tests für `standardize_data` erstellt
+  - Funktion `soft_threshold.R` + Tests erstellt
+  - Funktion `lasso_cd.R` + Tests erstellt
+  - Funktion `lambda_sequence.R` + Tests erstellt
+
+- **23.01.26 — Juliana**
+  - `lasso_path.R` + Test erstellt
+  - `plot_lasso_path.R` + Test erstellt
+
+- **24.01.26 — Juliana**
+  - `simulate_lasso_data.R` + Test erstellt
+
+- **26.01.26 — Felix**
+  - Basic function für `forward_stepwise_selection` erstellt  
+    (Status: grundlegende Funktionalität, noch keine Tests oder Input-Validierung)
+
+- **15.02.26 — Adina**
+  - Funktion `lambda_CV.R` erstellt (noch unfertige Fassung)
+
+- **17.02.26 — Juliana**
+  - Kleine Änderungen an `lambda_sequence.R`, `lasso_cd.R`, `lasso_fit.R`, `coef_lasso.R`, `predict_lasso.R`
+  - Tests für nutzerfreundlichere Benutzung ergänzt
+  - Plot-Funktion für S3-Klasse `lasso_model` ergänzt
+
+- **17.02.26 — Felix**
+  - Forward selection: kleine Funktionalitäts-Upgrades
+  - Erste Testfunktion
+  - Input-Validierung
+
+- **18.02.26 — Adina**
+  - Weiterarbeit an `lambda_CV`
+
+- **18.02.26 — Juliana**
+  - Fehlerchecks
+  - Kleine Änderung an `standardize_data.R`
+  - Kleine Fehlerbehebung in `plot.lasso_model.R`
+  - `compute_correlations.R` + Test
+  - `active_set.R` + Tests
+  - `equiangular_dirrection.R` + Test
+  - `step_size_gamma.R` + Tests
+
+- **18.02.26 — Lilli**
+  - `ridge_core` und `ridge_checkInputs` erstellt
+
+- **19.02.26 — Lilli**
+  - `ridge_standardizeData` und `ridge_inverseTransform` erstellt
+
+- **20.02.26 — Lilli**
+  - `ridge.R` aus Hilfsfunktionen zusammengestellt
+
+- **20.02.26 — Juliana**
+  - Kleine Änderungen an `step_size_gamma.R` und `equiangular_dirrection.R`
+  - `update_coefficients.R` + Tests
+  - `lar_path.R` + Test
+
+- **21.02.26 — Juliana**
+  - `lar.R` + Tests
+  - Plot-Funktionen für `lar`
+  - `coef.lar_model.R`
+  - `predict.lar_model()`
+
+- **21.02.26 — Adina**
+  - Weiterarbeit an `lambda_CV`  
+    (Einarbeiten von Ridge und Fehlerbehebungen bzw. Fehlersuche)
+
+- **22.02.26 — Adina**
+  - Fehlersuche bei `lambda_CV`
+  - `plot_cv` erstellt
+
+- **23.02.26 — Lilli**
+  - Kleine Änderungen an `ridge.R`
+  - Tests zu allen Hilfsfunktionen + `ridge`
+
+- **23.02.26 — Juliana**
+  - Fehlersuche in `step_size_gamma.R` und `update_coefficients.R`
+
+- **23.02.26 — Adina**
+  - `plot.cv`: Überarbeitung
+  - Help-Seite erstellt
+  - `lambda_sequence_ridge` erstellt
+  - `lambda_CV`: Überarbeitung, genauere Beschreibung
+
+- **24.02.26 — Lilli**
+  - S3-Methoden `print`, `coef`, `fitted`, `residuals`, `predict` für `ridge` erstellt + Tests
+
+- **24.02.26 — Adina**
+  - Tests erstellt
+
+- **25.02.26 — Lilli**
+  - `ridge_path` erstellt
+  - S3-Methoden `print`, `coef` ergänzt + Tests
+
+- **25.02.26 - Felix**
+  - A row of QoL implementations for forward stepwise selection (toggled by an argument)
+- **25.02.26 - Adina**
+  - `Vignette_LassoRidge` erstellt
+  - `Dokumentation.Rmd` verschönert (v.a. für Knitnutzung)
