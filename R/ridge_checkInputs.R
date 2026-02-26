@@ -2,11 +2,11 @@
 #'
 #' Performs basic consistency checks for the ridge regression estimator.
 #'
-#' @param X A numeric design matrix of dimension n x d.
-#' @param y A numeric response vector of length n.
+#' @param X A numeric design matrix of dimension \eqn{n \times d}.
+#' @param y A numeric response vector of length \eqn{n}.
 #' @param lambda Non-negative regularization parameter.
 #'
-#' @returns \code{TRUE} if all checks pass, else an informative error.
+#' @returns Invisible \code{TRUE} if all checks pass, else an informative error.
 #' @export
 #'
 #' @examples

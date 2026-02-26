@@ -26,6 +26,7 @@
 #'  plot(path)
 plot.ridge_path <- function(x,
                             log.lambda = TRUE,
+                            #TODO legend = TRUE?
                             type = "l",
                             lty = 1,
                             col = NULL,
@@ -68,7 +69,7 @@ plot.ridge_path <- function(x,
             col = col[i])
     }
   }
-
+  #TODO if(legend)
   legend("topright",
          legend = rownames(coef_mat),
          col = col,

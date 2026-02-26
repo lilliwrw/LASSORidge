@@ -2,8 +2,8 @@
 #'
 #' Standardizes the design matrix \code{X} column-wise and centers the response vector \code{y}.
 #'
-#' @param X A numeric design matrix of dimension n x d.
-#' @param y A numeric response vector of length n.
+#' @param X A numeric design matrix of dimension \eqn{n \times d}.
+#' @param y A numeric response vector of length \eqn{n}.
 #'
 #' @returns  A list containing:
 #' \itemize{
@@ -27,7 +27,6 @@ ridge_standardizeData <- function(X, y){
 
   y_mean <- mean(y)
   ys <- y-y_mean
-  #TODO y auch normieren?
 
   list(
     Xs = Xs,

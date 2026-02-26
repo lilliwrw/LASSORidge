@@ -4,8 +4,8 @@
 #' \deqn{\hat{\beta}_\lambda =
 #' (X^\top X + \lambda I_d)^{-1} X^\top y}
 #'
-#' @param X A numeric design matrix of dimension n x d.
-#' @param y A numeric response vector of length n.
+#' @param X A numeric design matrix of dimension \eqn{n \times d}.
+#' @param y A numeric response vector of length \eqn{n}.
 #' @param lambda Non-negative regularization parameter.
 #'
 #' @returns A numeric vector of length d containing the ridge coefficients.
