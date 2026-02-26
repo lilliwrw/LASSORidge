@@ -106,3 +106,7 @@ output: html_document
 - **25.02.26 - Adina**
   - `Vignette_LassoRidge` erstellt
   - `Dokumentation.Rmd` verschönert (v.a. für Knitnutzung)
+
+- **26.02.26 — Lilli**
+  - S3 Methode `plot` für `ridge_path` erstellt + Tests
+  
