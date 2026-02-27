@@ -18,22 +18,37 @@
 #' z <- rnorm(5)
 #' ridge_checkInputs(X, z, lambda = 1)
 ridge_checkInputs <- function(X, y, lambda){
-  if (!is.matrix(X)) stop("X must be a matrix")
+  #Assume Input coerced to matrix/vector/numeric
 
+  #Check X
   if (!is.numeric(X)) stop("X must be numeric.")
+
+  if (anyNA(X) || !all(is.finite(X))) {
+    stop("X must not contain NA, NaN or Inf.")
+  }
+
+  if (nrow(X) == 0 || ncol(X) == 0) {
+    stop("X must have positive dimensions.")
+  }
+
+  #Check y
   if (!is.numeric(y)) stop("y must be numeric.")
 
+  if (anyNA(y) || !all(is.finite(y))) {
+    stop("y must not contain NA, NaN or Inf.")
+  }
+
+  #Check compatibility
   if (nrow(X) != length(y)) {
     stop("dimensions of X and y do not fit.")
   }
 
-  if (!is.numeric(lambda) || length(lambda) != 1) {
-    stop("lambda must be a single numeric value.")
+  #Check lambda
+  if (length(lambda) != 1) {
+    stop("lambda must be a single value.")
   }
 
-  if (lambda < 0) stop("lambda must be non-negative.")
-
-  #TODO ...
+  if (!is.finite(lambda) || lambda < 0) stop("lambda must be a finite non-negative value.")
 
   invisible(TRUE)
 }

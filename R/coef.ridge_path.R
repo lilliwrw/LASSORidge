@@ -17,19 +17,23 @@
 #' path <- ridge_path(X, y, lambda = c(0.1, 1))
 #' coef(path)
 coef.ridge_path <- function(object, step = NULL, ...){
+  #All coefficients
   if(is.null(step)){
     return(object$coefficients)
   }
 
+  #Look up lambda value
   if (length(step) == 1 && step %in% seq_along(object$lambda)) {
     return(object$coefficients[, step])
   }
 
+  #Look up index
   idx <- which(object$lambda == step)
 
   if (length(idx) == 0) {
     stop("Requested lambda not found.")
   }
 
+  #Requested coefficients
   object$coefficients[, idx, drop = FALSE]
 }

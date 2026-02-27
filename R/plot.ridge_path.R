@@ -6,6 +6,7 @@
 #' @param x An object of class \code{"ridge_path"}.
 #' @param log.lamdba Logical; if TRUE (default), the horizontal
 #' axis shows \code{log(lambda)}.
+#' @param legend Logical; if TRUE (default), a legend is shown in the top right.
 #' @param type Line type for plotting (default: "l").
 #' @param lty Line type specification (default: 1).
 #' @param col Optional vector of colors.
@@ -26,7 +27,7 @@
 #'  plot(path)
 plot.ridge_path <- function(x,
                             log.lambda = TRUE,
-                            #TODO legend = TRUE?
+                            legend = TRUE,
                             type = "l",
                             lty = 1,
                             col = NULL,
@@ -37,6 +38,7 @@ plot.ridge_path <- function(x,
   lambda_vals <- if (log.lambda) log(x$lambda) else x$lambda
   coef_mat <- x$coefficients
 
+  #Set defaults
   if (is.null(col)) {
     col <- seq_len(nrow(coef_mat))
   }
@@ -49,6 +51,7 @@ plot.ridge_path <- function(x,
     ylab <- "Coefficients"
   }
 
+  #Plot first line
   plot(lambda_vals,
        coef_mat[1, ],
        type = type,
@@ -60,6 +63,7 @@ plot.ridge_path <- function(x,
        ylim = range(coef_mat),
        ...)
 
+  #Plot other lines
   if (nrow(coef_mat) > 1) {
     for (i in 2:nrow(coef_mat)) {
       lines(lambda_vals,
@@ -69,12 +73,15 @@ plot.ridge_path <- function(x,
             col = col[i])
     }
   }
-  #TODO if(legend)
-  legend("topright",
-         legend = rownames(coef_mat),
-         col = col,
-         lty = lty,
-         cex = 0.8)
+  if(legend){
+    #Add legend
+    legend("topright",
+           legend = rownames(coef_mat),
+           col = col,
+           lty = lty,
+           cex = 0.8)
+
+  }
 
   invisible(NULL)
 }

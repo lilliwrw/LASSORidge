@@ -29,6 +29,8 @@ ridge_inverseTransform <- function(beta_scaled,
                                    X_means,
                                    X_sds,
                                    y_mean){
+  #Assume checked, standardized data and compatibility
+  #Back-transformation
   beta <- beta_scaled / X_sds
 
   intercept <- y_mean - sum(beta * X_means)
