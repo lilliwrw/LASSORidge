@@ -103,11 +103,16 @@ output: html_document
   - `ridge_path` erstellt
   - S3-Methoden `print`, `coef` ergänzt + Tests
 
-- **25.02.26 - Felix**
+- **25.02.26 — Felix**
   - A row of QoL implementations for forward stepwise selection (toggled by an argument)
-- **25.02.26 - Adina**
+
+- **25.02.26 — Adina**
   - `Vignette_LassoRidge` erstellt
   - `Dokumentation.Rmd` verschönert (v.a. für Knitnutzung)
 
 - **26.02.26 — Lilli**
   - S3 Methode `plot` für `ridge_path` erstellt + Tests
+
+- **26.02.26 — Adina**
+  - CV für `Vignette_LassoRidge`
+  - Ändern der Standartisierung bei `lambda_cv`
