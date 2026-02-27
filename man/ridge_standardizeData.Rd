@@ -7,9 +7,9 @@
 ridge_standardizeData(X, y)
 }
 \arguments{
-\item{X}{A numeric design matrix of dimension n x d.}
+\item{X}{A numeric design matrix of dimension \eqn{n \times d}.}
 
-\item{y}{A numeric response vector of length n.}
+\item{y}{A numeric response vector of length \eqn{n}.}
 }
 \value{
 A list containing:

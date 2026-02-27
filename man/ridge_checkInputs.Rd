@@ -7,14 +7,14 @@
 ridge_checkInputs(X, y, lambda)
 }
 \arguments{
-\item{X}{A numeric design matrix of dimension n x d.}
+\item{X}{A numeric design matrix of dimension \eqn{n \times d}.}
 
-\item{y}{A numeric response vector of length n.}
+\item{y}{A numeric response vector of length \eqn{n}.}
 
 \item{lambda}{Non-negative regularization parameter.}
 }
 \value{
-\code{TRUE} if all checks pass, else an informative error.
+Invisible \code{TRUE} if all checks pass, else an informative error.
 }
 \description{
 Performs basic consistency checks for the ridge regression estimator.
@@ -24,7 +24,4 @@ set.seed(1)
 X <- matrix(rnorm(20), 10, 2)
 y <- rnorm(10)
 ridge_checkInputs(X, y, lambda = 1)
-ridge_checkInputs(X, y, lambda = -1)
-z <- rnorm(5)
-ridge_checkInputs(X, z, lambda = 1)
 }

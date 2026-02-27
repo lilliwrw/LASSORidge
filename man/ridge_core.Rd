@@ -7,14 +7,15 @@
 ridge_core(X, y, lambda)
 }
 \arguments{
-\item{X}{A numeric design matrix of dimension n x d.}
+\item{X}{A numeric design matrix of dimension \eqn{n \times d}.}
 
-\item{y}{A numeric response vector of length n.}
+\item{y}{A numeric response vector of length \eqn{n}.}
 
 \item{lambda}{Non-negative regularization parameter.}
 }
 \value{
-A numeric vector of length d containing the ridge coefficients.
+A numeric vector of length \eqn{d} containing the ridge coefficients
+corresponding to the columns of \code{X}..
 }
 \description{
 Computes the ridge regression estimator in closed form.

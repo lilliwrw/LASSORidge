@@ -4,7 +4,7 @@
 #' of lambda or log(lambda).
 #'
 #' @param x An object of class \code{"ridge_path"}.
-#' @param log.lamdba Logical; if TRUE (default), the horizontal
+#' @param log.lambda Logical; if TRUE (default), the horizontal
 #' axis shows \code{log(lambda)}.
 #' @param legend Logical; if TRUE (default), a legend is shown in the top right.
 #' @param type Line type for plotting (default: "l").
@@ -16,6 +16,9 @@
 #' @param ... Additional graphical parameters passed to \code{plot}.
 #'
 #' @returns Produces a plot and returns \code{NULL} invisibly.
+#'
+#' @importFrom grDevices rainbow
+#'
 #' @export
 #'
 #' @examples
@@ -36,11 +39,15 @@ plot.ridge_path <- function(x,
                             main = "Ridge Path",
                             ...){
   lambda_vals <- if (log.lambda) log(x$lambda) else x$lambda
+  if (log.lambda && any(x$lambda <= 0)) {
+    stop("Cannot use log scale when lambda contains non-positive values.")
+  }
+
   coef_mat <- x$coefficients
 
   #Set defaults
   if (is.null(col)) {
-    col <- seq_len(nrow(coef_mat))
+    col <- rainbow(nrow(coef_mat))
   }
 
   if (is.null(xlab)) {

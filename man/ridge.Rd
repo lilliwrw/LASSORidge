@@ -4,14 +4,16 @@
 \alias{ridge}
 \title{Ridge Regression Estimator}
 \usage{
-ridge(X, y, lambda)
+ridge(X, y, lambda, standardize = TRUE)
 }
 \arguments{
-\item{X}{A numeric design matrix of dimension n x d.}
+\item{X}{A numeric design matrix of dimension \eqn{n \times d}.}
 
-\item{y}{A numeric response vector of length n.}
+\item{y}{A numeric response vector of length \eqn{n}.}
 
 \item{lambda}{A non-negative regularization parameter.}
+
+\item{standardize}{Logical; if TRUE (default), the predictors are standardized before fitting.}
 }
 \value{
 An object of class \code{"ridge"} containing:
@@ -24,8 +26,9 @@ An object of class \code{"ridge"} containing:
 }
 }
 \description{
-Computes the ridge regression estimator using standardized data
-and returns the results transformed back to the original scale.
+Computes the ridge regression estimator. If \code{standardize = TRUE}, predictors are centered and scaled
+and the intercept is reconstructed afterwards.
+If \code{standardize = FALSE}, no intercept is estimated.
 }
 \examples{
 set.seed(1)

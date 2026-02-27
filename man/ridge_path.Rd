@@ -4,14 +4,16 @@
 \alias{ridge_path}
 \title{Ridge Coefficient Path}
 \usage{
-ridge_path(X, y, lambda)
+ridge_path(X, y, lambda, standardize = TRUE)
 }
 \arguments{
-\item{X}{A numeric design matrix of dimension n x d.}
+\item{X}{A numeric design matrix of dimension \eqn{n \times d}.}
 
-\item{y}{A numeric response vector of length n.}
+\item{y}{A numeric response vector of length \eqn{n}.}
 
 \item{lambda}{A numeric vector of non-negative regularization parameters.}
+
+\item{standardize}{Logical; if TRUE (default), the predictors are standardized before fitting.}
 }
 \value{
 An object of class \code{"ridge_path"} containing:

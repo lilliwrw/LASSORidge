@@ -13,6 +13,9 @@
 #'   \item \code{X_sds} — column standard deviations of \code{X}
 #'   \item \code{y_mean} — mean of \code{y}
 #' }
+#'
+#' @importFrom stats sd
+#'
 #' @export
 #'
 #' @examples
