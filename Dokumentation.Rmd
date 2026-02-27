@@ -115,3 +115,7 @@ output: html_document
 - **26.02.26 — Adina**
   - CV für `Vignette_LassoRidge`
   - Ändern der Standartisierung bei `lambda_cv`
+
+- **27.02.26 — Lilli**
+  - Standardisierung als Option bei ridge und ridge_path
+  - kleine Verbesserungen, Tests und Roxygen Skeleton überarbeitet

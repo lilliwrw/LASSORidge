@@ -8,7 +8,8 @@
 #' @param y A numeric response vector of length \eqn{n}.
 #' @param lambda Non-negative regularization parameter.
 #'
-#' @returns A numeric vector of length d containing the ridge coefficients.
+#' @returns A numeric vector of length \eqn{d} containing the ridge coefficients
+#' corresponding to the columns of \code{X}..
 #' @export
 #'
 #' @examples
@@ -18,7 +19,12 @@
 #' ridge_core(X, y, lambda = 1)
 ridge_core <- function(X, y, lambda){
   d <- ncol(X)
-  beta <- solve(t(X) %*% X + lambda * diag(d),
-                t(X) %*% y)
-  return(beta)
+
+  XtX <- crossprod(X)
+  Xty <- crossprod(X, y)
+
+  beta <- solve(XtX + lambda * diag(d), Xty)
+  beta <- as.vector(beta)
+
+  beta
 }

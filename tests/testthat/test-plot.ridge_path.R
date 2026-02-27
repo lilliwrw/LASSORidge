@@ -49,3 +49,14 @@ test_that("plot.ridge_path works without log scale", {
 
   expect_no_error(plot(path, log.lambda = FALSE))
 })
+
+test_that("plot.ridge_path works without legend", {
+  set.seed(1)
+  X <- matrix(rnorm(100), 20, 5)
+  y <- rnorm(20)
+  lambda_seq <- exp(seq(-2, 2, length.out = 10))
+
+  path <- ridge_path(X, y, lambda_seq)
+
+  expect_no_error(plot(path, legend = FALSE))
+})

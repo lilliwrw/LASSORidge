@@ -21,10 +21,20 @@
 #' y <- rnorm(10)
 #' ridge_standardizeData(X, y)
 ridge_standardizeData <- function(X, y){
+  #Standardize X
   X_means <- colMeans(X)
   X_sds <- apply(X, 2, sd)
+
+  # Avoid division by zero
+  zero_sd <- X_sds == 0
+  if (any(zero_sd)) {
+    warning("Some columns have zero standard deviation and were not scaled.")
+    X_sds[zero_sd] <- 1
+  }
+
   Xs <- scale(X, center = X_means, scale = X_sds)
 
+  #Center y
   y_mean <- mean(y)
   ys <- y-y_mean
 
