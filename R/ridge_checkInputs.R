@@ -14,9 +14,6 @@
 #' X <- matrix(rnorm(20), 10, 2)
 #' y <- rnorm(10)
 #' ridge_checkInputs(X, y, lambda = 1)
-#' ridge_checkInputs(X, y, lambda = -1)
-#' z <- rnorm(5)
-#' ridge_checkInputs(X, z, lambda = 1)
 ridge_checkInputs <- function(X, y, lambda){
   #Assume Input coerced to matrix/vector/numeric
 

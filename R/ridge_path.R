@@ -22,19 +22,23 @@
 #' ridge_path(X, y, lambda = c(0.1, 1, 10))
 ridge_path <- function(X, y, lambda, standardize = TRUE){
   #Check X and y
+  X <- as.matrix(X)
+  y <- as.vector(y)
   ridge_checkInputs(X, y, lambda = 0)
 
   #Check lambda vector
-  if (!is.numeric(lambda) || any(lambda < 0)) {
-    stop("lambda must be a non-negative numeric vector.")
+  if (!is.numeric(lambda) || any(!is.finite(lambda)) ||any(lambda < 0)) {
+    stop("lambda must be a finite non-negative numeric vector.")
   }
 
   lambda <- sort(unique(lambda))
 
-  #Calculate coefficient matrix via ridge
-  coef_mat <- sapply(lambda, function(l) {
-    ridge(X, y, l, standardize = standardize)$coefficients
+  #Calculate path via ridge
+  fits <- lapply(lambda, function(l) {
+    ridge(X, y, l, standardize = standardize)
   })
+
+  coef_mat <- sapply(fits, function(f) f$coefficients)
 
   #If vector, set dimension
   if (is.vector(coef_mat)) {
@@ -43,7 +47,7 @@ ridge_path <- function(X, y, lambda, standardize = TRUE){
 
   #Set dimnames
   colnames(coef_mat) <- paste0("lambda=", lambda)
-  rownames(coef_mat) <- names(ridge(X, y, lambda[1], standardize = standardize)$coefficients)
+  rownames(coef_mat) <- names(fits[[1]]$coefficients)
 
   #Build S3 "ridge_path" object
   result <- list(

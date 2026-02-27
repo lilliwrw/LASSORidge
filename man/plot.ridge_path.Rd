@@ -7,6 +7,7 @@
 \method{plot}{ridge_path}(
   x,
   log.lambda = TRUE,
+  legend = TRUE,
   type = "l",
   lty = 1,
   col = NULL,
@@ -18,6 +19,11 @@
 }
 \arguments{
 \item{x}{An object of class \code{"ridge_path"}.}
+
+\item{log.lambda}{Logical; if TRUE (default), the horizontal
+axis shows \code{log(lambda)}.}
+
+\item{legend}{Logical; if TRUE (default), a legend is shown in the top right.}
 
 \item{type}{Line type for plotting (default: "l").}
 
@@ -32,9 +38,6 @@
 \item{main}{Plot title (default: "Ridge Path")}
 
 \item{...}{Additional graphical parameters passed to \code{plot}.}
-
-\item{log.lamdba}{Logical; if TRUE (default), the horizontal
-axis shows \code{log(lambda)}.}
 }
 \value{
 Produces a plot and returns \code{NULL} invisibly.
