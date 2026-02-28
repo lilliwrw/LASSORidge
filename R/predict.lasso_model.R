@@ -16,12 +16,12 @@
 #' y <- rnorm(20, sd=2)
 #' fit <- lasso(X, y)
 #' X_new <- matrix(rnorm(10*5), 10, 5)
-#' predict_lasso(fit, X_new)
-predict_lasso <- function(object, X_new, lambda_index = NULL) {
+#' predict(fit, X_new)
+predict.lasso_model <- function(object, X_new, lambda_index = NULL) {
   if(!inherits(object, "lasso_model"))
     stop("Not a lasso_model object")
 
-  beta <- coef_lasso(object, lambda_index)
+  beta <- coef(object, lambda_index)
   std <- object$standardization
 
   if(!is.null(std)) {

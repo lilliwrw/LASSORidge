@@ -125,3 +125,4 @@ output: html_document
   - Verbesserung `lar_path.r`
   - Kleine Änderungen an `step_size_gamma.R` und `equiangular_dirrection.R`, `update_coefficients.R`
   - Funktion `standardize_lar.R`und Tests
+  - Umbenennen von `coef_lasso.R`in `coef.lasso_model.R`und `predict_lasso.R`in `predict.Lasso_model.R`

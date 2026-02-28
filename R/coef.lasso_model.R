@@ -14,8 +14,8 @@
 #' X <- matrix(rnorm(20*5, sd=2), 20, 5)
 #' y <- rnorm(20, sd=2)
 #' fit <- lasso(X, y)
-#' coef_lasso(fit)
-coef_lasso <- function(object, lambda_index = NULL) {
+#' coef(fit)
+coef.lasso_model <- function(object, lambda_index = NULL) {
   if(!inherits(object, "lasso_model"))
     stop("Not a lasso_model object")
 
