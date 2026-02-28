@@ -26,19 +26,19 @@
 #' @export
 lar <- function(X, y, max_steps = ncol(X), standardize = TRUE) {
 
-  # optional standardization
+  #Standartisierung falls standardize = TRUE
   if (standardize==TRUE) {
     std <- standardize_lar(X, y)
     X <- std$X
     y <- std$y
   }
 
-  # compute LAR path
+  #LAR path
   path <- lar_path(X, y, max_steps = max_steps)
 
   #Sicherstellen, dass beta Matrix ist
   beta_mat <- path$beta_path
-  if(!is.matrix(beta_mat)) beta_mat <- matrix(beta_mat, nrow = ncol(X_use), ncol = ncol(beta_mat))
+  if(!is.matrix(beta_mat)) beta_mat <- matrix(beta_mat, nrow = ncol(X), ncol = ncol(beta_mat))
 
   #Ausgabe
   structure(

@@ -5,6 +5,8 @@
 \title{Compute step size (gamma) in LAR}
 \usage{
 step_size_gamma(X, u, correlations, active_indices)
+
+step_size_gamma(X, u, correlations, active_indices)
 }
 \arguments{
 \item{X}{Numeric predictor matrix (standardized)}
@@ -21,12 +23,27 @@ A list with components:
 \item{gamma}{Step size along u}
 \item{next_index}{Index of next variable going into the active set}
 }
+
+A list with components:
+\describe{
+\item{gamma}{Step size along u}
+\item{next_index}{Index of next variable going into the active set}
+}
 }
 \description{
 Determines how far to move along the equiangular direction before
 the next predictor gets put in the active set.
+
+Determines how far to move along the equiangular direction before
+the next predictor gets put in the active set.
 }
 \examples{
+set.seed(1)
+X <- matrix(rnorm(20), 5, 4)
+active <- c(2)
+corrs <- compute_correlations(X, rnorm(5))
+eq <- equiangular_direction(X, active,corrs)
+step_size_gamma(X, eq$u, corrs, active)
 set.seed(1)
 X <- matrix(rnorm(20), 5, 4)
 active <- c(2)
