@@ -4,12 +4,14 @@
 \alias{coef.lasso_model}
 \title{Extract LASSO coefficients}
 \usage{
-\method{coef}{lasso_model}(object, lambda_index = NULL)
+\method{coef}{lasso_model}(object, lambda_index = NULL, ...)
 }
 \arguments{
 \item{object}{A fitted \code{lasso_model} object.}
 
 \item{lambda_index}{Index of lambda value to extract. Default last.}
+
+\item{...}{Additional arguments}
 }
 \value{
 Numeric vector of coefficients.

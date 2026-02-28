@@ -5,6 +5,7 @@
 #' @param object A fitted \code{lasso_model} object.
 #' @param X_new Numeric matrix of new predictors.
 #' @param lambda_index Index of lambda value to use. Default last.
+#' @param ... Additional arguments
 #'
 #' @returns Numeric vector of predictions.
 #'
@@ -17,11 +18,12 @@
 #' fit <- lasso(X, y)
 #' X_new <- matrix(rnorm(10*5), 10, 5)
 #' predict(fit, X_new)
-predict.lasso_model <- function(object, X_new, lambda_index = NULL) {
+predict.lasso_model <- function(object, X_new, lambda_index = NULL, ...) {
   if(!inherits(object, "lasso_model"))
     stop("Not a lasso_model object")
 
-  beta <- coef(object, lambda_index)
+  #kein generisches coef()
+  beta <- coef.lasso_model(object, lambda_index)
   std <- object$standardization
 
   if(!is.null(std)) {
