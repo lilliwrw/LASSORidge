@@ -120,9 +120,9 @@ output: html_document
   - Standardisierung als Option bei ridge und ridge_path
   - kleine Verbesserungen, Tests und Roxygen Skeleton überarbeitet
 
-  
 - **28.02.26 — Juliana**
   - Verbesserung `lar_path.r`
   - Kleine Änderungen an `step_size_gamma.R` und `equiangular_dirrection.R`, `update_coefficients.R`
   - Funktion `standardize_lar.R`und Tests
   - Umbenennen von `coef_lasso.R`in `coef.lasso_model.R`und `predict_lasso.R`in `predict.Lasso_model.R`
+  - S3 Methode print für lasso_model und lar_model erstellt + Tests
