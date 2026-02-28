@@ -4,6 +4,7 @@
 #'
 #' @param object A fitted \code{lasso_model} object.
 #' @param lambda_index Index of lambda value to extract. Default last.
+#' @param ... Additional arguments
 #'
 #' @returns Numeric vector of coefficients.
 #'
@@ -15,7 +16,7 @@
 #' y <- rnorm(20, sd=2)
 #' fit <- lasso(X, y)
 #' coef(fit)
-coef.lasso_model <- function(object, lambda_index = NULL) {
+coef.lasso_model <- function(object, lambda_index = NULL,...) {
   if(!inherits(object, "lasso_model"))
     stop("Not a lasso_model object")
 

@@ -4,7 +4,7 @@
 \alias{predict.lasso_model}
 \title{Predict using a LASSO model}
 \usage{
-\method{predict}{lasso_model}(object, X_new, lambda_index = NULL)
+\method{predict}{lasso_model}(object, X_new, lambda_index = NULL, ...)
 }
 \arguments{
 \item{object}{A fitted \code{lasso_model} object.}
@@ -12,6 +12,8 @@
 \item{X_new}{Numeric matrix of new predictors.}
 
 \item{lambda_index}{Index of lambda value to use. Default last.}
+
+\item{...}{Additional arguments}
 }
 \value{
 Numeric vector of predictions.
