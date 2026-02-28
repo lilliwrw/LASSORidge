@@ -29,8 +29,9 @@ lasso_path(
 \value{
 A list with:
 \describe{
-\item{lambda_seq}{Lambda sequence evaluated.}
-\item{beta}{Matrix of coefficients (p x n_lambda), each column = β for a lambda.}
+\item{lambda_seq}{A numeric vector containing the sequence of λ values used in the LASSO path.}
+\item{beta}{A numeric matrix of dimension p x n_lambda containing the estimated coefficients.
+Each column corresponds to one λ in \code{lambda_seq}, each row corresponds to a predictor.}
 }
 }
 \description{

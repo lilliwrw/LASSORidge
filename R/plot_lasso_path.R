@@ -17,9 +17,8 @@
 #' set.seed(1)
 #' X <- matrix(rnorm(50*5), nrow=50)
 #' y <- rnorm(50)
-#' std <- standardize_data(X, y)
-#' path <- lasso_path(std$X, std$y, n_lambda=10)
-#' plot_lasso_path(path$beta, path$lambda_seq)
+#' fit <- lasso(X, y, n_lambda=20)
+#' plot_lasso_path(fit$beta, fit$lambda_seq)
 
 plot_lasso_path <- function(beta, lambda_seq, log_x=TRUE, main="LASSO Path",xlab="log(lambda)",
                             ylab="Coefficients", col=NULL) {
@@ -29,6 +28,6 @@ plot_lasso_path <- function(beta, lambda_seq, log_x=TRUE, main="LASSO Path",xlab
 
   plot(x_vals, beta[1,], type="n",xlab=xlab, ylab=ylab, main=main, #"leerer" Plot
        ylim=range(beta), xlim=rev(range(x_vals))) #invertieren der Achsen
-  abline(h=0, col="black", lty=2) #schwarze Linie bei 0
+  abline(h=0, col="black", lty=2) #schwarze Linie bei 0 (zur Orientierung)
   for(j in 1:p) lines(x_vals, beta[j,], col=col[j], lwd=2) #Linien für alle beta j einzeln hinzufügen
 }

@@ -13,7 +13,7 @@
 
 \item{lambda_index}{Index of lambda value to use. Default last.}
 
-\item{...}{Additional arguments}
+\item{...}{Additional arguments (ignored).}
 }
 \value{
 Numeric vector of predictions.

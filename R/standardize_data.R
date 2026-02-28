@@ -25,9 +25,10 @@
 #' y <- rnorm(20)
 #' std <- standardize_data(X, y)
 #' colMeans(std$X)       # Should be about 0
-#' colSums(std$X^2)      # Should be 1
+#' colSums(std$X^2)/20      # Should be 1
 #' mean(std$y)           # Should be about 0
 standardize_data <- function(X, y, center = TRUE, scale = TRUE){
+  #Input checks
   if(!is.matrix(X))X <- as.matrix(X)
   if (!is.numeric(X)) stop("X must be numeric")
   if (!is.numeric(y)) stop("y must be numeric")

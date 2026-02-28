@@ -5,7 +5,7 @@
 #' @param object A fitted \code{lasso_model} object.
 #' @param X_new Numeric matrix of new predictors.
 #' @param lambda_index Index of lambda value to use. Default last.
-#' @param ... Additional arguments
+#' @param ... Additional arguments (ignored).
 #'
 #' @returns Numeric vector of predictions.
 #'
@@ -19,17 +19,17 @@
 #' X_new <- matrix(rnorm(10*5), 10, 5)
 #' predict(fit, X_new)
 predict.lasso_model <- function(object, X_new, lambda_index = NULL, ...) {
-  if(!inherits(object, "lasso_model"))
-    stop("Not a lasso_model object")
+  #S3 Methode, Objekt muss Klasse lasso_model haben
+  if(!inherits(object, "lasso_model")) stop("Not a lasso_model object")
 
-  #kein generisches coef()
-  beta <- coef.lasso_model(object, lambda_index)
+  #kein generisches coef() verwenden, sondern coef.lasso_model
+  beta <- coef.lasso_model(object, lambda_index) #Koeffizientenmatrix für gewünschte lambda-Spalte
+
   std <- object$standardization
-
-  if(!is.null(std)) {
+  if(!is.null(std)) { #prüfen ob Modell standartisiert wurde, wenn ja Prädikatoren ebenfalls standartisieren
     X_new <- scale(X_new,
                    center = std$X_means,
                    scale  = std$X_scales)
   }
-  as.numeric(X_new %*% beta)
+  as.numeric(X_new %*% beta) #Vorhersage als numerischen Vektor zurückgeben
 }

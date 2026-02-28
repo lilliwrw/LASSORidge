@@ -11,8 +11,9 @@
 #'
 #' @returns A list with:
 #' \describe{
-#'   \item{lambda_seq}{Lambda sequence evaluated.}
-#'   \item{beta}{Matrix of coefficients (p x n_lambda), each column = β for a lambda.}
+#'   \item{lambda_seq}{A numeric vector containing the sequence of λ values used in the LASSO path.}
+#'   \item{beta}{A numeric matrix of dimension p x n_lambda containing the estimated coefficients.
+#'               Each column corresponds to one λ in \code{lambda_seq}, each row corresponds to a predictor.}
 #' }
 #' @export
 #'
@@ -24,14 +25,16 @@
 #' path <- lasso_path(std$X, std$y, n_lambda=10)
 lasso_path <- function(X, y, n_lambda=100, lambda_min_ratio=0.01, tol=1e-6, max_iter=1000) {
   lambda_seq <- lambda_sequence(X, y, n_lambda, lambda_min_ratio) #Lambda-Sequenz erzeugen
+  #Initialisierung
   p <- ncol(X)
   n_lam <- length(lambda_seq)
-  beta_mat <- matrix(0, nrow=p, ncol=n_lam) #Koeffizienten sollen in Matriy beta_mat gespeichert werden
+  beta_mat <- matrix(0, nrow=p, ncol=n_lam) #Koeffizienten sollen in Matrix beta_mat gespeichert werden
 
-  for(i in seq_along(lambda_seq)){ #beta dutch lasso_cd berechnen und in beta_mat speichern
+  for(i in seq_along(lambda_seq)){ #beta durch lasso_cd berechnen und in beta_mat speichern
     lambda <- lambda_seq[i]
     est <- lasso_cd(X, y, lambda, tol, max_iter)
     b <- est$beta
+    #Safty checks
     if(!is.numeric(b)) stop("lasso_cd returned non-numeric beta")
     if(length(b) != p) stop('lasso_cd returned beta with wrong length')
     beta_mat[, i] <- as.numeric(est$beta) #Beta als Spaltenvektor

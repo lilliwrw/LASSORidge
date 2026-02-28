@@ -3,10 +3,11 @@
 #' Returns coefficient estimates from a fitted LASSO model.
 #'
 #' @param object A fitted \code{lasso_model} object.
-#' @param lambda_index Index of lambda value to extract. Default last.
-#' @param ... Additional arguments
+#' @param lambda_index Index of lambda value to extract. Defaults to the last one.
+#' @param ... Additional arguments (currently unused).
 #'
-#' @returns Numeric vector of coefficients.
+#' @returns A numeric matrix containing the coefficient estimates for the selected lambda value.
+#'          The matrix has one column corresponding to the chosen lambda, and one row per predictor.
 #'
 #' @export
 #'
@@ -17,16 +18,16 @@
 #' fit <- lasso(X, y)
 #' coef(fit)
 coef.lasso_model <- function(object, lambda_index = NULL,...) {
-  if(!inherits(object, "lasso_model"))
-    stop("Not a lasso_model object")
+  if(!inherits(object, "lasso_model")) stop("Not a lasso_model object") #S3- Methode für Klasse lasso_model
 
-  beta <- object$beta
+  beta <- object$beta #Koeffizienten
 
   if(!is.matrix(beta)) { #falls Vektor in Matrix umwandeln
     beta <- matrix(beta, ncol = 1)  # Spalte = 1 Lambda
   }
 
-  if(is.null(lambda_index)) lambda_index <- ncol(beta)
+  if(is.null(lambda_index)) lambda_index <- ncol(beta) #letztes lambda typischerweise das kleinste
 
-  beta[, lambda_index, drop = FALSE]
+  #Ausgabe
+  beta[, lambda_index, drop=FALSE]
 }

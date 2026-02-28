@@ -27,8 +27,8 @@ simulate_lasso_data <- function(n, p, n_active = 3, beta_values=NULL, sigma=1, s
 
   if(is.null(beta_values))beta_values <- runif(n_active, 1, 3) #zufällige Werte zwischen 1 und 3
   beta[1:n_active] <- beta_values #die ersten n_active Koeffizienten auf erzeugt Werte setzen
-  X <- matrix(rnorm(n*p), nrow=n, ncol=p)
-  y <- as.vector(X %*% beta + rnorm(n, mean=0, sd=sigma)) #Vector+ Gaussian noise
+  X <- matrix(rnorm(n*p), nrow=n, ncol=p) #zufällige Designmatrix, standartnormalverteilt
+  y <- as.vector(X %*% beta + rnorm(n, mean=0, sd=sigma)) #y = lineare Kombination von X * beta + Gaußsches Rauschen, steuert die Standardabweichung des Rauschens
   #Ausgabe
   list(X = X, y = y, beta = beta)
 }

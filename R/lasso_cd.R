@@ -26,21 +26,23 @@
 #' fit <- lasso_cd(std$X, std$y, lambda = 0.1)
 #' fit$beta #smaller numbers then beta
 lasso_cd <- function(X, y, lambda, tol = 1e-6, max_iter = 1000) {
+  #Input check
   if(lambda < 0) stop('lambda must be non-negative')
 
+  #Initialisierung (beta=0)
   n <- nrow(X)
   p <- ncol(X)
   beta <- rep(0, p)
 
-  for(iter in 1:max_iter) {
-    beta_old <- beta
+  for(iter in 1:max_iter) { #loop bis max_iter oder Konvergenz
+    beta_old <- beta #alte Werte zum Prüfen der Änderung
 
     for(j in 1:p) {#Spalte j von X enspricht Regressionskoeffizient beta_j
-      #Rest berechnen (j-te Koordinate)
+      #Rest berechnen (j-te Koordinate), rj= y- Sum{k!=j} Xk betak
       r_j <- y - X %*% beta + X[, j] * beta[j]
-
+      #Update Schritt, zj=1/n Xj^T rj
       z_j <- sum(X[, j] * r_j) / n
-      #beta_j mittels soft_threshold berecnen
+      #beta_j mittels soft_threshold berechnen
       beta[j] <- soft_threshold(z_j, lambda)
     }
     #auf Konvergenz des Verfahrens prüfen, falls die größte Änderung kleiner ist als die bestimmte Toleranz
