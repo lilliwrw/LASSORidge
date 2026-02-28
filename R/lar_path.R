@@ -47,9 +47,10 @@ lar_path <- function(X, y, max_steps = ncol(X)) {
 
     if (C_max < .Machine$double.eps) break #wenn C_max=0 haben Lösung erreicht
 
-    #neue Variablen hinzufügen, die mit größter Korrelation
-    new_active <- which(abs(c_vec) == C_max)
-    active <- union(active, new_active)
+    # Bei Start: alle Variablen mit maximaler Korrelation aktivieren
+    if(length(active) == 0){
+      active <- which(abs(c_vec) == C_max)
+    }
 
     #equiangular_direction()
     eq <- equiangular_direction(X, active, c_vec)
@@ -64,10 +65,18 @@ lar_path <- function(X, y, max_steps = ncol(X)) {
     beta <- upd$beta
     r <- upd$r
 
+    #neue Variablen hinzufügen, die mit größter Korrelation
+    if(!is.na(next_index)) active <- union(active, next_index)
+
     #an richtiger Stelle in Matrix speichern
     beta_path[,k + 1] <- beta
     active_sets[[k + 1]] <- active
 
+    #Abbruch, wenn keine neue Variable hinzukommt
+    if(is.na(next_index)) break
+
+    #Korrelation neu berechnen
+    c_vec <- drop(crossprod(X, r))
   }
 
   #Ausgabe

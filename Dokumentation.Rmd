@@ -119,3 +119,9 @@ output: html_document
 - **27.02.26 — Lilli**
   - Standardisierung als Option bei ridge und ridge_path
   - kleine Verbesserungen, Tests und Roxygen Skeleton überarbeitet
+
+  
+- **28.02.26 — Juliana**
+  - Verbesserung `lar_path.r`
+  - Kleine Änderungen an `step_size_gamma.R` und `equiangular_dirrection.R`, `update_coefficients.R`
+  - Funktion `standardize_lar.R`und Tests

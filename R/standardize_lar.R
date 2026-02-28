@@ -61,11 +61,9 @@ standardize_lar <- function(X, y) {
 
   Xs <- sweep(Xc, 2, X_scales, FUN = "/")
 
-  list(
-    X = Xs,
+  list(X = Xs,
     y = yc,
     X_means = X_means,
     X_scales = X_scales,
-    y_mean = y_mean
-  )
+    y_mean = y_mean)
 }
