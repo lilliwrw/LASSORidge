@@ -26,13 +26,26 @@
 #' active <- which.max(abs(c_vec))
 #' equiangular_direction(X, active, c_vec)
 equiangular_direction <- function(X, active_indices,c_vec) {
-  X_A <- X[, active_indices, drop = FALSE] #nur aktive Variablen/ Spalten
-  G_A <- crossprod(X_A) #Matrix X_A^T X_A
-  s<- sign(c_vec[active_indices]) #Sign der aktiven
+  if(length(active_indices) == 0) stop("Active set is empty!")
 
-  w <- solve(G_A, s) #nicht normalisierte Gewichte
-  w <- w/sqrt(sum(s*w)) #normierte Gewichte  w = G_A^{-1} s / sqrt(s^T G_A^{-1} s)
-  u <- X_A %*% w #u in alle Richtungen gleichwinklig, d.h. Korrelation von u mit allen aktiven Variablen ist gleich
+  X_A <- X[, active_indices, drop = FALSE] #nur aktive Variablen/ Spalten
+  s<- sign(c_vec[active_indices]) #Sign der aktiven
+  eps <- 1e-12
+
+  if(length(active_indices) == 1) {
+    # Spezialfall 1 aktive Variable
+    w <- s
+  } else {
+    # ≥2 aktive Variablen: numerisch stabil
+    G_A <- crossprod(X_A) #Matrix X_A^T X_A
+    w <- solve(G_A + diag(eps, nrow(G_A)), s)
+    w <- w / sqrt(sum(s * w))
+  }
+  #u in alle Richtungen gleichwinklig, d.h. Korrelation von u mit allen aktiven Variablen ist gleich
+  u <- X_A %*% w
+
+  stopifnot(length(u) == nrow(X))
+  stopifnot(length(w) == length(active_indices))
 
   list(u = drop(u), #Vektor der gleichwinkligen (equiangular)  in alle Richtungen
        w = drop(w), #Gewichte
