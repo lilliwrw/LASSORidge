@@ -1,12 +1,12 @@
 #' Fit Least Angle Regression (LAR) Model
 #'
 #' Computes the full LAR path for predictors X and response y.
-#' Optional standardization is applied internally.
+#' Standardization is applied internally.
 #'
 #' @param X Numeric predictor matrix
 #' @param y Numeric response vector
 #' @param max_steps Maximum number of LAR steps (default = number of predictors)
-#' @param standardize Logical, whether to standardize X and y (default = TRUE)
+#' @param standardize Logical, whether to standardize X and y (default TRUE)
 #'
 #' @return S3 object of class 'lar_model' containing:
 #' \describe{
@@ -25,18 +25,16 @@
 #'
 #' @export
 lar <- function(X, y, max_steps = ncol(X), standardize = TRUE) {
-  #Standartisieren, falls standardize=TRUE
-  if (standardize) {
-    std <- standardize_data(X, y)
-    X_use <- std$X
-    y_use <- std$y
-  } else {
-    X_use <- X
-    y_use <- y
+
+  # optional standardization
+  if (standardize==TRUE) {
+    std <- standardize_lar(X, y)
+    X <- std$X
+    y <- std$y
   }
 
-  #Lar_path
-  path <- lar_path(X_use, y_use, max_steps = max_steps)
+  # compute LAR path
+  path <- lar_path(X, y, max_steps = max_steps)
 
   #Sicherstellen, dass beta Matrix ist
   beta_mat <- path$beta_path

@@ -13,7 +13,7 @@ lar(X, y, max_steps = ncol(X), standardize = TRUE)
 
 \item{max_steps}{Maximum number of LAR steps (default = number of predictors)}
 
-\item{standardize}{Logical, whether to standardize X and y (default = TRUE)}
+\item{standardize}{Logical, whether to standardize X and y (default TRUE)}
 }
 \value{
 S3 object of class 'lar_model' containing:
@@ -24,7 +24,7 @@ S3 object of class 'lar_model' containing:
 }
 \description{
 Computes the full LAR path for predictors X and response y.
-Optional standardization is applied internally.
+Standardization is applied internally.
 }
 \examples{
 set.seed(1)
