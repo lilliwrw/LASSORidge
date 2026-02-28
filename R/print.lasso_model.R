@@ -17,18 +17,20 @@
 #' fit <- lasso(X, y, n_lambda=10)
 #' print(fit)
 print.lasso_model <- function(x, ...) {
-  cat("Call:\n")
+  cat("Call:\n") #zeigt ursprünglichen Funktionsaufruf (falls gespeichert)
   if(!is.null(x$call)) {
     print(x$call)
   } else {
     cat("<original call not stored>\n")
   }
 
+  #Basisinformationen zum Modell
   cat("\nLASSO Regression Path\n")
   cat("Number of predictors:", nrow(x$beta), "\n")
   cat("Number of lambda values:", length(x$lambda_seq), "\n")
   cat("Lambda range: [", min(x$lambda_seq), ", ", max(x$lambda_seq), "]\n\n", sep="")
 
+  #Vorschau der Koeffizientenmatrix
   cat("Coefficient Matrix (showing first 6 rows and columns if large):\n")
   coef_mat <- x$beta
   max_rows <- min(6, nrow(coef_mat))

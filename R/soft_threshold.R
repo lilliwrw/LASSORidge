@@ -12,8 +12,7 @@
 #' soft_threshold(3, 1)
 #' soft_threshold(c(-2, -0.5, 0.5, 2), 1)
 soft_threshold <- function(z, lambda) {
-  if (lambda < 0) {
-    stop('lambda must be non-negative')
-  }
+  #Safty check
+  if (lambda < 0) stop('lambda must be non-negative')
   sign(z) * pmax(abs(z) - lambda, 0) #Elementweises Maximum, um Vektoreingaben zu ermöglichen
 }

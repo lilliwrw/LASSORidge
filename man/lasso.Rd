@@ -27,13 +27,14 @@ lasso(
 
 \item{max_iter}{Maximum iterations for coordinate descent (default 1000).}
 
-\item{standardize}{Logical, whether to standardize X and center y (default TRUE).}
+\item{standardize}{Logical; if TRUE (default), X is standardized
+and y is centered before fitting.}
 }
 \value{
 A \code{lasso_model} object with:
 \describe{
-\item{beta}{Matrix of coefficients (p x n_lambda), each column = β for a lambda.}
-\item{lambda_seq}{Vector of lambda values used.}
+\item{beta}{Numeric matrix of dimension p x n_lambda with estimated coefficients. Each column corresponds to one lambda.}
+\item{lambda_seq}{Numeric vector of lambda values used in the path.}
 }
 }
 \description{

@@ -19,10 +19,12 @@
 #' #Customized title and colors
 #' plot(fit, main = "Mein LASSO Pfad", col = rainbow(ncol(fit$beta)))
 plot.lasso_model <- function(x, ...) {
+  #S3_Funktion, deshalb prüfen ob lasso_model
   if(!inherits(x, "lasso_model")) stop("x must be a lasso_model object")
 
+  #Sicherstellen, dass beta Matrix und Lambda_seq numerischer Vektor ist
   x$beta <- as.matrix(x$beta)
   x$lambda_seq <- as.numeric(x$lambda_seq)
   #bestehende plot_lasso_path Funktion aufrufen
-  plot_lasso_path(beta = x$beta, lambda_seq = x$lambda_seq, ...)
+  plot_lasso_path(beta = x$beta, lambda_seq = x$lambda_seq, ...) #... erlaubt Farbe, etc. zu ändern
 }

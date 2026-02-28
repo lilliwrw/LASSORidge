@@ -40,11 +40,9 @@ lar_path <- function(X, y, max_steps = ncol(X)) {
   active_sets <- list(active)
 
   for (k in seq_len(max_steps)) {
-
-    #Residuum und Korrelationen
-    c_vec <- drop(crossprod(X, r))
+    #Korrelation neu berechnen
+    c_vec <- compute_correlations(X, r)
     C_max <- max(abs(c_vec)) #größte absoulute Relation
-
     if (C_max < .Machine$double.eps) break #wenn C_max=0 haben Lösung erreicht
 
     # Bei Start: alle Variablen mit maximaler Korrelation aktivieren
@@ -74,9 +72,6 @@ lar_path <- function(X, y, max_steps = ncol(X)) {
 
     #Abbruch, wenn keine neue Variable hinzukommt
     if(is.na(next_index)) break
-
-    #Korrelation neu berechnen
-    c_vec <- drop(crossprod(X, r))
   }
 
   #Ausgabe

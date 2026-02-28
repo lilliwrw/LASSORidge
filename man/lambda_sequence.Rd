@@ -7,16 +7,19 @@
 lambda_sequence(X, y, n_lambda = 100, lambda_min_ratio = 0.01)
 }
 \arguments{
-\item{X}{Numeric matrix of predictors (n x p), centered.}
+\item{X}{Numeric matrix of predictors (n x p).}
 
-\item{y}{Numeric response vector of length n, centered.}
+\item{y}{Numeric response vector of length n.}
 
 \item{n_lambda}{Number of lambda values to generate, default 100.}
 
 \item{lambda_min_ratio}{Ratio of min lambda to max lambda, default 0.01.}
 }
 \value{
-Numeric vector of length n_lambda (descending from lambda_max to lambda_min)
+Numeric vector of length \code{n_lambda} containing
+the sequence of lambda values for the LASSO regularization path.
+The values are logarithmically spaced and descend from \code{lambda_max}
+to \code{lambda_min}.
 }
 \description{
 Creates a logarithmically spaced sequence of regularization parameters.

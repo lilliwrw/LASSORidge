@@ -9,12 +9,13 @@
 \arguments{
 \item{object}{A fitted \code{lasso_model} object.}
 
-\item{lambda_index}{Index of lambda value to extract. Default last.}
+\item{lambda_index}{Index of lambda value to extract. Defaults to the last one.}
 
-\item{...}{Additional arguments}
+\item{...}{Additional arguments (currently unused).}
 }
 \value{
-Numeric vector of coefficients.
+A numeric matrix containing the coefficient estimates for the selected lambda value.
+The matrix has one column corresponding to the chosen lambda, and one row per predictor.
 }
 \description{
 Returns coefficient estimates from a fitted LASSO model.
