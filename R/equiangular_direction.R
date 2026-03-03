@@ -49,5 +49,5 @@ equiangular_direction <- function(X, active_indices,c_vec) {
 
   list(u = drop(u), #Vektor der gleichwinkligen (equiangular)  in alle Richtungen
        w = drop(w), #Gewichte
-       s = drop(s))
+       s = drop(s)) #Vorzeichen
 }

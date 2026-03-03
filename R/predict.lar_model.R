@@ -8,7 +8,7 @@
 #' @param newx Numeric matrix of new predictors.
 #' @param step Optional integer specifying which step to use for prediction.
 #'   If `NULL` (default), predictions are returned for all steps.
-#' @param ... Additional arguments.
+#' @param ... Additional arguments (currently unused).
 #'
 #' @return Numeric vector of predictions if `step` is given,
 #'   or numeric matrix (nrow(newx) x ncol(beta)) if step = NULL.
@@ -28,18 +28,18 @@
 #' # Predict for training data using step 3
 #' pred_step3 <- predict(fit, X, step = 3)
 predict.lar_model <- function(object, newx, step = NULL, ...) {
-  beta <- object$beta
+  beta <- object$beta #Koeffizienten extrahieren
 
   #Spaltenanzahl prüfen
   if (ncol(newx) != nrow(beta))stop("Number of columns of newx must match number of variables in model")
 
-  #prediction für einen bestimmten Schritt
+  #Vorhersage für einen bestimmten Schritt
   if (!is.null(step)) {
     if (step < 1 || step > ncol(beta))stop("`step` must be between 1 and the number of steps in the path")
     return(as.vector(newx %*% beta[, step]))
   }
 
-  #prediction für alle Schritte
+  #Vorhersage für alle Schritte
   preds <- newx %*% beta
   return(preds)
 }

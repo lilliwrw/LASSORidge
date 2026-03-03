@@ -7,21 +7,27 @@
 lar_path(X, y, max_steps = ncol(X))
 }
 \arguments{
-\item{X}{Numeric predictor matrix (standardized)}
+\item{X}{Numeric predictor matrix of dimension \eqn{n \times p} (standardized)}
 
-\item{y}{Numeric response vector (centered)}
+\item{y}{Numeric response vector of length \eqn{n} (centered)}
 
-\item{max_steps}{Maximum number of LAR steps (default ncol(X))}
+\item{max_steps}{Maximum number of LAR steps (default = \code{ncol(X)})}
 }
 \value{
 A list containing:
 \describe{
-\item{beta_path}{Matrix of coefficient estimates (columns = steps)}
-\item{active_sets}{List of active index sets}
+\item{beta_path}{Matrix of dimension \eqn{p \times (K+1)} of coefficient estimates. Each column corresponds to a LAR step, first column is zero.}
+\item{active_sets}{List of length \eqn{K+1} containing the indices of active predictors at each step.}
 }
 }
 \description{
-Computes the full Least Angle Regression (LAR) coefficient path.
+Computes the full coefficient path for the LAR algorithm given a
+standardized predictor matrix \eqn{X} and centered response vector \eqn{y}.
+}
+\details{
+The function iteratively adds predictors to the active set, moves
+along the equiangular direction, updates coefficients, and stores
+the coefficient path until \code{max_steps} or convergence.
 }
 \examples{
 set.seed(1)

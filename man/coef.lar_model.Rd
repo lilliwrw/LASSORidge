@@ -12,15 +12,19 @@
 \item{step}{Optional integer specifying which step to return.
 If \code{NULL} (default), returns the full coefficient matrix.}
 
-\item{...}{Additional arguments}
+\item{...}{Additional arguments (currently ignored).}
 }
 \value{
-Numeric matrix (p x K) of coefficients if \code{step = NULL},
-or numeric vector of length p if a specific \code{step} is given.
+Numeric matrix (p x K) containing the full coefficient path if \code{step = NULL},
+or numeric vector of length p containing the coefficients at that step, if a specific \code{step} is given.
 }
 \description{
 S3 method to extract coefficients from an object of class \code{"lar_model"}.
-Returns the coefficient matrix or a specific step.
+The function returns the coefficient path computed by the Least Angle
+Regression (LAR) algorithm. The coefficient matrix has dimension
+\eqn{p \times K}, where \eqn{p} is the number of predictors and
+\eqn{K} is the number of LAR steps. Each column corresponds to one
+step along the solution path.
 }
 \examples{
 set.seed(1)

@@ -14,7 +14,7 @@ plot_lar_path(
 )
 }
 \arguments{
-\item{beta}{Numeric matrix of coefficients. Rows represent variables,
+\item{beta}{Numeric matrix of coefficients (p × K). Rows represent variables,
 columns represent steps along the LAR path.}
 
 \item{x_axis}{Character, either "l1" (default) for L1-norm of beta or "step" for step index.}
@@ -33,7 +33,7 @@ Invisibly returns NULL
 \description{
 Plots the coefficient path of a Least Angle Regression (LAR) model.
 Each line represents one predictor. The x-axis can be either
-the L1-norm of coefficients or the step index.
+the L1-norm of coefficients (classical LAR representation) or the step index.
 }
 \examples{
 set.seed(1)

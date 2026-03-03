@@ -1,15 +1,20 @@
 #' Compute LAR coefficient path
 #'
-#' Computes the full Least Angle Regression (LAR) coefficient path.
+#' Computes the full coefficient path for the LAR algorithm given a
+#' standardized predictor matrix \eqn{X} and centered response vector \eqn{y}.
 #'
-#' @param X Numeric predictor matrix (standardized)
-#' @param y Numeric response vector (centered)
-#' @param max_steps Maximum number of LAR steps (default ncol(X))
+#' The function iteratively adds predictors to the active set, moves
+#' along the equiangular direction, updates coefficients, and stores
+#' the coefficient path until \code{max_steps} or convergence.
+#'
+#' @param X Numeric predictor matrix of dimension \eqn{n \times p} (standardized)
+#' @param y Numeric response vector of length \eqn{n} (centered)
+#' @param max_steps Maximum number of LAR steps (default = \code{ncol(X)})
 #'
 #' @return A list containing:
 #' \describe{
-#' \item{beta_path}{Matrix of coefficient estimates (columns = steps)}
-#' \item{active_sets}{List of active index sets}
+#' \item{beta_path}{Matrix of dimension \eqn{p \times (K+1)} of coefficient estimates. Each column corresponds to a LAR step, first column is zero.}
+#' \item{active_sets}{List of length \eqn{K+1} containing the indices of active predictors at each step.}
 #' }
 #'
 #' @export
@@ -58,7 +63,7 @@ lar_path <- function(X, y, max_steps = ncol(X)) {
     gamma <- gamma_info$gamma
     next_index <- gamma_info$next_index
 
-    #updata_coefficients()
+    #update_coefficients()
     upd <- update_coefficients(beta, active, eq$w, gamma, r, eq$u)
     beta <- upd$beta
     r <- upd$r
@@ -77,6 +82,6 @@ lar_path <- function(X, y, max_steps = ncol(X)) {
   #Ausgabe
   list(
     beta_path = beta_path, #Spalten = Schritte, Zeilen = Variablen
-    active_sets = active_sets
+    active_sets = active_sets #Aktive Variablen pro Schritt
   )
 }

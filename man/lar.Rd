@@ -7,9 +7,9 @@
 lar(X, y, max_steps = ncol(X), standardize = TRUE)
 }
 \arguments{
-\item{X}{Numeric predictor matrix}
+\item{X}{Numeric predictor matrix of dimension \eqn{n \times p}.}
 
-\item{y}{Numeric response vector}
+\item{y}{Numeric response vector of length \eqn{n}.}
 
 \item{max_steps}{Maximum number of LAR steps (default = number of predictors)}
 
@@ -18,13 +18,13 @@ lar(X, y, max_steps = ncol(X), standardize = TRUE)
 \value{
 S3 object of class 'lar_model' containing:
 \describe{
-\item{beta}{matrix of coefficients, columns = steps along the path}
-\item{active_sets}{list of active variables at each step}
+\item{beta}{Matrix of coefficients (p × (K+1)), columns correspond to LAR steps. First column = 0.}
+\item{active_sets}{List of active variable indices at each step}
 }
 }
 \description{
-Computes the full LAR path for predictors X and response y.
-Standardization is applied internally.
+Computes the full LAR coefficient path for a predictor matrix \eqn{X} and response vector \eqn{y}.
+Optionally standardizes predictors and centers the response internally.
 }
 \examples{
 set.seed(1)

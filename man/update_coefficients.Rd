@@ -7,28 +7,28 @@
 update_coefficients(beta, active_indices, w, gamma, r, u)
 }
 \arguments{
-\item{beta}{Current coefficient vector (length p)}
+\item{beta}{Numeric vector. Current coefficient vector (length p).}
 
-\item{active_indices}{Integer vector of active predictor indices}
+\item{active_indices}{Integer vector of active predictor indices.}
 
-\item{w}{Weights of active predictors (from equangular_direction)}
+\item{w}{Numeric vector. Weights of active predictors (from \code{equiangular_direction}).}
 
-\item{gamma}{Step size}
+\item{gamma}{Numeric scalar. Step size along the equiangular direction.}
 
-\item{r}{residual vector}
+\item{r}{Numeric vector. Current residual vector.}
 
-\item{u}{Equiangular direction vector}
+\item{u}{Numeric vector. Equiangular direction vector.}
 }
 \value{
 A list with updated:
 \describe{
-\item{beta}{Updated coefficient vector}
-\item{r}{Updated residual vector}
+\item{beta}{Updated coefficient vector.}
+\item{r}{Updated residual vector.}
 }
 }
 \description{
-Updates the coefficient vector and residual after doing the
-equiangular direction by step size gamma.
+Updates the coefficient vector and residual after moving along the equiangular
+direction by step size \code{gamma} in Least Angle Regression (LAR).
 }
 \examples{
 set.seed(1)

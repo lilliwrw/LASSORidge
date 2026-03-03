@@ -7,12 +7,13 @@
 compute_correlations(X, r)
 }
 \arguments{
-\item{X}{Numeric predictor matrix (standardized).}
+\item{X}{Numeric predictor matrix of dimension \eqn{n \times p} (standardized).}
 
-\item{r}{Numeric residual vector.}
+\item{r}{Numeric residual vector of length \eqn{n}.}
 }
 \value{
-Numeric vector of correlations.
+Numeric vector of length \eqn{p} containing
+the predictor–residual correlations.
 }
 \description{
 Computes inner products between each predictor column and a residual

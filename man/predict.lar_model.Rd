@@ -14,7 +14,7 @@
 \item{step}{Optional integer specifying which step to use for prediction.
 If \code{NULL} (default), predictions are returned for all steps.}
 
-\item{...}{Additional arguments.}
+\item{...}{Additional arguments (currently unused).}
 }
 \value{
 Numeric vector of predictions if \code{step} is given,
