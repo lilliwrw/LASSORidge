@@ -1,17 +1,17 @@
 #' Fit Least Angle Regression (LAR) Model
 #'
-#' Computes the full LAR path for predictors X and response y.
-#' Standardization is applied internally.
+#' Computes the full LAR coefficient path for a predictor matrix \eqn{X} and response vector \eqn{y}.
+#' Optionally standardizes predictors and centers the response internally.
 #'
-#' @param X Numeric predictor matrix
-#' @param y Numeric response vector
+#' @param X Numeric predictor matrix of dimension \eqn{n \times p}.
+#' @param y Numeric response vector of length \eqn{n}.
 #' @param max_steps Maximum number of LAR steps (default = number of predictors)
 #' @param standardize Logical, whether to standardize X and y (default TRUE)
 #'
 #' @return S3 object of class 'lar_model' containing:
 #' \describe{
-#'   \item{beta}{matrix of coefficients, columns = steps along the path}
-#'   \item{active_sets}{list of active variables at each step}
+#'   \item{beta}{Matrix of coefficients (p × (K+1)), columns correspond to LAR steps. First column = 0.}
+#'   \item{active_sets}{List of active variable indices at each step}
 #' }
 #'
 #' @examples

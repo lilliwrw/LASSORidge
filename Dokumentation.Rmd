@@ -127,4 +127,7 @@ output: html_document
   - Umbenennen von `coef_lasso.R`in `coef.lasso_model.R`und `predict_lasso.R`in `predict.Lasso_model.R`
   - S3 Methode print für lasso_model und lar_model erstellt + Tests
   - `active_set.R` +Tests enfernt, da in lar_path direkt eingebunden 
-  - Überarbeiten der Roxygen sceleton und Komentare des Codes
+  - Überarbeiten der Roxygen-Sceleton und Komentare des Codes
+  
+- **03.03.26 — Juliana**
+  - Überarbeiten der Roxygen-Sceleton und Komentare des Codes

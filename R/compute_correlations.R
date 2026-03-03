@@ -10,10 +10,11 @@
 #' This function assumes valid numeric inputs and is intended for internal
 #' use inside the LAR algorithm.
 #'
-#' @param X Numeric predictor matrix (standardized).
-#' @param r Numeric residual vector.
+#' @param X Numeric predictor matrix of dimension \eqn{n \times p} (standardized).
+#' @param r Numeric residual vector of length \eqn{n}.
 #'
-#' @return Numeric vector of correlations.
+#' @return Numeric vector of length \eqn{p} containing
+#'   the predictor–residual correlations.
 #'
 #' @export
 #'

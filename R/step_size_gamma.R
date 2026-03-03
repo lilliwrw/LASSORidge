@@ -1,12 +1,16 @@
 #' Compute step size (gamma) in LAR
 #'
 #' Determines how far to move along the equiangular direction before
-#' the next predictor gets put in the active set.
+#' the next predictor is added to the active set in Least Angle Regression (LAR).
 #'
-#' @param X Numeric predictor matrix (standardized)
-#' @param u Equiangular direction vector
-#' @param correlations Numeric vector of current correlations
-#' @param active_indices Integer vector of currently active predictor indices
+#' This function computes candidate step sizes for inactivated variables
+#' and selects the smallest positive step, ensuring the next variable reaches
+#' the maximum correlation with the current residual.
+#'
+#' @param X Numeric predictor matrix (standardized, n x p).
+#' @param u Equiangular direction vector.
+#' @param correlations Numeric vector of current correlations (X^T r).
+#' @param active_indices Integer vector of currently active predictor indices.
 #'
 #' @return A list with components:
 #' \describe{
@@ -33,12 +37,12 @@ step_size_gamma <- function(X, u, correlations, active_indices) {
   c_inactive <- correlations[inactive]
 
   #Berechnen der möglichen Schrittweiten (wähle dann die kleinste positive weite)
-  if(length(active_indices) == 1) {
+  if(length(active_indices) == 1) {#eine aktive Variable
     gamma_candidates <- c((C - c_inactive), (C + c_inactive))
-  }else {
+  }else {#mehrere aktive Variablen
     gamma_candidates <- c((C - c_inactive)/(1 - a), (C + c_inactive)/(1 + a))
   }
-  gamma_candidates <- gamma_candidates[gamma_candidates > 0 & is.finite(gamma_candidates)]
+  gamma_candidates <- gamma_candidates[gamma_candidates > 0 & is.finite(gamma_candidates)] #nur positive endliche Kandidaten
 
   if(length(gamma_candidates) == 0) {
     gamma <- 0
@@ -54,56 +58,6 @@ step_size_gamma <- function(X, u, correlations, active_indices) {
       next_index <- inactive[gamma_idx]
     }
   }
-
-  #Ausgabe
-  list(gamma = gamma, next_index = next_index)
-}
-#' Compute step size (gamma) in LAR
-#'
-#' Determines how far to move along the equiangular direction before
-#' the next predictor gets put in the active set.
-#'
-#' @param X Numeric predictor matrix (standardized)
-#' @param u Equiangular direction vector
-#' @param correlations Numeric vector of current correlations
-#' @param active_indices Integer vector of currently active predictor indices
-#'
-#' @return A list with components:
-#' \describe{
-#' \item{gamma}{Step size along u}
-#' \item{next_index}{Index of next variable going into the active set}
-#' }
-#'
-#' @export
-#'
-#' @examples
-#' set.seed(1)
-#' X <- matrix(rnorm(20), 5, 4)
-#' active <- c(2)
-#' corrs <- compute_correlations(X, rnorm(5))
-#' eq <- equiangular_direction(X, active,corrs)
-#' step_size_gamma(X, eq$u, corrs, active)
-step_size_gamma <- function(X, u, correlations, active_indices) {
-  inactive <- setdiff(seq_len(ncol(X)), active_indices) #Spalten die noch nicht im aktiven Set sind
-  if(length(inactive) == 0) return(list(gamma = 0, next_index = NA)) #alle Variablen aktiv
-  C <- max(abs(correlations[active_indices])) #Maximum der Korrelation aller Variablen
-
-  a <- drop(crossprod(X[, inactive, drop=FALSE], u)) #aj=Xj^Tu (Matrixeigenschaft fallen lassen)
-  c_inactive <- correlations[inactive]
-
-  #Berechnen der möglichen Schrittweiten (wähle dann die kleinste positive weite)
-  gamma_candidates <- c((C - c_inactive)/(1 - a),
-                        (C + c_inactive)/(1 + a))
-  gamma_candidates <- gamma_candidates[gamma_candidates > 0 & is.finite(gamma_candidates)]
-
-  if(length(gamma_candidates) == 0) {
-    gamma <- 0
-    next_index <- NA
-  } else {
-    gamma <- min(gamma_candidates)
-    #den Index der nächsten Variable bestimmen
-    next_index <- inactive[which.min(pmin((C - c_inactive)/(1 - a), (C + c_inactive)/(1 + a)))]
-    }
 
   #Ausgabe
   list(gamma = gamma, next_index = next_index)

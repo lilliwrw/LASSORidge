@@ -5,25 +5,17 @@
 \title{Compute step size (gamma) in LAR}
 \usage{
 step_size_gamma(X, u, correlations, active_indices)
-
-step_size_gamma(X, u, correlations, active_indices)
 }
 \arguments{
-\item{X}{Numeric predictor matrix (standardized)}
+\item{X}{Numeric predictor matrix (standardized, n x p).}
 
-\item{u}{Equiangular direction vector}
+\item{u}{Equiangular direction vector.}
 
-\item{correlations}{Numeric vector of current correlations}
+\item{correlations}{Numeric vector of current correlations (X^T r).}
 
-\item{active_indices}{Integer vector of currently active predictor indices}
+\item{active_indices}{Integer vector of currently active predictor indices.}
 }
 \value{
-A list with components:
-\describe{
-\item{gamma}{Step size along u}
-\item{next_index}{Index of next variable going into the active set}
-}
-
 A list with components:
 \describe{
 \item{gamma}{Step size along u}
@@ -32,18 +24,14 @@ A list with components:
 }
 \description{
 Determines how far to move along the equiangular direction before
-the next predictor gets put in the active set.
-
-Determines how far to move along the equiangular direction before
-the next predictor gets put in the active set.
+the next predictor is added to the active set in Least Angle Regression (LAR).
+}
+\details{
+This function computes candidate step sizes for inactivated variables
+and selects the smallest positive step, ensuring the next variable reaches
+the maximum correlation with the current residual.
 }
 \examples{
-set.seed(1)
-X <- matrix(rnorm(20), 5, 4)
-active <- c(2)
-corrs <- compute_correlations(X, rnorm(5))
-eq <- equiangular_direction(X, active,corrs)
-step_size_gamma(X, eq$u, corrs, active)
 set.seed(1)
 X <- matrix(rnorm(20), 5, 4)
 active <- c(2)

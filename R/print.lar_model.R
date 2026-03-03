@@ -1,13 +1,14 @@
-#' Print Method for LAR Model Objects (S3 Method)
+#' Print Method for LAR Model Objects
 #'
-#' Prints a summary of a Least Angle Regression (LAR) model.
-#' Displays the number of predictors, number of steps, and a preview of the
-#' coefficient matrix and active sets.
+#' S3 method to print a concise summary of a Least Angle Regression (LAR) model.
+#' Displays the number of predictors, number of steps, a preview of the coefficient matrix,
+#' and the first steps of the active sets.
 #'
 #' @param x An object of class \code{"lar_model"}.
 #' @param ... Additional arguments (ignored).
 #'
-#' @returns Invisibly returns the object \code{x}.
+#' @return Invisibly returns the object \code{x}.
+#'
 #' @export
 #'
 #' @examples

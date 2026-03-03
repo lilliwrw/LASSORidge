@@ -2,7 +2,7 @@
 % Please edit documentation in R/print.lar_model.R
 \name{print.lar_model}
 \alias{print.lar_model}
-\title{Print Method for LAR Model Objects (S3 Method)}
+\title{Print Method for LAR Model Objects}
 \usage{
 \method{print}{lar_model}(x, ...)
 }
@@ -15,9 +15,9 @@
 Invisibly returns the object \code{x}.
 }
 \description{
-Prints a summary of a Least Angle Regression (LAR) model.
-Displays the number of predictors, number of steps, and a preview of the
-coefficient matrix and active sets.
+S3 method to print a concise summary of a Least Angle Regression (LAR) model.
+Displays the number of predictors, number of steps, a preview of the coefficient matrix,
+and the first steps of the active sets.
 }
 \examples{
 set.seed(1)
