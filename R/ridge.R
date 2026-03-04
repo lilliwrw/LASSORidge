@@ -2,12 +2,12 @@
 #'
 #' Computes the ridge regression estimator. If \code{standardize = TRUE}, predictors are centered and scaled
 #' and the intercept is reconstructed afterwards.
-#' If \code{standardize = FALSE}, no intercept is estimated.
+#' If \code{standardize = FALSE}, only \code{X} is centered.
 #'
 #' @param X A numeric design matrix of dimension \eqn{n \times d}.
 #' @param y A numeric response vector of length \eqn{n}.
 #' @param lambda A non-negative regularization parameter.
-#' @param standardize Logical; if TRUE (default), the predictors are standardized before fitting.
+#' @param standardize Logical; if TRUE (default), the predictors are standardized before fitting, else only X is centered.
 #'
 #' @returns An object of class \code{"ridge"} containing:
 #' \itemize{
@@ -39,7 +39,6 @@ ridge <- function(X, y, lambda, standardize = TRUE){
     coef_names <- paste0("X", seq_len(ncol(X)))
   }
 
-
   if(standardize){
     #Standardization
     std <- ridge_standardizeData(X, y)
@@ -59,10 +58,16 @@ ridge <- function(X, y, lambda, standardize = TRUE){
     names(beta) <- coef_names
     intercept <- as.numeric(recovered$intercept)
   } else {
-    #No standardization
-    beta <- ridge_core(X, y, lambda)
+    #No standardization, only center X
+    X_means <- colMeans(X)
+    Xc <- sweep(X, 2, X_means)
+
+    y_mean <- mean(y)
+
+    beta <- ridge_core(Xc, y, lambda)
     names(beta) <- coef_names
-    intercept <- 0
+
+    intercept <- y_mean - sum(beta * X_means)
   }
 
   #Full coefficient vector

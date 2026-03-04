@@ -13,7 +13,7 @@ ridge(X, y, lambda, standardize = TRUE)
 
 \item{lambda}{A non-negative regularization parameter.}
 
-\item{standardize}{Logical; if TRUE (default), the predictors are standardized before fitting.}
+\item{standardize}{Logical; if TRUE (default), the predictors are standardized before fitting, else only X is centered.}
 }
 \value{
 An object of class \code{"ridge"} containing:
@@ -28,7 +28,7 @@ An object of class \code{"ridge"} containing:
 \description{
 Computes the ridge regression estimator. If \code{standardize = TRUE}, predictors are centered and scaled
 and the intercept is reconstructed afterwards.
-If \code{standardize = FALSE}, no intercept is estimated.
+If \code{standardize = FALSE}, only \code{X} is centered.
 }
 \examples{
 set.seed(1)
