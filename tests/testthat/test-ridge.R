@@ -25,16 +25,16 @@ test_that("lambda = 0 approximates OLS", {
   expect_equal(fit_ridge$coefficients, coef(fit_lm), tolerance = 1e-6)
 })
 
-test_that("lambda = 0 without standardization equals OLS without intercept", {
+test_that("lambda = 0 without standardization equals OLS", {
   set.seed(1)
   X <- matrix(rnorm(100), 20, 5)
   y <- rnorm(20)
 
   fit_ridge <- ridge(X, y, lambda = 0, standardize = FALSE)
 
-  fit_lm <- lm(y ~ X - 1)
+  fit_lm <- lm(y ~ X)
 
-  expect_equal(fit_ridge$coefficients[-1], coef(fit_lm), tolerance = 1e-6)
+  expect_equal(fit_ridge$coefficients, coef(fit_lm), tolerance = 1e-6)
 })
 
 test_that("large lambda shrinks coefficients", {
