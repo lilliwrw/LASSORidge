@@ -27,3 +27,4 @@ output: html_document
 24.02.26: Lilli ~ S3 Methoden print, coef, fitted, residuals und predict für ridge erstellt + tests
 24.02.26: Adina ~ Tests erstellt
 25.02.26: Lilli ~ ridge_path und S3 Methoden print, coef erstellt + tests
+25.02.26: Felix ~ A row of QoL implementations for forward stepwise selection (toggled by an argument)
