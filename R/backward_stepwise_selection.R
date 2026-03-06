@@ -1,12 +1,12 @@
-#' Forward stepwise selection of coefficients
+#' Backward stepwise selection of coefficients
 #'
 #'
-#' \code{forward_stepwise_selection} is used to calculate, which coefficients in
+#' \code{backward_stepwise_selection} is used to calculate, which coefficients in
 #' a linear regression can be dropped with least influence on the residual square
 #' sum. The function returns either a sequence of character vectors of the coefficient
 #' names or a sequence of \code{lm}-obejects for nested subsets of coefficients
-#' with increasing size. The result is calculated by forward-stepwise selection
-#' (i.e. subsequently adding new coefficients beginning without coefficients).
+#' with increasing size. The result is calculated by backward-stepwise selection
+#' (i.e. subsequently removing coefficients from the model).
 #'
 #' @param data data frame containing the data to be used for the linear regression
 #' @param input character vector: names of the coefficients
@@ -48,12 +48,12 @@
 #' data$output <- rowSums(t(t(data)*linear_coefficients))
 #' data$output <- data$output * rnorm(100, 1, 0.00001)
 #' # Calculate which coeffiecients can be dropped with least influence on residual square sum
-#' forward_stepwise_selection(data, input=letters[1:10], output="output",nparam = 10)
+#' backward_stepwise_selection(data, input=letters[1:10], output="output",nparam = 1:10)
 #'
-forward_stepwise_selection <- function(
+backward_stepwise_selection <- function(
     data, input, output, subset, weights = NULL,
     nparam = NULL, unlist_return_value = FALSE, interactions = FALSE, intercept = TRUE, return_lm = FALSE, ...
-    ) {
+) {
   ##############################################################################
   # Input validation                                                           #
   ##############################################################################
@@ -65,13 +65,13 @@ forward_stepwise_selection <- function(
   # Check variable input for malformed input
   stopifnot("'input' is not a character vector (of the column names containing the input data related to that coefficient)" = is.character(input),
             "'input' contains coeffiecients that are not present as columns in 'data'" = input %in% colnames(data)
-            )
+  )
 
   # Check variable output for malformed output
   stopifnot("'output' is not a character vextor (of the column name containing the output to predict)" = is.character(output),
             "'output' must have length 1 (only one-dimensional outputs are supported)" = length(output)==1,
             "the column specified by 'output' doesn't exist in 'data'" = output %in% colnames(data)
-            )
+  )
   if(output %in% input) warning(paste0("Column ", output, "is used as input and output data"))
 
   # Check variable weights for malformed input
@@ -117,7 +117,7 @@ forward_stepwise_selection <- function(
   nparam <- sort(nparam)
   stopifnot("'nparam' contains negative subset size" = nparam >-1L,
             "'nparam' contains subset size greater than the number of coefficients" = nparam <= length(input)
-            )
+  )
 
   # Check unlist_return_value for malformed input
   stopifnot("'unlist_return_value' has to be logical" = is.logical(unlist_return_value),
@@ -129,35 +129,42 @@ forward_stepwise_selection <- function(
   # Computational part                                                         #
   ##############################################################################
 
-  # Set maximum number of parameters, which should be used
+  # Set minimum number of parameters, which should be used
   # default: full subset of parameters
-  max_params <- max(nparam)
+  min_params <- min(nparam)
 
   # Initialize the list to return
-  res <- as.list(rep(NA, times = max_params+1))
-  names(res) <- as.character(0:max_params)
+  res <- as.list(rep(NA, times = length(input)))
+  names(res) <- as.character(1:length(input))
 
-  # Create variables for storing the list of parameters already used in models with
+  # Create variables for storing the list of parameters not dropped already in models with
   # smaller k and a helper string for formula generation
-  used_params <- character(0)
+  undropped_params <- input
   if (intercept) {
     formula_string <- paste0(output, " ~ ")
   } else {
     formula_string <- paste0(output, " ~ 0 + ")
   }
 
+  # Initialize output for full model
+  if (return_lm) {
+    res[[length(input)]] <- stats::lm(stats::as.formula(paste0(formula_string, generate_formula_arguments(undropped_params, interactions = interactions))),
+                                      data, subset = subset, weights = weights, ...)
+  } else {
+    res[[length(input)]] <- undropped_params
+  }
 
-  for (i in 1:max_params) {
+  for (i in (length(input)-1):min_params) {
 
-    # Create variables to store the best next param to used and its RSS
+    # Create variables to store the best next param to drop and its RSS
     next_param <- NULL
     best_rss <- Inf
     best_model <- NULL
 
-    # For every parameter not used calculate the regression including that parameter,
-    # then test against the previous best parameter to add an overwrite, if it has lower RSS
-    for (param in (input[!input %in% used_params])) {
-      model <- stats::lm(stats::as.formula(paste0(formula_string, param)),
+    # For every parameter not already dropped calculate the regression without that parameter,
+    # then test against the previous best parameter to drop an overwrite, if it has lower RSS
+    for (param in 1:length(undropped_params)) {
+      model <- stats::lm(stats::as.formula(paste0(formula_string, generate_formula_arguments(undropped_params[-i], interactions = interactions))),
                          data, subset = subset, weights = weights, ...)
       if (is.null(weights)) {
         rss <- sum(stats::residuals(model)^2)
@@ -166,23 +173,18 @@ forward_stepwise_selection <- function(
       }
 
       if (rss < best_rss) {
-         best_rss <- rss
-         next_param <- param
-         best_model <- model
+        best_rss <- rss
+        next_param <- param
+        best_model <- model
       }
     }
 
     # Add best parameter to result and prepare formula_string for the next iteration
-    used_params <- c(used_params, next_param)
+    undropped_params <- undropped_params[-next_param]
     if (return_lm) {
-      res[[i+1]] <- best_model
+      res[[i]] <- best_model
     } else {
-      res[[i+1]] <- used_params
-    }
-    if (interactions) {
-      formula_string <- paste0(formula_string, next_param, " * ")
-    } else {
-      formula_string <- paste0(formula_string, next_param, " + ")
+      res[[i]] <- undropped_params
     }
   }
 
@@ -197,4 +199,28 @@ forward_stepwise_selection <- function(
   if(unlist_return_value) res <- res[[1]]
 
   return(res)
+}
+
+
+#' Helper function to generate modula forulae
+#'
+#' \code{generate_formula_arguments} concatenates the arguments using \code{+}
+#' as a seperator.
+#'
+#' @param arguments character vector with the arguments to be used
+#' @param interactions If set to \code{TRUE} the arguments are combined using
+#' the \code{*} operator instead of \code{+}. (default: \code{FALSE})
+#'
+#' @return A character vector of length 1 containing the concatenated string
+#'
+#' @examples
+#' LASSORidge:::generate_formula_arguments(c("a","b"))
+#'
+generate_formula_arguments <- function(arguments, interactions = FALSE) {
+  if(interactions) {
+    return(paste(arguments, collapse = " * "))
+  } else {
+    return(paste(arguments, collapse = " + "))
+  }
+
 }
