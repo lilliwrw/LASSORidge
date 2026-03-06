@@ -164,7 +164,7 @@ backward_stepwise_selection <- function(
     # For every parameter not already dropped calculate the regression without that parameter,
     # then test against the previous best parameter to drop an overwrite, if it has lower RSS
     for (param in 1:length(undropped_params)) {
-      model <- stats::lm(stats::as.formula(paste0(formula_string, generate_formula_arguments(undropped_params[-i], interactions = interactions))),
+      model <- stats::lm(stats::as.formula(paste0(formula_string, generate_formula_arguments(undropped_params[-param], interactions = interactions))),
                          data, subset = subset, weights = weights, ...)
       if (is.null(weights)) {
         rss <- sum(stats::residuals(model)^2)
