@@ -26,27 +26,30 @@ forward_stepwise_selection(
 \item{output}{character vector of length 1: name of the column containing the output data}
 
 \item{subset}{Optionally specify, which rows of the data frame should be used
-for the calculation. This argument is passed directly to lm(), details can be
-found in its man page. 'subset' can be given as logical vector with a value
+for the calculation. This argument is passed directly to \code{lm()}, details can be
+found in its man page. \code{subset} can be given as logical vector with a value
 for each row or a numerical vector with the number of the rows, that should be
 used (default: Use all rows)}
 
 \item{weights}{Optionally use weights for the rows in the data frame. This
-argument is passed directly to lm(), details can be found in its man page. If
-provided as non-NULL, 'weights' must be a numerical vector containing the weights.
-(default: NULL (i.e. all weights equal 1))}
+argument is passed directly to \code{lm()}, details can be found in its man page. If
+provided as non-NULL, \code{weights} must be a numerical vector containing the weights.
+(default: \code{NULL}, i.e. all weights equal \eqn{1})}
 
-\item{nparam}{Numeric vector of the sizes of the subsets, that should be returned, default: all subset sizes are returned}
+\item{nparam}{Numeric vector of the sizes of the subsets, that should be returned,
+(default: \code{NULL}, i.e. all subset sizes are returned)}
 
-\item{unlist_return_value}{If set to TRUE and nparam only contains one subset size, return result as character vector}
+\item{unlist_return_value}{If set to TRUE and \code{nparam} only contains one
+subset size, return result as character vector. (default: \code{FALSE})}
 
-\item{interactions}{Use interaction terms for the coefficients. (default: FALSE)}
+\item{interactions}{Use interaction terms for the coefficients. (default: \code{FALSE})}
 
-\item{intercept}{Toggle, if an intercept term should be used in the linear model. (default: TRUE)}
+\item{intercept}{Toggle, if an intercept term should be used in the linear model.
+(default: \code{TRUE})}
 
-\item{return_lm}{If TRUE, return a list of models for each specified number of coefficients instead. (default: FALSE)}
+\item{return_lm}{If \code{TRUE}, return a list of models for each specified number of coefficients instead. (default: FALSE)}
 
-\item{...}{Additional arguments to be passed to the calls of lm().}
+\item{...}{Additional arguments to be passed to the calls of \code{lm()}.}
 }
 \value{
 A list of character vectors indexed by the number of coefficients used
@@ -54,10 +57,24 @@ in the model. The character vectors contain the names of the coefficients used.
 If the argument 'return_lm' is true, the function returns a list of models (lm-objects) instead.
 }
 \description{
-Returns a sequence of models for nested subsets of coefficients with increasing
-size by forward-stepwise selection.
+\code{forward_stepwise_selection} is used to calculate, which coefficients in
+a linear regression can be dropped with least influence on the residual square
+sum. The function returns either a sequence of character vectors of the coefficient
+names or a sequence of \code{lm}-obejects for nested subsets of coefficients
+with increasing size. The result is calculated by forward-stepwise selection
+(i.e. subsequently adding new coefficients beginning without coefficients).
 }
 \examples{
-# TBD
+## Generate test data (10 coefficients, each about 10 times as large as the previous one)
+set.seed(18645)
+linear_coefficients <- 10^(1:10) * rnorm(10, 1, 0.1)
+data <- matrix(runif(1000, 0, 100), ncol=10)
+colnames(data) <- letters[1:10]
+data <- as.data.frame(data)
+# Synthesize test outputs
+data$output <- rowSums(t(t(data)*linear_coefficients))
+data$output <- data$output * rnorm(100, 1, 0.00001)
+# Calculate which coeffiecients can be dropped with least influence on residual square sum
+res <- forward_stepwise_selection(data, input=letters[1:10], output="output",nparam = 10)
 
 }
