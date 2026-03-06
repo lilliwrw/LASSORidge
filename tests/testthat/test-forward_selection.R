@@ -41,6 +41,54 @@ test_that("forward selection subset", {
   expect_true(identical(res$model, res3$model))
 })
 
+test_that("forward selection weights", {
+  # Calculate example as in basic test with lower number of coefficients
+  set.seed(18645)
+  linear_coefficients <- 10^(1:3) * rnorm(3, 1, 0.1)
+  data <- matrix(runif(300, 0, 100), ncol=3)
+  colnames(data) <- letters[1:3]
+  data <- as.data.frame(data)
+  data$output <- rowSums(t(t(data)*linear_coefficients))
+  data$output <- data$output * rnorm(100, 1, 0.0001)
+  res <- forward_stepwise_selection(data, input=letters[1:3], output="output",nparam = 3, return_lm = TRUE)
+
+  # Add 5 random rows to the data frame
+  data2 <- matrix(runif(20, 0, 100), ncol=4)
+  colnames(data2) <- c(letters[1:3], "output")
+  data2 <- as.data.frame(data2)
+  data2$output <- data2$output /1000
+  data <- rbind(data, data2)
+
+  # Calculate the model for the new data set with the last hundred rows effectively surpressed
+  res2 <- forward_stepwise_selection(data, input=letters[1:3], output="output",nparam = 3, return_lm = TRUE, weights = c(rep(1, 100), rep(1e-10, 5)))
+
+  # Check if all three models use the same data
+  expect_equal(res2$`3`$coefficients, res$`3`$coefficients)
+})
+
+test_that("forward selection nparam", {
+  # Generate test data as in basic test with lower number of coefficients
+  set.seed(18645)
+  linear_coefficients <- 10^(1:3) * rnorm(3, 1, 0.1)
+  data <- matrix(runif(300, 0, 100), ncol=3)
+  colnames(data) <- letters[1:3]
+  data <- as.data.frame(data)
+  data$output <- rowSums(t(t(data)*linear_coefficients))
+  data$output <- data$output * rnorm(100, 1, 0.0001)
+
+  # Calculate subset of coefficients for diffrent values of nparam
+  res1 <- forward_stepwise_selection(data, input=letters[1:3], output="output",nparam = 1)
+  res2 <- forward_stepwise_selection(data, input=letters[1:3], output="output",nparam = 2)
+  res3 <- forward_stepwise_selection(data, input=letters[1:3], output="output",nparam = 3)
+  res4 <- forward_stepwise_selection(data, input=letters[1:3], output="output",nparam = 2:3)
+
+  # Check if all three models use the same data
+  expect_identical(res1, list("1"="c"))
+  expect_identical(res2, list("2"=c("c", "b")))
+  expect_identical(res3, list("3"=c("c", "b", "a")))
+  expect_identical(res4, list("2"=c("c", "b"), "3"=c("c", "b", "a")))
+})
+
 test_that("forward selection input validation", {
   # Generate testing data
   set.seed(18645)
