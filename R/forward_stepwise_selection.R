@@ -9,6 +9,7 @@
 #' @param weights TBD
 #' @param nparam Numeric vector of the sizes of the subsets, that should be returned, default: all subset sizes are returned
 #' @param unlist_return_value If set to TRUE and nparam only contains one subset size, return result as character vector
+#' @param interactions Use interaction terms for the coefficients
 #'
 #'
 #' @return A list of models indexed by the number of parameters used in the model
@@ -18,7 +19,7 @@
 #' @examples
 #' # TBD
 #'
-forward_stepwise_selection <- function(data, input, output, subset, weights, nparam = NULL, unlist_return_value = FALSE) {
+forward_stepwise_selection <- function(data, input, output, subset, weights, nparam = NULL, unlist_return_value = FALSE, interactions = FALSE) {
   # Check variable data for malformed input
   tryCatch(data <- as.data.frame(data), error = function(e) stop("data is not a data frame and cannot be coerced."))
   stopifnot("'data' contains NA" = !any(is.na.data.frame(data)))
@@ -37,6 +38,10 @@ forward_stepwise_selection <- function(data, input, output, subset, weights, npa
 
   # Check variable weights for malformed input
   # TBD
+
+  # Check variable interactions for malformed input
+  stopifnot("'interactions' must be logical" = is.logical(interactions),
+            "'interactions' must have length 1" = length(interactions) == 1)
 
   # Check variable nparam for malformed input and correct if possible, sort by subset size
   # default: return subset of coefficients for every size of subsets
@@ -91,7 +96,12 @@ forward_stepwise_selection <- function(data, input, output, subset, weights, npa
     # Add best parameter to result and prepare formula_string for the next iteration
     used_params <- c(used_params, next_param)
     res[[i+1]] <- used_params
-    formula_string <- paste0(formula_string, " + ", next_param, " + ")
+    if (interactions) {
+      formula_string <- paste0(formula_string, next_param, " * ")
+    } else {
+      formula_string <- paste0(formula_string, next_param, " + ")
+    }
+    print(formula_string)
   }
 
   # Remove unwanted parts of the return list
