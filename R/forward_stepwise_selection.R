@@ -7,25 +7,36 @@
 #' @param data data frame containing the data to be used for the linear regression
 #' @param input character vector: names of the coefficients
 #' @param output character vector of length 1: name of the column containing the output data
-#' @param subset TBD
-#' @param weights TBD
+#' @param subset Optionally specify, which rows of the data frame should be used
+#' for the calculation. This argument is passed directly to lm(), details can be
+#' found in its man page. 'subset' can be given as logical vector with a value
+#' for each row or a numerical vector with the number of the rows, that should be
+#' used (default: Use all rows)
+#' @param weights Optionally use weights for the rows in the data frame. This
+#' argument is passed directly to lm(), details can be found in its man page. If
+#' provided as non-NULL, 'weights' must be a numerical vector containing the weights.
+#' (default: NULL (i.e. all weights equal 1))
 #' @param nparam Numeric vector of the sizes of the subsets, that should be returned, default: all subset sizes are returned
 #' @param unlist_return_value If set to TRUE and nparam only contains one subset size, return result as character vector
 #' @param interactions Use interaction terms for the coefficients. (default: FALSE)
 #' @param intercept Toggle, if an intercept term should be used in the linear model. (default: TRUE)
 #' @param return_lm If TRUE, return a list of models for each specified number of coefficients instead. (default: FALSE)
+#' @param ... Additional arguments to be passed to the calls of lm().
 #'
 #'
 #' @return A list of character vectors indexed by the number of coefficients used
 #' in the model. The character vectors contain the names of the coefficients used.
-#' If the toggle 'return_lm' is used, the function returns a list of models (lm-objects) instead.
+#' If the argument 'return_lm' is true, the function returns a list of models (lm-objects) instead.
 #'
 #' @export
 #'
 #' @examples
 #' # TBD
 #'
-forward_stepwise_selection <- function(data, input, output, subset, weights, nparam = NULL, unlist_return_value = FALSE, interactions = FALSE, intercept = TRUE, return_lm = FALSE) {
+forward_stepwise_selection <- function(
+    data, input, output, subset, weights = NULL,
+    nparam = NULL, unlist_return_value = FALSE, interactions = FALSE, intercept = TRUE, return_lm = FALSE, ...
+    ) {
   ##############################################################################
   # Input validation                                                           #
   ##############################################################################
@@ -47,7 +58,23 @@ forward_stepwise_selection <- function(data, input, output, subset, weights, npa
   if(output %in% input) warning(paste0("Column ", output, "is used as input and output data"))
 
   # Check variable weights for malformed input
-  # TBD
+  if (!missing(weights)) {
+    stopifnot("'weights' must be numeric" = is.numeric(weights),
+              "'weights' must have length equal to the number of rows in 'data" = length(weights)==nrow(data))
+  }
+
+  # Check variable subset for malformed input
+  if (!missing(subset)) {
+    stopifnot("'subset' must be logical or numeric" = is.logical(subset) || is.numeric(subset),
+              "If 'subset' is provided as logical, it must have length equal to the number of rows in 'data'" = is.numeric(subset) || length(subset)==nrow(data),
+              "If 'subset' is provided as numeric, it cannot contain nonpositive numbers" = is.logical(subset) || min(subset)>0,
+              "If 'subset' is provided as numeric, it cannot contain numbers greater than the number of rows in 'data'" = is.logical(subset) || max(subset)<=nrow(data))
+    if (is.numeric(subset) && unique(as.integer(subset)) != as.integer(subset)) {
+      warning("'subset' was provided as numeric vector, but contains duplicate values. Duplicate values will be dropped.")
+    }
+  } else {
+    subset <- 1:nrow(data)
+  }
 
   # Check variable interactions for malformed input
   stopifnot("'interactions' must be logical" = is.logical(interactions),
@@ -96,7 +123,8 @@ forward_stepwise_selection <- function(data, input, output, subset, weights, npa
   res <- as.list(rep(NA, times = max_params+1))
   names(res) <- as.character(0:max_params)
 
-  # Create variables for storing the list of parameters already used in models with smaller k and a helper string for formula generation
+  # Create variables for storing the list of parameters already used in models with
+  # smaller k and a helper string for formula generation
   used_params <- character(0)
   if (intercept) {
     formula_string <- paste0(output, " ~ ")
@@ -112,9 +140,11 @@ forward_stepwise_selection <- function(data, input, output, subset, weights, npa
     best_rss <- Inf
     best_model <- NULL
 
-    # For every parameter not used calculate the regression including that parameter, then test against the previous best parameter to add an overwrite, if it has lower RSS
+    # For every parameter not used calculate the regression including that parameter,
+    # then test against the previous best parameter to add an overwrite, if it has lower RSS
     for (param in (input[!input %in% used_params])) {
-      model <- stats::lm(stats::as.formula(paste0(formula_string, param)), data)
+      model <- stats::lm(stats::as.formula(paste0(formula_string, param)),
+                         data, subset = subset, weights = weights, ...)
       rss <- sum(stats::residuals(model)^2)
       if (rss < best_rss) {
          best_rss <- rss
