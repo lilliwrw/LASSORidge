@@ -224,5 +224,4 @@ generate_formula_arguments <- function(arguments, interactions = FALSE) {
   } else {
     return(paste(arguments, collapse = " + "))
   }
-
 }
