@@ -52,10 +52,10 @@ forward_stepwise_selection <- function(data, input, output, subset, weights, npa
             "'nparam' contains subset size greater than the number of coefficients" = nparam <= length(input)
             )
 
-  # Check unlist_return_values for malformed input
-  stopifnot("'unlist_return_values' has to be logical" = is.logical(unlist_return_value),
-            "'unlist_return_values' must have length 1" = length(unlist_return_values)==1,
-            "'unlist_return_values' cannot be TRUE if nparam has more than size to return" = !unlist_return_values || length(nparam)==1)
+  # Check unlist_return_value for malformed input
+  stopifnot("'unlist_return_value' has to be logical" = is.logical(unlist_return_value),
+            "'unlist_return_value' must have length 1" = length(unlist_return_value)==1,
+            "'unlist_return_value' cannot be TRUE if nparam has more than size to return" = !unlist_return_value || length(nparam)==1)
 
   # Check other variables for malformed input
   # TBD
@@ -80,8 +80,8 @@ forward_stepwise_selection <- function(data, input, output, subset, weights, npa
 
     # For every parameter not used calculate the regression including that parameter, then test against the previous best parameter to add an overwrite, if it has lower RSS
     for (param in (input[!input %in% used_params])) {
-      model <- lm(as.formula(paste0(formula_string, param)), data)
-      rss <- sum(residuals(model)^2)
+      model <- stats::lm(stats::as.formula(paste0(formula_string, param)), data)
+      rss <- sum(stats::residuals(model)^2)
       if (rss < best_rss) {
          best_rss <- rss
          next_param <- param
@@ -97,8 +97,8 @@ forward_stepwise_selection <- function(data, input, output, subset, weights, npa
   # Remove unwanted parts of the return list
   res <- res[as.character(nparam)]
 
-  # If unlist_return_values is set to TRUE, unlist res
-  if(unlist_return_values) res <- res[[1]]
+  # If unlist_return_value is set to TRUE, unlist res
+  if(unlist_return_value) res <- res[[1]]
 
   return(res)
 }
