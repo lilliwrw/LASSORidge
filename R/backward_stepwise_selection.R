@@ -154,37 +154,39 @@ backward_stepwise_selection <- function(
     res[[length(input)]] <- undropped_params
   }
 
-  for (i in (length(input)-1):min_params) {
+  if (min_params<length(input)) {
+    for (i in (length(input)-1):min_params) {
 
-    # Create variables to store the best next param to drop and its RSS
-    next_param <- NULL
-    best_rss <- Inf
-    best_model <- NULL
+      # Create variables to store the best next param to drop and its RSS
+      next_param <- NULL
+      best_rss <- Inf
+      best_model <- NULL
 
-    # For every parameter not already dropped calculate the regression without that parameter,
-    # then test against the previous best parameter to drop an overwrite, if it has lower RSS
-    for (param in 1:length(undropped_params)) {
-      model <- stats::lm(stats::as.formula(paste0(formula_string, generate_formula_arguments(undropped_params[-param], interactions = interactions))),
-                         data, subset = subset, weights = weights, ...)
-      if (is.null(weights)) {
-        rss <- sum(stats::residuals(model)^2)
+      # For every parameter not already dropped calculate the regression without that parameter,
+      # then test against the previous best parameter to drop an overwrite, if it has lower RSS
+      for (param in 1:length(undropped_params)) {
+        model <- stats::lm(stats::as.formula(paste0(formula_string, generate_formula_arguments(undropped_params[-param], interactions = interactions))),
+                           data, subset = subset, weights = weights, ...)
+        if (is.null(weights)) {
+          rss <- sum(stats::residuals(model)^2)
+        } else {
+          rss <- sum(weights * stats::residuals(model)^2)
+        }
+
+        if (rss < best_rss) {
+          best_rss <- rss
+          next_param <- param
+          best_model <- model
+        }
+      }
+
+      # Add best parameter to result and prepare formula_string for the next iteration
+      undropped_params <- undropped_params[-next_param]
+      if (return_lm) {
+        res[[i]] <- best_model
       } else {
-        rss <- sum(weights * stats::residuals(model)^2)
+        res[[i]] <- undropped_params
       }
-
-      if (rss < best_rss) {
-        best_rss <- rss
-        next_param <- param
-        best_model <- model
-      }
-    }
-
-    # Add best parameter to result and prepare formula_string for the next iteration
-    undropped_params <- undropped_params[-next_param]
-    if (return_lm) {
-      res[[i]] <- best_model
-    } else {
-      res[[i]] <- undropped_params
     }
   }
 
