@@ -9,7 +9,8 @@
 #' @param weights TBD
 #' @param nparam Numeric vector of the sizes of the subsets, that should be returned, default: all subset sizes are returned
 #' @param unlist_return_value If set to TRUE and nparam only contains one subset size, return result as character vector
-#' @param interactions Use interaction terms for the coefficients
+#' @param interactions Use interaction terms for the coefficients (default: FALSE)
+#' @param intercept Toggle, if an intercept term should be used in the linear model (default: TRUE).
 #'
 #'
 #' @return A list of models indexed by the number of parameters used in the model
@@ -19,7 +20,7 @@
 #' @examples
 #' # TBD
 #'
-forward_stepwise_selection <- function(data, input, output, subset, weights, nparam = NULL, unlist_return_value = FALSE, interactions = FALSE) {
+forward_stepwise_selection <- function(data, input, output, subset, weights, nparam = NULL, unlist_return_value = FALSE, interactions = FALSE, intercept = TRUE) {
   # Check variable data for malformed input
   tryCatch(data <- as.data.frame(data), error = function(e) stop("data is not a data frame and cannot be coerced."))
   stopifnot("'data' contains NA" = !any(is.na.data.frame(data)))
@@ -42,6 +43,10 @@ forward_stepwise_selection <- function(data, input, output, subset, weights, npa
   # Check variable interactions for malformed input
   stopifnot("'interactions' must be logical" = is.logical(interactions),
             "'interactions' must have length 1" = length(interactions) == 1)
+
+  # Check variable intercept for malformed input
+  stopifnot("'intercept' must be logical" = is.logical(intercept),
+            "'intercept' must have length 1" = length(intercept) == 1)
 
   # Check variable nparam for malformed input and correct if possible, sort by subset size
   # default: return subset of coefficients for every size of subsets
@@ -75,7 +80,12 @@ forward_stepwise_selection <- function(data, input, output, subset, weights, npa
 
   # Create variables for storing the list of parameters already used in models with smaller k and a helper string for formula generation
   used_params <- character(0)
-  formula_string <- paste0(output, " ~ ")
+  if (intercept) {
+    formula_string <- paste0(output, " ~ ")
+  } else {
+    formula_string <- paste0(output, " ~ 0 + ")
+  }
+
 
   for (i in 1:max_params) {
 
@@ -101,7 +111,6 @@ forward_stepwise_selection <- function(data, input, output, subset, weights, npa
     } else {
       formula_string <- paste0(formula_string, next_param, " + ")
     }
-    print(formula_string)
   }
 
   # Remove unwanted parts of the return list
