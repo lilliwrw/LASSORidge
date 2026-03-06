@@ -32,7 +32,7 @@
 #'
 #'
 #' @return A list of character vectors indexed by the number of coefficients used
-#' in the model. The character vectors contain the names of the coefficients used.
+#' in the model. The character vectors contain the names of the coefficients not dropped.
 #' If the argument 'return_lm' is true, the function returns a list of models (lm-objects) instead.
 #'
 #' @export
