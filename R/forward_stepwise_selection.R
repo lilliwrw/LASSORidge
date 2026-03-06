@@ -159,7 +159,12 @@ forward_stepwise_selection <- function(
     for (param in (input[!input %in% used_params])) {
       model <- stats::lm(stats::as.formula(paste0(formula_string, param)),
                          data, subset = subset, weights = weights, ...)
-      rss <- sum(stats::residuals(model)^2)
+      if (is.null(weights)) {
+        rss <- sum(stats::residuals(model)^2)
+      } else {
+        rss <- sum(weights * stats::residuals(model)^2)
+      }
+
       if (rss < best_rss) {
          best_rss <- rss
          next_param <- param
