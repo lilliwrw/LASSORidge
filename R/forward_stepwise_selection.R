@@ -75,7 +75,7 @@ forward_stepwise_selection <- function(
   if(output %in% input) warning(paste0("Column ", output, "is used as input and output data"))
 
   # Check variable weights for malformed input
-  if (!missing(weights)) {
+  if (!is.null(weights)) {
     stopifnot("'weights' must be numeric" = is.numeric(weights),
               "'weights' must have length equal to the number of rows in 'data" = length(weights)==nrow(data))
   }
@@ -86,7 +86,7 @@ forward_stepwise_selection <- function(
               "If 'subset' is provided as logical, it must have length equal to the number of rows in 'data'" = is.numeric(subset) || length(subset)==nrow(data),
               "If 'subset' is provided as numeric, it cannot contain nonpositive numbers" = is.logical(subset) || min(subset)>0,
               "If 'subset' is provided as numeric, it cannot contain numbers greater than the number of rows in 'data'" = is.logical(subset) || max(subset)<=nrow(data))
-    if (is.numeric(subset) && unique(as.integer(subset)) != as.integer(subset)) {
+    if (is.numeric(subset) && length(unique(as.integer(subset))) != length(subset)) {
       warning("'subset' was provided as numeric vector, but contains duplicate values. Duplicate values will be dropped.")
     }
   } else {
@@ -122,10 +122,7 @@ forward_stepwise_selection <- function(
   # Check unlist_return_value for malformed input
   stopifnot("'unlist_return_value' has to be logical" = is.logical(unlist_return_value),
             "'unlist_return_value' must have length 1" = length(unlist_return_value)==1,
-            "'unlist_return_value' cannot be TRUE if nparam has more than size to return" = !unlist_return_value || length(nparam)==1)
-
-  # Check other variables for malformed input
-  # TBD
+            "'unlist_return_value' cannot be TRUE if nparam has more than one subset size to return" = !unlist_return_value || length(nparam)==1)
 
 
   ##############################################################################
