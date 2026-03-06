@@ -16,7 +16,8 @@
 #'
 forward_stepwise_selection <- function(data, input, output, subset, weights, nparam = NULL) {
   # Check variable data for malformed input
-  # TBD
+  tryCatch(data <- as.data.frame(data), error = function(e) stop("data is not a data frame and cannot be coerced."))
+  stopifnot("'data' contains NA" = !any(is.na.data.frame(data)))
 
   # Check variable weights for malformed input
   # TBD
