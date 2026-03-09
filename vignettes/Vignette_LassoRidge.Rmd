@@ -13,45 +13,174 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 ```
-Our package `LASSORidge` implements the LASSO and Ridge estimator, the Least angle Regression, the cross validation and the Forward and Backward selection.
-So now, we explain which functions the important ones are and when they could used.
+Our package `LASSORidge` implements methods for penalized and stepwise linear regression, including the LASSO, Ridge regression, Least Angle Regression (LAR), cross-validation for selecting tuning parameters, and forward and backward stepwise selection.
 
-We consider a standard regression setting with a real-valued response \(y \in \mathbb{R}\) and predictors \(X \in \mathbb{R}^{n \times p}\). From this input data X, we can identify structures or make predictions based on the inputs, for example, predicting height. However, often not all information in the data is relevant.
+# Setting
+In linear regression, we have a design matrix \(X\), a response vector \(y\), and a regression coefficient vector \(\beta\). The goal is to explain or predict the response variable based on the observed predictors.
 
-For us, it is important that the data help solve a specific problem. Lasso and Ridge regression are examples of methods used for regression problems, where the goal is to predict a single real-valued outcome.
+Classical linear regression solves the optimization problem
 
-We will explain our functions using an example to illustrate the concepts.
+\[
+\hat\beta
+=
+\arg\min_\beta \|y - X\beta\|_2^2.
+\]
 
+Thus, the aim is to minimize the squared deviation between the prediction and the observed response. However, when the predictors are strongly correlated or when some variables contribute only little to the prediction problem, ordinary least squares estimates may become unstable or difficult to interpret. In such situations, regularization and variable selection methods are useful.
 ```{r setup}
 library(LASSORidge)
 set.seed(1)
 ```
-## Data
-We will use the data from mtcars...
+
+## Dataset
+We use the swiss dataset to illustrate the main functions of the package.
+The dataset contains socio-demographic indicators for 47 French-speaking provinces in Switzerland around 1888. In the following examples, `Fertility` is used as the response variable, while `Agriculture`, `Examination`, `Education`, `Catholic`, and `Infant.Mortality` are used as predictors.
 
 ```{r data}
-data(mtcars)
-df <- within(mtcars, { cyl <- factor(cyl); am <- factor(am); vs <- factor(vs); gear <- factor(gear) })
-X <- model.matrix(mpg ~ . , df)[, -1]
-y <- df$mpg
+data(swiss)
+X <- model.matrix(Fertility ~ ., data = swiss)[, -1]
+y <- swiss$Fertility
 ```
 
+## LASSO 
 
-Ridge and LASSO solve penalized least squares problems:
+The LASSO (Least Absolute Shrinkage and Selection Operator) is a penalized regression method that extends classical linear regression with a regularization term:
+\[\arg\min_\beta\left\{\frac{1}{2n}\|y - X\beta\|_2^2 + \lambda \|\beta\|_1\right\}\]
+with \[\|\beta\|_1 = \sum_{j=1}^p |\beta_j|\]
+where \(\lambda \geq 0\) is the regularization parameter.
+
+For small values of \(\lambda\), the estimates are close to the ordinary least squares solution. For larger values, the coefficients are shrunk more strongly. In contrast to Ridge regression, the LASSO can shrink some coefficients exactly to zero. Therefore, it is useful not only for prediction, but also for variable selection.
+
+In our package, the LASSO is fitted using coordinate descent on standardized data.
+
+The main user-facing functions are:
+
+- `lasso()` to fit a LASSO model for a sequence of lambda values
+- `coef()` to extract coefficients, it shows the coefficients for the last lambda by default, but you can specify a different lambda index
+- `predict()` to compute predictions for new observations
+- `plot()` to visualize the coefficient path across the lambda sequence
+
+The package also contains several helper functions, also for other parts, used internally for standardization, coefficient updates, and path construction.
+
+```{r lasso-fit}
+fit_lasso <- lasso(X, y, n_lambda = 10)
+print(fit_lasso)
+coef_last <- coef(fit_lasso)
+coef_first <- coef(fit_lasso, lambda_index = 1)
+print(coef_last)
+print(coef_first)
+preds_lasso <- predict(fit_lasso, X[1:5, ])
+preds_lasso #noch seltsame Ausgaben...
+plot(fit_lasso) #S3 plot method
+```
+The LASSO coefficient path shows how the regression coefficients change along the sequence of penalty values. For small values of \(\lambda\), the estimates are closer to the ordinary least squares solution. As \(\lambda\) increases, the coefficients are shrunk more strongly, and some of them become exactly zero. This illustrates the main feature of the LASSO: it combines shrinkage with variable selection.
+
+## Ridge regression
+
+Ridge regression is a penalized regression method that extends classical linear regression with an \(\ell_2\) regularization term:
+
 \[
-\hat\beta_{\text{ridge}}(\lambda) = \arg\min_\beta \frac{1}{2n}\|y - X\beta\|_2^2 + \lambda\|\beta\|_2^2,
-\quad
-\hat\beta_{\text{lasso}}(\lambda) = \arg\min_\beta \frac{1}{2n}\|y - X\beta\|_2^2 + \lambda\|\beta\|_1.
+\arg\min_\beta\left\{\frac{1}{2n}\|y - X\beta\|_2^2 + \lambda \|\beta\|_2^2\right\}
 \]
-LAR/LARS provides a coefficient path algorithm closely related to the LASSO path.
-Cross-validation is used to choose the best \lambda\.
+
+with \(\|\beta\|_2^2 = \sum_{j=1}^p \beta_j^2\), where \(\lambda \geq 0\) is the regularization parameter.
+
+Ridge regression shrinks coefficients towards zero, but does not set any coefficients exactly to zero. In our package, Ridge regression is fitted using the closed-form solution on standardized data.
+
+The main user functions are:
+
+- `ridge()` to fit a Ridge model for one lambda value
+- `ridge_path()` to fit Ridge models for a sequence of lambda values
+- `coef()` to extract coefficients
+- `predict()` to compute predictions
+- `plot()` to visualize the Ridge coefficient path
+
+```{r ridge-fit}
+fit_ridge <- ridge(X, y, lambda = 1)
+print(fit_ridge)
+
+coef_ridge <- fit_ridge$coefficients
+print(coef_ridge)
+
+preds_ridge <- predict(fit_ridge, X[1:5, ])
+preds_ridge
+
+ridge_path_fit <- ridge_path(X, y, lambda = c(0.01, 0.1, 1, 10, 100))
+plot(ridge_path_fit)
+```
+The Ridge coefficient path shows that all coefficients are shrunk continuously as the penalty increases. In contrast to the LASSO, Ridge regression usually does not set coefficients exactly to zero. Instead, it keeps all predictors in the model while stabilizing the estimates, which is especially helpful when predictors are correlated.
 
 ## Cross-validation (choosing \(\lambda\))
 
-For Ridge regression and the LASSO, \(\lambda \ge 0\) is the penalty (regularization) parameter: \(\lambda \approx 0\) yields little shrinkage, while larger \(\lambda\) shrinks coefficients more strongly (and for the LASSO can set some coefficients exactly to zero). We choose \(\lambda\) via \(M\)-fold cross-validation (default \(M=5\)): the data are split into \(M\) folds, each fold is used once as test data while the remaining folds are used for training. For every candidate \(\lambda\), we compute the average squared prediction error across folds and select \(\lambda_{\text{opt}}\) as the value with the smallest error. For small datasets like `mtcars`, results can vary with the random split (setting a seed makes the procedure reproducible).
+For Ridge regression and the LASSO, \(\lambda \ge 0\) is the penalty (regularization) parameter: \(\lambda \approx 0\) yields little shrinkage, while larger \(\lambda\) shrinks coefficients more strongly (and for the LASSO can set some coefficients exactly to zero). We choose \(\lambda\) via \(M\)-fold cross-validation (default \(M=5\)): the data are split into \(M\) folds, each fold is used once as test data while the remaining folds are used for training. For every candidate \(\lambda\), we compute the average squared prediction error across folds and select \(\lambda_{\text{opt}}\) as the value with the smallest error. For relatively small datasets such as \swiss, results can vary with the random split (setting a seed makes the procedure reproducible).
+
+Note that the numerical value of the tuning parameter \(\lambda\) depends on the precise formulation of the optimization problem and on the applied standardization. Therefore, \(\lambda\)-values from this package are not necessarily directly comparable to those returned by other implementations such as `glmnet`.
+
 ```{r cv}
 cv_lasso <- lambda_cv(X, y, M = 5, method = "lasso")
 cv_ridge <- lambda_cv(X, y, M = 5, method = "ridge")
 plot_cv(cv_lasso$lambda_seq, cv_lasso$cv_values, cv_lasso$lambda_opt, main = "Crossvalidation for LASSO")
 plot_cv(cv_ridge$lambda_seq, cv_ridge$cv_values, cv_ridge$lambda_opt, main = "Crossvalidation for Ridge")
 ```
+The cross-validation curves show how the prediction error changes across the candidate values of \(\lambda\). The optimal tuning parameter is chosen as the value with the smallest cross-validation error. Small values of \(\lambda\) correspond to weak regularization, whereas large values correspond to stronger shrinkage. The selected value therefore represents a compromise between model fit and regularization.
+
+## LAR
+LAR (Least Angle Regression) does not solve the problem by iterative minimization of a loss function but constructs the solution path geometrically.
+-	LAR starts with all β_j=0
+-	Iteratively selects the variable with the highest correlation with the residual
+-	Moves in the equiangular direction, keeping the correlation of all active variables equal
+-	Adds variables until all variables are in the model or a maximum number of steps is reached
+The main function for the user is `lar()`, which fits a LAR model and returns the coefficient path.
+The user can then extract coefficients for specific steps or plot the path.
+
+```{r lar-fit}  
+fit_lar <- lar(X, y)
+print(fit_lar)
+coef_all <- coef(fit_lar)
+print(coef_all)
+coef_step3 <- coef(fit_lar, step = 3)
+print(coef_step3)
+preds_lar <- predict(fit_lar, X[1:5, ], step = 3)
+preds_lar #noch seltsame Ausgaben...
+plot(fit_lar) #S3 plot method, x axis L1 norm
+```
+The LAR path illustrates how variables enter the model step by step. Starting from zero coefficients, the algorithm adds predictors according to their correlation with the current residual. The plot therefore gives a geometric view of model building and shows in which order variables become active.
+
+## Stepwise selection
+Forward and backward stepwise selection are iterative variable selection methods that add or remove predictors based on their
+contribution to the model fit. The main functions for the user are `forward_stepwise_selection()` and `backward_stepwise_selection()`, which perform forward and backward selection, respectively. The user can specify the maximum number of steps and extract the selected variables and coefficients at each step.
+
+```{r stepwise}  
+fit_forward <- forward_stepwise_selection(
+  data = swiss,
+  input = c("Agriculture", "Examination", "Education", "Catholic", "Infant.Mortality"),
+  output = "Fertility"
+)
+fit_backward <- backward_stepwise_selection(
+  data = swiss,
+  input = c("Agriculture", "Examination", "Education", "Catholic", "Infant.Mortality"),
+  output = "Fertility"
+)
+print(fit_forward)
+print(fit_backward)
+```
+In the swiss data, both forward and backward stepwise selection identify Education and Catholic early in the model-building process. This suggests that these variables contribute strongly to the explanatory power of the linear model
+
+## Summary
+The `LASSORidge` package provides user-friendly functions for fitting LASSO and Ridge
+regression models, performing cross-validation to select tuning parameters, and conducting stepwise variable selection. The package is designed to be accessible for users with basic R knowledge while also providing flexibility for more advanced users.
+For `swiss`we get the following results for the LASSO and Ridge regression with cross-validation:
+```{r summary}
+lasso_tuning <- lasso(X, y, lambda = cv_lasso$lambda_opt)
+ridge_tuning <- ridge(X, y, lambda = cv_ridge$lambda_opt)
+print(lasso_tuning) #? was hier genau?
+print(ridge_tuning)
+```
+
+# Interpretation
+
+Using the `swiss` dataset, we compared several approaches to linear regression and variable selection within one common framework. The LASSO provides a sparse solution by shrinking some coefficients exactly to zero and is therefore useful when a simpler and more interpretable model is desired. Ridge regression, in contrast, keeps all predictors in the model but shrinks their coefficients continuously, which can improve stability when predictors are correlated. Least Angle Regression gives an additional geometric view of the coefficient path and shows how variables enter the model step by step.
+
+Cross-validation was used to choose suitable values of the tuning parameter \(\lambda\) for the LASSO and Ridge regression. The selected values represent a balance between model fit and regularization. In this way, the package allows the user to compare different regression strategies and to choose a method depending on whether prediction accuracy, coefficient stability, or variable selection is the main goal. 
+
+Overall, the `swiss` data illustrate the different roles of the two regularization methods. The LASSO yields a more parsimonious model by setting some coefficients exactly to zero, which is useful when variable selection is of interest. Ridge regression does not remove predictors, but stabilizes the coefficient estimates by shrinking them towards zero. The values of \(\lambda\) selected by cross-validation represent a compromise between model fit and model complexity, and therefore provide a data-driven choice of regularization strength.
