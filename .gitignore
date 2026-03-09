@@ -5,3 +5,4 @@
 .DS_Store
 .quarto
 Dokumentation.html
+inst/doc

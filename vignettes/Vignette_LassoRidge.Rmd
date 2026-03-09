@@ -1,0 +1,57 @@
+---
+title: "Vignette_LassoRidge"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette_LassoRidge}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+Our package `LASSORidge` implements the LASSO and Ridge estimator, the Least angle Regression, the cross validation and the Forward and Backward selection.
+So now, we explain which functions the important ones are and when they could used.
+
+We consider a standard regression setting with a real-valued response \(y \in \mathbb{R}\) and predictors \(X \in \mathbb{R}^{n \times p}\). From this input data X, we can identify structures or make predictions based on the inputs, for example, predicting height. However, often not all information in the data is relevant.
+
+For us, it is important that the data help solve a specific problem. Lasso and Ridge regression are examples of methods used for regression problems, where the goal is to predict a single real-valued outcome.
+
+We will explain our functions using an example to illustrate the concepts.
+
+```{r setup}
+library(LASSORidge)
+set.seed(1)
+```
+## Data
+We will use the data from mtcars...
+
+```{r data}
+data(mtcars)
+df <- within(mtcars, { cyl <- factor(cyl); am <- factor(am); vs <- factor(vs); gear <- factor(gear) })
+X <- model.matrix(mpg ~ . , df)[, -1]
+y <- df$mpg
+```
+
+
+Ridge and LASSO solve penalized least squares problems:
+\[
+\hat\beta_{\text{ridge}}(\lambda) = \arg\min_\beta \frac{1}{2n}\|y - X\beta\|_2^2 + \lambda\|\beta\|_2^2,
+\quad
+\hat\beta_{\text{lasso}}(\lambda) = \arg\min_\beta \frac{1}{2n}\|y - X\beta\|_2^2 + \lambda\|\beta\|_1.
+\]
+LAR/LARS provides a coefficient path algorithm closely related to the LASSO path.
+Cross-validation is used to choose the best \lambda\.
+
+## Cross-validation (choosing \(\lambda\))
+
+For Ridge regression and the LASSO, \(\lambda \ge 0\) is the penalty (regularization) parameter: \(\lambda \approx 0\) yields little shrinkage, while larger \(\lambda\) shrinks coefficients more strongly (and for the LASSO can set some coefficients exactly to zero). We choose \(\lambda\) via \(M\)-fold cross-validation (default \(M=5\)): the data are split into \(M\) folds, each fold is used once as test data while the remaining folds are used for training. For every candidate \(\lambda\), we compute the average squared prediction error across folds and select \(\lambda_{\text{opt}}\) as the value with the smallest error. For small datasets like `mtcars`, results can vary with the random split (setting a seed makes the procedure reproducible).
+```{r cv}
+cv_lasso <- lambda_cv(X, y, M = 5, method = "lasso")
+cv_ridge <- lambda_cv(X, y, M = 5, method = "ridge")
+plot_cv(cv_lasso$lambda_seq, cv_lasso$cv_values, cv_lasso$lambda_opt, main = "Crossvalidation for LASSO")
+plot_cv(cv_ridge$lambda_seq, cv_ridge$cv_values, cv_ridge$lambda_opt, main = "Crossvalidation for Ridge")
+```

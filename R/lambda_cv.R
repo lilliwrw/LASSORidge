@@ -27,6 +27,12 @@
 #' lambda_cv(X,y,method="ridge")
 #'
 ## lasso stimmt mit glmnet überein, bei ridge nicht, das liegt aber an einer anderen Zielfunktion bei glmnet für ridge
+# Unsere Ridge-Implementierung verwendet die Closed-Form.
+# glmnet nutzt eine anders normierte Zielfunktion
+# (u.a. Faktor 1/(2n) vor dem RSS-Term) und standardisiert bei Gaussian y zusätzlich
+# zur Bestimmung der lambda-Skala (1/n-Varianzformel).
+# Daher sind die numerischen lambda-Werte zwischen beiden Implementierungen nicht
+# direkt vergleichbar.
 lambda_cv <- function(X, y, M = 5, method){
   M <- as.integer(M)
   if(M <= 0) stop("M must be a positive number")
@@ -49,11 +55,12 @@ lambda_cv <- function(X, y, M = 5, method){
 
   #Determining th lambdas to be tested, depending on the method
   ## Standardize for the lambda sequences, in standardize_data also checking the inputs X and y
-  std_all <- standardize_data(X, y)
   if(method == "lasso"){
+    std_all <- standardize_data(X, y)
     lambda_seq <- lambda_sequence(std_all$X, std_all$y)
   } else if(method == "ridge"){
-    lambda_seq <- lambda_sequence_ridge(std_all$X)
+    std_all <- ridge_standardizeData(X, y)
+    lambda_seq <- lambda_sequence_ridge(std_all$Xs)
   }
 
   #Determining the CV_error for every lambda
@@ -71,45 +78,51 @@ lambda_cv <- function(X, y, M = 5, method){
       y_train <- y[fold_index != m]
       y_test <- y[fold_index == m]
 
-      # Standardization on training data
-      std_train <- standardize_data(X_train, y_train)
-      X_train_scaled <- std_train$X
-      y_train_centered <- std_train$y
-
-      # Standardize test data with training parameters
-      X_test_scaled <- scale(X_test, center = std_train$X_means, scale = std_train$X_scales) #!sd nicht ganz gleich, wie bei jean chaque
 
       #algorithm depending on the method
       ## determination of the coefficients (beta) for LASSO or Ridge
       if(method == "lasso"){
-       ## beta <- lasso_cd(X_train, y_train, lambda_seq[l])$beta
+        # Standardization on training data
+        std_train <- standardize_data(X_train, y_train)
+        X_train_scaled <- std_train$X
+        y_train_centered <- std_train$y
+
+        # Standardize test data with training parameters
+        X_test_scaled <- scale(X_test, center = std_train$X_means, scale = std_train$X_scales) #!sd nicht ganz gleich, wie bei jean chaque
+        ## beta <- lasso_cd(X_train, y_train, lambda_seq[l])$beta
         beta <- lasso_cd(X_train_scaled, y_train_centered, lambda_seq[l])$beta
-       ## intercept <- 0
+        ## intercept <- 0
       }
       if(method == "ridge"){
         #ridge_data <- ridge(X_train, y_train, lambda_seq[l]) #Name?
         #beta_orig <- ridge_data$coefficients
         #intercept_orig <- ridge_data$intercept
-      ##  beta <- ridge_core(X_train, y_train, lambda_seq[l]) #!irgendwie Verschiebung um 10er Stelle in Beispielen (vllt. um p?)
+        ##  beta <- ridge_core(X_train, y_train, lambda_seq[l]) #!irgendwie Verschiebung um 10er Stelle in Beispielen (vllt. um p?)
+        std_train <- ridge_standardizeData(X_train, y_train)
+        X_train_scaled <- std_train$Xs
+        y_train_centered <- std_train$ys
+
+        X_test_scaled <- scale(X_test, center = std_train$X_means, scale = std_train$X_sds)
         beta <- ridge_core(X_train_scaled, y_train_centered, lambda_seq[l])
-       # beta <- ridge_core_own(X_train_scaled, y_train_centered, lambda_seq[l])
+        # beta <- ridge_core_own(X_train_scaled, y_train_centered, lambda_seq[l])
         #print(intercept_orig)
       }
 
-     ## intercept <-  std_train$y_mean - sum(beta * std_train$X_means)
-     ## intercept <- mean(y_train)
+      ## intercept <-  std_train$y_mean - sum(beta * std_train$X_means)
+      ## intercept <- mean(y_train)
 
       ## intercept is beta[0] and here nearly 0 since, y ist centered
-     # intercept <- 0  # meist 0 durch Zentrierung von y
+      # intercept <- 0  # meist 0 durch Zentrierung von y
       #intercept_orig <- 0
 
       # Back transformation from standardization to original data
-      beta_orig <- beta / std_train$X_scales
-      intercept_orig <- std_train$y_mean - sum(beta_orig * std_train$X_means) #intercept is beta[0]
+      #      beta_orig <- beta / std_train$X_scales
+      #      intercept_orig <- std_train$y_mean - sum(beta_orig * std_train$X_means) #intercept is beta[0]
+      y_pred <- std_train$y_mean + as.vector(X_test_scaled %*% beta)
 
       ## Determining the prediction for the original data under the trainingdata through the algorithm of LASSO and Ridge (here the same one, just different coefficients)
       #y_pred <- intercept + X_test %*% beta #f schlange aus Richter mit i als Index, also hier Vektor
-      y_pred <- intercept_orig + X_test %*% beta_orig
+      #     y_pred <- intercept_orig + X_test %*% beta_orig
 
       #cv_errror for m and summation over all m
       res <- res + sum((y_test - y_pred)^2)
