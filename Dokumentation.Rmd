@@ -131,3 +131,6 @@ output: html_document
   
 - **03.03.26 — Juliana**
   - Überarbeiten der Roxygen-Sceleton und Komentare des Codes
+
+- **09.03.26 — Adina**
+  - Arbeiten an der `Vignette_LassoRidge`
