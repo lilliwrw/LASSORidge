@@ -34,6 +34,7 @@
 # Daher sind die numerischen lambda-Werte zwischen beiden Implementierungen nicht
 # direkt vergleichbar.
 lambda_cv <- function(X, y, M = 5, method){
+  # input checks
   M <- as.integer(M)
   if(M <= 0) stop("M must be a positive number")
   stopifnot("method must bei lasso or ridge" = (method %in% c("lasso","ridge")))
@@ -42,8 +43,13 @@ lambda_cv <- function(X, y, M = 5, method){
       stop("X must be a matrix or coercible to a matrix.")
     })
   }
+  if (!is.numeric(X)) stop("X must be numeric")
+  if (!is.numeric(y)) stop("y must be numeric")
+  if (anyNA(X) || anyNA(y))stop("NA in Data not allowed")
 
   n <- nrow(X)
+  p <- ncol(X)
+  if (length(y) != n)stop("Length of y must match number of rows of X")
   if (M > n)  stop("M must be smaller or equal (leave-one-out cross validation) to nrow(X)")
 
   # Index for spliting the data into K roughly equal-sized parts
