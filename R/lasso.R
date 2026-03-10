@@ -16,7 +16,10 @@
 #' \describe{
 #'   \item{beta}{Numeric matrix of dimension p x n_lambda with estimated coefficients. Each column corresponds to one lambda.}
 #'   \item{lambda_seq}{Numeric vector of lambda values used in the path.}
+<<<<<<< HEAD
+=======
 #'   \item{standartization}{standardized data, if standardized=TRUE, else NULL.}
+>>>>>>> 8100ff99e0d923920b1051ad321b552291231392
 #' }
 #'
 #' @export
@@ -48,7 +51,11 @@ lasso <- function(X, y, n_lambda=100, lambda_min_ratio=0.01,
   #Ausgabe
   structure(
     list(beta = beta_mat,
+<<<<<<< HEAD
+      lambda_seq = path$lambda_seq),
+=======
       lambda_seq = path$lambda_seq,
       standardization = if(standardize) std else NULL),
+>>>>>>> 8100ff99e0d923920b1051ad321b552291231392
     class = "lasso_model")
 }

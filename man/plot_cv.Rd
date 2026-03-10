@@ -9,7 +9,11 @@ plot_cv(
   cv_values,
   lambda_opt,
   log_scale = TRUE,
+<<<<<<< HEAD
+  main = "Cross Validation"
+=======
   main = "Cross-validation"
+>>>>>>> 8100ff99e0d923920b1051ad321b552291231392
 )
 }
 \arguments{
