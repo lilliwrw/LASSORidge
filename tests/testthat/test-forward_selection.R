@@ -1,8 +1,5 @@
 test_that("forward selection basic functionality", {
-<<<<<<< HEAD
-=======
   # Generate testing data
->>>>>>> 8100ff99e0d923920b1051ad321b552291231392
   set.seed(18645)
   linear_coefficients <- 10^(1:10) * rnorm(10, 1, 0.1)
   data <- matrix(runif(1000, 0, 100), ncol=10)
@@ -10,12 +7,6 @@ test_that("forward selection basic functionality", {
   data <- as.data.frame(data)
   data$output <- rowSums(t(t(data)*linear_coefficients))
   data$output <- data$output * rnorm(100, 1, 0.00001)
-<<<<<<< HEAD
-  lm(output ~ a+b+c+d+e+f+g+h+i+j, data)
-  res <- forward_stepwise_selection(data, input=letters[1:10], output="output",nparam = 10)
-  expect_true(all(res[[1]] == letters[c(10,9,8,7,6,5,2,1,4,3)]))
-})
-=======
 
   # Calculate coefficient order
   res <- forward_stepwise_selection(data, input=letters[1:10], output="output",nparam = 10)
@@ -158,4 +149,3 @@ test_that("forward selection input validation", {
 
   # expect_error(forward_stepwise_selection(data, letters[1:3], "output", weights = NULL, nparam = NULL, unlist_return_value = FALSE, interactions = FALSE, intercept = TRUE, return_lm = FALSE), regexp = )
 })
->>>>>>> 8100ff99e0d923920b1051ad321b552291231392
