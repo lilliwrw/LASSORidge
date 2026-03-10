@@ -10,7 +10,7 @@
 #'   TRUE.
 #' @param main Character; main title of the plot. Default is "Cross Validation".
 #'
-#' @importFrom graphics plot abline text par
+#' @importFrom graphics plot abline text par points
 #'
 #' @return None (invisible NULL). Produces a plot.
 #' @export
@@ -25,8 +25,7 @@
 #'
 plot_cv <- function(lambda_seq, cv_values, lambda_opt,
                     log_scale = TRUE,
-                    main = "Cross-validation",
-                    digits = 4) {
+                    main = "Cross-validation") {
 
   # Input checks
   if (!is.numeric(lambda_seq) || !is.numeric(cv_values) || !is.numeric(lambda_opt)) {
@@ -70,7 +69,7 @@ plot_cv <- function(lambda_seq, cv_values, lambda_opt,
     xlab = x_lab,
     ylab = "CV error",
     main = main,
-    sub = paste0("Selected lambda = ", signif(lambda_opt, digits)),
+    sub = paste0("Selected lambda = ", signif(lambda_opt, 4)),
     col.sub = "red"
   )
 
