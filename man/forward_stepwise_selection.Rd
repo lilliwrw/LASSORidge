@@ -9,21 +9,13 @@ forward_stepwise_selection(
   input,
   output,
   subset,
-<<<<<<< HEAD
-  weights,
-=======
   weights = NULL,
->>>>>>> 8100ff99e0d923920b1051ad321b552291231392
   nparam = NULL,
   unlist_return_value = FALSE,
   interactions = FALSE,
   intercept = TRUE,
-<<<<<<< HEAD
-  return_lm = FALSE
-=======
   return_lm = FALSE,
   ...
->>>>>>> 8100ff99e0d923920b1051ad321b552291231392
 )
 }
 \arguments{
@@ -33,21 +25,6 @@ forward_stepwise_selection(
 
 \item{output}{character vector of length 1: name of the column containing the output data}
 
-<<<<<<< HEAD
-\item{subset}{TBD}
-
-\item{weights}{TBD}
-
-\item{nparam}{Numeric vector of the sizes of the subsets, that should be returned, default: all subset sizes are returned}
-
-\item{unlist_return_value}{If set to TRUE and nparam only contains one subset size, return result as character vector}
-
-\item{interactions}{Use interaction terms for the coefficients. (default: FALSE)}
-
-\item{intercept}{Toggle, if an intercept term should be used in the linear model. (default: TRUE)}
-
-\item{return_lm}{If TRUE, return a list of models for each specified number of coefficients instead. (default: FALSE)}
-=======
 \item{subset}{Optionally specify, which rows of the data frame should be used
 for the calculation. This argument is passed directly to \code{lm()}, details can be
 found in its man page. \code{subset} can be given as logical vector with a value
@@ -73,21 +50,10 @@ subset size, return result as character vector. (default: \code{FALSE})}
 \item{return_lm}{If \code{TRUE}, return a list of models for each specified number of coefficients instead. (default: FALSE)}
 
 \item{...}{Additional arguments to be passed to the calls of \code{lm()}.}
->>>>>>> 8100ff99e0d923920b1051ad321b552291231392
 }
 \value{
 A list of character vectors indexed by the number of coefficients used
 in the model. The character vectors contain the names of the coefficients used.
-<<<<<<< HEAD
-If the toggle 'return_lm' is used, the function returns a list of models (lm-objects) instead.
-}
-\description{
-Returns a sequence of models for nested subsets of coefficients with increasing
-size by forward-stepwise selection.
-}
-\examples{
-# TBD
-=======
 If the argument 'return_lm' is true, the function returns a list of models (lm-objects) instead.
 }
 \description{
@@ -110,6 +76,5 @@ data$output <- rowSums(t(t(data)*linear_coefficients))
 data$output <- data$output * rnorm(100, 1, 0.00001)
 # Calculate which coeffiecients can be dropped with least influence on residual square sum
 forward_stepwise_selection(data, input=letters[1:10], output="output",nparam = 10)
->>>>>>> 8100ff99e0d923920b1051ad321b552291231392
 
 }

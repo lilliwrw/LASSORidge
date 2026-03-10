@@ -29,10 +29,7 @@
 #' pred_step3 <- predict(fit, X, step = 3)
 predict.lar_model <- function(object, newx, step = NULL, ...) {
   beta <- object$beta #Koeffizienten extrahieren
-<<<<<<< HEAD
-=======
   std <- object$standardization
->>>>>>> 8100ff99e0d923920b1051ad321b552291231392
 
   #Spaltenanzahl prüfen
   if (ncol(newx) != nrow(beta))stop("Number of columns of newx must match number of variables in model")
