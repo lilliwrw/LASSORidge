@@ -19,7 +19,12 @@ lar(X, y, max_steps = ncol(X), standardize = TRUE)
 S3 object of class 'lar_model' containing:
 \describe{
 \item{beta}{Matrix of coefficients (p × (K+1)), columns correspond to LAR steps. First column = 0.}
+<<<<<<< HEAD
 \item{active_sets}{List of active variable indices at each step}
+=======
+\item{active_sets}{List of active variable indices at each step.}
+\item{standartization}{standardized data, if standardized=TRUE, else NULL.}
+>>>>>>> 8100ff99e0d923920b1051ad321b552291231392
 }
 }
 \description{

@@ -11,7 +11,12 @@
 #' @return S3 object of class 'lar_model' containing:
 #' \describe{
 #'   \item{beta}{Matrix of coefficients (p × (K+1)), columns correspond to LAR steps. First column = 0.}
+<<<<<<< HEAD
 #'   \item{active_sets}{List of active variable indices at each step}
+=======
+#'   \item{active_sets}{List of active variable indices at each step.}
+#'   \item{standartization}{standardized data, if standardized=TRUE, else NULL.}
+>>>>>>> 8100ff99e0d923920b1051ad321b552291231392
 #' }
 #'
 #' @examples
@@ -42,10 +47,16 @@ lar <- function(X, y, max_steps = ncol(X), standardize = TRUE) {
 
   #Ausgabe
   structure(
+<<<<<<< HEAD
     list(
       beta = beta_mat,
       active_sets = path$active_sets
     ),
+=======
+    list(beta = beta_mat,
+      active_sets = path$active_sets,
+      standardization = if(standardize) std else NULL),
+>>>>>>> 8100ff99e0d923920b1051ad321b552291231392
     class = "lar_model"
   )
 }

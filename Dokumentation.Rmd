@@ -3,7 +3,10 @@ title: "Dokumentation"
 output: html_document
 ---
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8100ff99e0d923920b1051ad321b552291231392
 - **14.01.26 — Lilli**
   - Projekt erstellt
 
@@ -132,3 +135,12 @@ output: html_document
   
 - **03.03.26 — Juliana**
   - Überarbeiten der Roxygen-Sceleton und Komentare des Codes
+<<<<<<< HEAD
+=======
+
+- **09.03.26 — Adina**
+  - Arbeiten an der `Vignette_LassoRidge`
+  
+- **10.03.26 — Juliana**
+  - Verbesserungen `predict.lasso_model.R` und `predict.lar_model`
+>>>>>>> 8100ff99e0d923920b1051ad321b552291231392

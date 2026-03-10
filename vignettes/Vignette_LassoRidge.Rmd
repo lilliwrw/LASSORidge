@@ -1,0 +1,275 @@
+---
+title: "Vignette_LassoRidge"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette_LassoRidge}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.align = "center",
+  fig.width = 5.5,
+  fig.height = 4,
+  out.width = "75%"
+)
+
+library(LASSORidge)
+set.seed(1)
+```
+
+Our package `LASSORidge` implements methods for penalized and stepwise linear regression, including the LASSO, Ridge regression, Least Angle Regression (LAR), cross-validation for selecting tuning parameters, and forward and backward stepwise selection.
+
+## Setting
+
+In linear regression, we have a design matrix \(X\), a response vector \(y\), and a regression coefficient vector \(\beta\). The goal is to explain or predict the response variable based on the observed predictors.
+
+Classical linear regression solves the optimization problem
+
+\[
+\min_\beta\frac{1}{2n} \|y - X\beta\|_2^2.
+\]
+
+Thus, the aim is to minimize the squared deviation between the observed response and the fitted values. However, when predictors are strongly correlated or when some variables contribute little to the prediction problem, ordinary least squares estimates may become unstable or difficult to interpret. In such situations, regularization and variable selection methods are useful.
+
+For simplicity, the intercept is omitted from the notation below. In the implementation, it is treated separately and is not penalized.
+
+## Dataset
+
+We use the `swiss` data set to illustrate the main functions of the package. The data contain socio-demographic indicators for 47 French-speaking provinces of Switzerland around 1888. In the following examples, `Fertility` is used as the response variable, while `Agriculture`, `Examination`, `Education`, `Catholic`, and `Infant.Mortality` are used as predictors.
+
+```{r dataset}
+data(swiss)
+
+X <- model.matrix(Fertility ~ ., data = swiss)[, -1]
+y <- swiss$Fertility
+```
+
+## LASSO
+
+We begin with the LASSO (Least Absolute Shrinkage and Selection Operator), which extends linear regression by adding an \(\ell_1\)-penalty:
+
+\[
+\min_\beta
+\left\{
+\frac{1}{2n}\|y - X\beta\|_2^2 + \lambda \|\beta\|_1
+\right\},
+\qquad
+\|\beta\|_1 = \sum_{j=1}^p |\beta_j|,
+\qquad
+\lambda \ge 0.
+\]
+
+The LASSO is useful because it shrinks coefficients towards zero and may set some coefficients exactly to zero, leading to a sparse and interpretable model.
+
+A typical workflow is to fit the coefficient path, inspect selected coefficient vectors, and visualize how the coefficients change across penalty values.
+
+```{r lasso-fit}
+fit_lasso <- lasso(X, y, n_lambda = 10)
+print(fit_lasso)
+
+coef_last <- coef(fit_lasso)
+coef_first <- coef(fit_lasso, lambda_index = 1)
+
+rownames(coef_last) <- colnames(X)
+rownames(coef_first) <- colnames(X)
+
+coef_first
+coef_last
+
+plot(fit_lasso)
+```
+
+The LASSO fit returns coefficient estimates for a sequence of penalty values. In this example, the first coefficient vector is the null model, with all coefficients equal to zero. This is the expected behaviour when the penalty is sufficiently large.
+
+As the penalty becomes smaller, predictors enter the model and the coefficient estimates move away from zero. For the `swiss` data, the later coefficient vector has negative coefficients for `Agriculture`, `Examination`, and `Education`, and positive coefficients for `Catholic` and `Infant.Mortality`. Thus, conditional on the remaining predictors, higher values of `Education` are associated with lower `Fertility`, whereas higher values of `Catholic` and `Infant.Mortality` are associated with higher `Fertility`.
+
+The coefficient path plot shows how the LASSO combines shrinkage and variable selection in one framework.
+
+## Ridge regression
+
+Ridge regression replaces the \(\ell_1\)-penalty by an \(\ell_2\)-penalty and uses a closed form solution:
+
+\[
+\hat\beta_\lambda
+=
+\arg\min_{\beta \in \mathbb{R}^p}
+\left\{
+\|y - X\beta\|_2^2 + \lambda \|\beta\|_2^2
+\right\}
+\]
+with solution
+\[
+\hat\beta_\lambda = (X^\top X + \lambda I_p)^{-1} X^\top y\]
+
+Ridge regression shrinks coefficients towards zero, but usually does not set them exactly to zero. In our package, Ridge regression is fitted using a closed-form solution on standardized data.
+
+We now illustrate a typical Ridge workflow using the `swiss` data.
+
+```{r ridge-fit}
+fit_ridge <- ridge(X, y, lambda = 1)
+print(fit_ridge)
+
+coef_ridge <- coef(fit_ridge)
+coef_ridge
+
+preds_ridge <- predict(fit_ridge, X[1:5, ])
+preds_ridge
+
+ridge_path_fit <- ridge_path(X, y, lambda = c(0.01, 0.1, 1, 10, 100))
+plot(ridge_path_fit)
+```
+
+For the `swiss` data, the Ridge model with `lambda = 1` estimates negative coefficients for `Agriculture`, `Examination`, and `Education`, and positive coefficients for `Catholic` and `Infant.Mortality`. Hence, conditional on the other predictors, higher values of `Education`, `Examination`, and `Agriculture` are associated with lower predicted `Fertility`, whereas higher values of `Catholic` and `Infant.Mortality` are associated with higher predicted `Fertility`.
+
+As expected for Ridge regression, all predictors remain in the model. The predicted values for the first five observations are fitted values for these regions in the original data set. The coefficient path plot further shows that increasing `lambda` leads to stronger shrinkage of all coefficients while keeping all predictors active.
+
+## Cross-validation (choosing \(\lambda\))
+
+After examining the coefficient paths, the next practical question is: **which amount of regularization gives the best predictive performance for the `swiss` data?**
+
+To select the regularization parameter \(\lambda\), we use \(M\)-fold cross-validation.  
+The data are randomly divided into \(M\) disjoint folds \(I_1, \dots, I_M\) of roughly equal size.  
+For each candidate value of \(\lambda\), the model is fitted \(M\) times, each time leaving out one fold for validation and using the remaining \(M-1\) folds for training.
+
+For a given \(\lambda\), the cross-validation criterion is the pooled mean squared prediction error over all validation observations:
+
+$$
+CV_n(\lambda)
+=
+\frac{1}{n}
+\sum_{m=1}^M
+\sum_{i \in I_m}
+\left(
+y_i - \tilde f_{n,\lambda}^{(-m)}(X_i)
+\right)^2,
+$$
+
+where \(I_m\) denotes the \(m\)-th fold and \(\tilde f_{n,\lambda}^{(-m)}(X_i)\) is the prediction for observation \(i\) obtained from the model fitted without fold \(m\).
+
+The selected tuning parameter is
+
+$$
+\lambda_{\mathrm{opt}}
+=
+\arg\min_{\lambda \in \Lambda} CV_n(\lambda),
+$$
+
+where \(\Lambda\) is the candidate sequence of tested regularization parameters.
+
+Because the `swiss` data set is relatively small, the selected value may vary somewhat across random splits. Setting a seed makes the result reproducible.
+
+```{r cv, fig.show='hold', out.width='49%'}
+set.seed(1)
+cv_lasso <- lambda_cv(X, y, M = 5, method = "lasso")
+cv_ridge <- lambda_cv(X, y, M = 5, method = "ridge")
+
+plot_cv(
+  cv_lasso$lambda_seq,
+  cv_lasso$cv_values,
+  cv_lasso$lambda_opt,
+  main = "Cross-validation for LASSO"
+)
+
+plot_cv(
+  cv_ridge$lambda_seq,
+  cv_ridge$cv_values,
+  cv_ridge$lambda_opt,
+  main = "Cross-validation for Ridge"
+)
+```
+
+The cross-validation curves show how predictive error changes over the candidate values of `lambda`. Small values correspond to weak regularization, whereas larger values imply stronger shrinkage. The selected value therefore represents a data-driven compromise between model fit and regularization.
+
+For the `swiss` data, the Ridge optimum is close to the earlier illustrative choice `lambda = 1`, suggesting that the main signal is fairly stable. More generally, this step turns the penalty choice from an arbitrary example into a data-driven decision.
+
+Note that the numerical value of `lambda` depends on the exact optimization problem and on how standardization is handled. Therefore, `lambda` values from this package are not necessarily directly comparable to those from other implementations such as `glmnet`.
+
+## Final models using the selected \(\lambda\)
+
+After choosing the tuning parameter by cross-validation, we refit the models on the full `swiss` data set using the selected values.
+
+```{r final-models}
+fit_lasso_cv <- lasso(X, y, lambda = cv_lasso$lambda_opt)
+fit_ridge_cv <- ridge(X, y, lambda = cv_ridge$lambda_opt)
+
+coef_lasso_cv <- coef(fit_lasso_cv)
+rownames(coef_lasso_cv) <- colnames(X)
+
+coef_ridge_cv <- coef(fit_ridge_cv)
+
+coef_lasso_cv
+coef_ridge_cv
+
+pred_ridge_cv <- predict(fit_ridge_cv, X[1:5, ])
+pred_ridge_cv
+```
+
+Before cross-validation, the LASSO and Ridge examples mainly illustrated how the methods work for user-specified penalty values. After cross-validation, the models are refitted using the selected values \(\lambda_{\mathrm{opt}}\), so the final fits are data-driven.
+
+For the `swiss` data, the Ridge fit changes only very little after cross-validation. The selected value is close to the previously used value `lambda = 1`, and the estimated coefficients remain almost unchanged. In both cases, `Agriculture`, `Examination`, and `Education` have negative coefficients, whereas `Catholic` and `Infant.Mortality` have positive coefficients.
+
+For the LASSO, the cross-validated fit yields a sparse coefficient vector, with at least one coefficient equal to zero in this example. Thus, compared with the earlier illustrative path, cross-validation determines a final amount of penalization based on predictive performance.
+
+## Least Angle Regression (LAR)
+
+After fitting LASSO and Ridge models, there is a slightly different question: **how do predictors enter the model step by step?** Least Angle Regression (LAR) addresses this question by constructing a coefficient path geometrically.
+
+Unlike Ridge regression and the LASSO, LAR is not introduced here as a penalized model with a tuning parameter chosen by cross-validation. Instead, it provides a stepwise path that starts at zero and updates the coefficient vector according to the current correlations with the residual.
+
+```{r lar-fit}
+fit_lar <- lar(X, y)
+print(fit_lar)
+
+coef_all <- coef(fit_lar)
+coef_all
+
+coef_step3 <- coef(fit_lar, step = 3)
+coef_step3
+
+plot(fit_lar)
+```
+
+For the `swiss` data, the LAR path shows how predictors enter the model sequentially. According to the active sets, `Education` enters the model first, followed by `Examination`. Later, `Infant.Mortality`, `Catholic`, and finally `Agriculture` are added. This suggests that, within the LAR procedure, `Education` and `Examination` account for the strongest early reduction of residual variation in `Fertility`.
+
+The LAR plot complements the regularization results by showing not only the fitted coefficients, but also the order in which information enters the model.
+
+## Stepwise selection
+
+We now turn to a more classical approach to variable selection. A natural question is: **which subsets of predictors would be chosen by stepwise procedures in an ordinary linear regression model?**
+
+Forward and backward stepwise selection are iterative subset selection methods. Forward selection starts with a small model and adds predictors step by step, whereas backward selection starts from the full model and removes predictors step by step.
+
+```{r stepwise}
+fit_forward <- forward_stepwise_selection(
+  data = swiss,
+  input = c("Agriculture", "Examination", "Education", "Catholic", "Infant.Mortality"),
+  output = "Fertility"
+)
+
+fit_backward <- backward_stepwise_selection(
+  data = swiss,
+  input = c("Agriculture", "Examination", "Education", "Catholic", "Infant.Mortality"),
+  output = "Fertility"
+)
+
+print(fit_forward)
+print(fit_backward)
+```
+
+For the `swiss` data, the forward and backward procedures lead to very similar selected models. In both outputs, `Education` is selected first, and `Catholic` is added next. Adding `Infant.Mortality` yields the corresponding three-variable model.
+
+At the four-variable stage, both procedures include `Agriculture` together with `Education`, `Catholic`, and `Infant.Mortality`, while `Examination` is still excluded. Only at the final five-variable stage does `Examination` enter the model as well.
+
+Thus, for the `swiss` data, `Education` appears to be the most important single predictor in these stepwise procedures, followed by `Catholic`. The close agreement between forward and backward selection also suggests that the smaller selected models are fairly stable for this data set.
+
+## Summary
+
+The `LASSORidge` package provides a unified workflow for regularized regression and variable selection. Using the `swiss` data, we showed how to fit LASSO and Ridge models, choose \(\lambda\) by cross-validation, inspect coefficient paths, and compare these results with LAR and stepwise selection.
+
+The examples highlight the different roles of the methods. The LASSO is useful for sparse models and variable selection, whereas Ridge regression keeps all predictors and stabilizes their coefficients through shrinkage. LAR adds a geometric view of how predictors enter the model step by step, and stepwise selection provides a classical subset selection approach.
+
+Overall, the `swiss` example suggests that the main relationships are reasonably stable across methods, with `Education` emerging as an especially important predictor and `Catholic` and `Infant.Mortality` also contributing substantially to the explanation of `Fertility`.

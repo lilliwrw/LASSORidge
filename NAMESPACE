@@ -16,6 +16,10 @@ S3method(print,lasso_model)
 S3method(print,ridge)
 S3method(print,ridge_path)
 S3method(residuals,ridge)
+<<<<<<< HEAD
+=======
+export(backward_stepwise_selection)
+>>>>>>> 8100ff99e0d923920b1051ad321b552291231392
 export(compute_correlations)
 export(equiangular_direction)
 export(forward_stepwise_selection)
@@ -48,6 +52,10 @@ importFrom(graphics,legend)
 importFrom(graphics,lines)
 importFrom(graphics,par)
 importFrom(graphics,plot)
+<<<<<<< HEAD
+=======
+importFrom(graphics,points)
+>>>>>>> 8100ff99e0d923920b1051ad321b552291231392
 importFrom(graphics,text)
 importFrom(stats,rnorm)
 importFrom(stats,runif)

@@ -5,3 +5,7 @@
 .DS_Store
 .quarto
 Dokumentation.html
+<<<<<<< HEAD
+=======
+inst/doc
+>>>>>>> 8100ff99e0d923920b1051ad321b552291231392
