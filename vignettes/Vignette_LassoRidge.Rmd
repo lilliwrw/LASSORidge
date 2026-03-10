@@ -80,12 +80,16 @@ rownames(coef_first) <- colnames(X)
 coef_first
 coef_last
 
+preds_lasso <- predict(fit_lasso, X[1:5, ])
+preds_lasso
+
 plot(fit_lasso)
 ```
 
 The LASSO fit returns coefficient estimates for a sequence of penalty values. In this example, the first coefficient vector is the null model, with all coefficients equal to zero. This is the expected behaviour when the penalty is sufficiently large.
 
 As the penalty becomes smaller, predictors enter the model and the coefficient estimates move away from zero. For the `swiss` data, the later coefficient vector has negative coefficients for `Agriculture`, `Examination`, and `Education`, and positive coefficients for `Catholic` and `Infant.Mortality`. Thus, conditional on the remaining predictors, higher values of `Education` are associated with lower `Fertility`, whereas higher values of `Catholic` and `Infant.Mortality` are associated with higher `Fertility`.
+The predicted values for the first five observations are fitted values for these regions under the selected point on the LASSO path. They are reported on the original scale of `Fertility`. Since these predictions are computed for observations already contained in the data set, they mainly illustrate how the fitted LASSO model is used for prediction and should not be interpreted as an out-of-sample performance assessment.
 
 The coefficient path plot shows how the LASSO combines shrinkage and variable selection in one framework.
 
@@ -204,6 +208,8 @@ coef_ridge_cv <- coef(fit_ridge_cv)
 coef_lasso_cv
 coef_ridge_cv
 
+pred_lasso_cv <- predict(fit_lasso_cv, X[1:5, ])
+pred_lasso_cv
 pred_ridge_cv <- predict(fit_ridge_cv, X[1:5, ])
 pred_ridge_cv
 ```
@@ -212,7 +218,13 @@ Before cross-validation, the LASSO and Ridge examples mainly illustrated how the
 
 For the `swiss` data, the Ridge fit changes only very little after cross-validation. The selected value is close to the previously used value `lambda = 1`, and the estimated coefficients remain almost unchanged. In both cases, `Agriculture`, `Examination`, and `Education` have negative coefficients, whereas `Catholic` and `Infant.Mortality` have positive coefficients.
 
+Before cross-validation, the LASSO and Ridge examples mainly illustrated how the methods work for user-specified penalty values. After cross-validation, the models are refitted using the selected values \(\lambda_{\mathrm{opt}}\), so the final fits are data-driven.
+
+For the `swiss` data, the Ridge fit changes only very little after cross-validation. The selected value is close to the previously used value `lambda = 1`, and the estimated coefficients remain almost unchanged. In both cases, `Agriculture`, `Examination`, and `Education` have negative coefficients, whereas `Catholic` and `Infant.Mortality` have positive coefficients.
+
 For the LASSO, the cross-validated fit yields a sparse coefficient vector, with at least one coefficient equal to zero in this example. Thus, compared with the earlier illustrative path, cross-validation determines a final amount of penalization based on predictive performance.
+
+The predicted values for the first five observations are fitted values from the final models refitted with the cross-validated tuning parameters and are reported on the original scale of `Fertility`. They illustrate how the final data-driven models can be used for prediction once the tuning parameter has been selected. In this example, the LASSO predictions appear more strongly shrunk toward the overall mean than the Ridge predictions, which is consistent with the stronger shrinkage and sparsity induced by the cross-validated LASSO fit.
 
 ## Least Angle Regression (LAR)
 
@@ -230,12 +242,13 @@ coef_all
 coef_step3 <- coef(fit_lar, step = 3)
 coef_step3
 
+pred_lar <- predict(fit_lar, X[1:5, ], step = 3)
+pred_lar
+
 plot(fit_lar)
 ```
 
-For the `swiss` data, the LAR path shows how predictors enter the model sequentially. According to the active sets, `Education` enters the model first, followed by `Examination`. Later, `Infant.Mortality`, `Catholic`, and finally `Agriculture` are added. This suggests that, within the LAR procedure, `Education` and `Examination` account for the strongest early reduction of residual variation in `Fertility`.
-
-The LAR plot complements the regularization results by showing not only the fitted coefficients, but also the order in which information enters the model.
+For the `swiss` data, the LAR path shows how predictors become active sequentially along the coefficient path. From the printed coefficient matrix, `Education` becomes active first and `Examination` enters next, while additional predictors are incorporated only in later steps. The predictions shown for `step = 3` are fitted values from an intermediate model on the LAR path, not from the final step. Since only a subset of predictors is active at this stage, the fitted values remain relatively close to the overall mean level of `Fertility`. Thus, the LAR output illustrates both the order in which information enters the model and how predictions are gradually refined as the path progresses.
 
 ## Stepwise selection
 
