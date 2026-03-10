@@ -134,3 +134,6 @@ output: html_document
 
 - **09.03.26 — Adina**
   - Arbeiten an der `Vignette_LassoRidge`
+  
+- **10.03.26 — Juliana**
+  - Verbesserungen `predict.lasso_model.R` und `predict.lar_model`

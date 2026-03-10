@@ -31,5 +31,11 @@ predict.lasso_model <- function(object, X_new, lambda_index = NULL, ...) {
                    center = std$X_means,
                    scale  = std$X_scales)
   }
-  as.numeric(X_new %*% beta) #Vorhersage als numerischen Vektor zurückgeben
+  pred <- X_new %*% beta
+
+  if(!is.null(std)) {
+    pred <- pred + std$y_mean
+  }
+
+  as.numeric(pred) #Vorhersage als numerischen Vektor zurückgeben
 }

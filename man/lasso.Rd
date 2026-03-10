@@ -35,6 +35,7 @@ A \code{lasso_model} object with:
 \describe{
 \item{beta}{Numeric matrix of dimension p x n_lambda with estimated coefficients. Each column corresponds to one lambda.}
 \item{lambda_seq}{Numeric vector of lambda values used in the path.}
+\item{standartization}{standardized data, if standardized=TRUE, else NULL.}
 }
 }
 \description{
