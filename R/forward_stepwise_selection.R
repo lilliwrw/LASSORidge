@@ -1,30 +1,16 @@
 #' Forward stepwise selection of coefficients
 #'
 #'
-<<<<<<< HEAD
-#' Returns a sequence of models for nested subsets of coefficients with increasing
-#' size by forward-stepwise selection.
-=======
 #' \code{forward_stepwise_selection} is used to calculate, which coefficients in
 #' a linear regression can be dropped with least influence on the residual square
 #' sum. The function returns either a sequence of character vectors of the coefficient
 #' names or a sequence of \code{lm}-obejects for nested subsets of coefficients
 #' with increasing size. The result is calculated by forward-stepwise selection
 #' (i.e. subsequently adding new coefficients beginning without coefficients).
->>>>>>> 8100ff99e0d923920b1051ad321b552291231392
 #'
 #' @param data data frame containing the data to be used for the linear regression
 #' @param input character vector: names of the coefficients
 #' @param output character vector of length 1: name of the column containing the output data
-<<<<<<< HEAD
-#' @param subset TBD
-#' @param weights TBD
-#' @param nparam Numeric vector of the sizes of the subsets, that should be returned, default: all subset sizes are returned
-#' @param unlist_return_value If set to TRUE and nparam only contains one subset size, return result as character vector
-#' @param interactions Use interaction terms for the coefficients. (default: FALSE)
-#' @param intercept Toggle, if an intercept term should be used in the linear model. (default: TRUE)
-#' @param return_lm If TRUE, return a list of models for each specified number of coefficients instead. (default: FALSE)
-=======
 #' @param subset Optionally specify, which rows of the data frame should be used
 #' for the calculation. This argument is passed directly to \code{lm()}, details can be
 #' found in its man page. \code{subset} can be given as logical vector with a value
@@ -43,25 +29,15 @@
 #' (default: \code{TRUE})
 #' @param return_lm If \code{TRUE}, return a list of models for each specified number of coefficients instead. (default: FALSE)
 #' @param ... Additional arguments to be passed to the calls of \code{lm()}.
->>>>>>> 8100ff99e0d923920b1051ad321b552291231392
 #'
 #'
 #' @return A list of character vectors indexed by the number of coefficients used
 #' in the model. The character vectors contain the names of the coefficients used.
-<<<<<<< HEAD
-#' If the toggle 'return_lm' is used, the function returns a list of models (lm-objects) instead.
-=======
 #' If the argument 'return_lm' is true, the function returns a list of models (lm-objects) instead.
->>>>>>> 8100ff99e0d923920b1051ad321b552291231392
 #'
 #' @export
 #'
 #' @examples
-<<<<<<< HEAD
-#' # TBD
-#'
-forward_stepwise_selection <- function(data, input, output, subset, weights, nparam = NULL, unlist_return_value = FALSE, interactions = FALSE, intercept = TRUE, return_lm = FALSE) {
-=======
 #' ## Generate test data (10 coefficients, each about 10 times as large as the previous one)
 #' set.seed(18645)
 #' linear_coefficients <- 10^(1:10) * rnorm(10, 1, 0.1)
@@ -78,7 +54,6 @@ forward_stepwise_selection <- function(
     data, input, output, subset, weights = NULL,
     nparam = NULL, unlist_return_value = FALSE, interactions = FALSE, intercept = TRUE, return_lm = FALSE, ...
     ) {
->>>>>>> 8100ff99e0d923920b1051ad321b552291231392
   ##############################################################################
   # Input validation                                                           #
   ##############################################################################
@@ -100,9 +75,6 @@ forward_stepwise_selection <- function(
   if(output %in% input) warning(paste0("Column ", output, "is used as input and output data"))
 
   # Check variable weights for malformed input
-<<<<<<< HEAD
-  # TBD
-=======
   if (!is.null(weights)) {
     stopifnot("'weights' must be numeric" = is.numeric(weights),
               "'weights' must have length equal to the number of rows in 'data" = length(weights)==nrow(data))
@@ -120,7 +92,6 @@ forward_stepwise_selection <- function(
   } else {
     subset <- 1:nrow(data)
   }
->>>>>>> 8100ff99e0d923920b1051ad321b552291231392
 
   # Check variable interactions for malformed input
   stopifnot("'interactions' must be logical" = is.logical(interactions),
@@ -151,14 +122,7 @@ forward_stepwise_selection <- function(
   # Check unlist_return_value for malformed input
   stopifnot("'unlist_return_value' has to be logical" = is.logical(unlist_return_value),
             "'unlist_return_value' must have length 1" = length(unlist_return_value)==1,
-<<<<<<< HEAD
-            "'unlist_return_value' cannot be TRUE if nparam has more than size to return" = !unlist_return_value || length(nparam)==1)
-
-  # Check other variables for malformed input
-  # TBD
-=======
             "'unlist_return_value' cannot be TRUE if nparam has more than one subset size to return" = !unlist_return_value || length(nparam)==1)
->>>>>>> 8100ff99e0d923920b1051ad321b552291231392
 
 
   ##############################################################################
@@ -173,12 +137,8 @@ forward_stepwise_selection <- function(
   res <- as.list(rep(NA, times = max_params+1))
   names(res) <- as.character(0:max_params)
 
-<<<<<<< HEAD
-  # Create variables for storing the list of parameters already used in models with smaller k and a helper string for formula generation
-=======
   # Create variables for storing the list of parameters already used in models with
   # smaller k and a helper string for formula generation
->>>>>>> 8100ff99e0d923920b1051ad321b552291231392
   used_params <- character(0)
   if (intercept) {
     formula_string <- paste0(output, " ~ ")
@@ -194,12 +154,6 @@ forward_stepwise_selection <- function(
     best_rss <- Inf
     best_model <- NULL
 
-<<<<<<< HEAD
-    # For every parameter not used calculate the regression including that parameter, then test against the previous best parameter to add an overwrite, if it has lower RSS
-    for (param in (input[!input %in% used_params])) {
-      model <- stats::lm(stats::as.formula(paste0(formula_string, param)), data)
-      rss <- sum(stats::residuals(model)^2)
-=======
     # For every parameter not used calculate the regression including that parameter,
     # then test against the previous best parameter to add an overwrite, if it has lower RSS
     for (param in (input[!input %in% used_params])) {
@@ -211,7 +165,6 @@ forward_stepwise_selection <- function(
         rss <- sum(weights * stats::residuals(model)^2)
       }
 
->>>>>>> 8100ff99e0d923920b1051ad321b552291231392
       if (rss < best_rss) {
          best_rss <- rss
          next_param <- param
