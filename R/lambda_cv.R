@@ -26,13 +26,8 @@
 #' lambda_cv(X,y,method="lasso")
 #' lambda_cv(X,y,method="ridge")
 #'
-<<<<<<< HEAD
-## lasso stimmt mit glmnet überein, bei ridge nicht, das liegt aber an einer anderen Zielfunktion bei glmnet für ridge
-lambda_cv <- function(X, y, M = 5, method){
-=======
 lambda_cv <- function(X, y, M = 5, method){
   # input checks
->>>>>>> 8100ff99e0d923920b1051ad321b552291231392
   M <- as.integer(M)
   if(M <= 0) stop("M must be a positive number")
   stopifnot("method must bei lasso or ridge" = (method %in% c("lasso","ridge")))
@@ -41,10 +36,6 @@ lambda_cv <- function(X, y, M = 5, method){
       stop("X must be a matrix or coercible to a matrix.")
     })
   }
-<<<<<<< HEAD
-
-  n <- nrow(X)
-=======
   if (!is.numeric(X)) stop("X must be numeric")
   if (!is.numeric(y)) stop("y must be numeric")
   if (anyNA(X) || anyNA(y))stop("NA in Data not allowed")
@@ -52,7 +43,6 @@ lambda_cv <- function(X, y, M = 5, method){
   n <- nrow(X)
   p <- ncol(X)
   if (length(y) != n)stop("Length of y must match number of rows of X")
->>>>>>> 8100ff99e0d923920b1051ad321b552291231392
   if (M > n)  stop("M must be smaller or equal (leave-one-out cross validation) to nrow(X)")
 
   # Index for spliting the data into K roughly equal-sized parts
@@ -62,27 +52,6 @@ lambda_cv <- function(X, y, M = 5, method){
   fold_index <- sample(rep(1:M, length.out = n),
                        size = n, replace = FALSE)
 
-<<<<<<< HEAD
-  #Determining th lambdas to be tested, depending on the method
-  ## Standardize for the lambda sequences, in standardize_data also checking the inputs X and y
-  std_all <- standardize_data(X, y)
-  if(method == "lasso"){
-    lambda_seq <- lambda_sequence(std_all$X, std_all$y)
-  } else if(method == "ridge"){
-    lambda_seq <- lambda_sequence_ridge(std_all$X)
-  }
-
-  #Determining the CV_error for every lambda
-  cv <- numeric(length(lambda_seq))
-  ##cv <- matrix(0, ncol = M, nrow = length(lambda_seq))
-  for (l in seq_along(lambda_seq)){
-    res <- 0
-
-    #iteration through the parts, each part is one-time test area
-    for (m in 1:M){
-
-      #Assigning the data, whether train or test data, to the fold index
-=======
   # Determining th lambdas to be tested, depending on the method
   ## Standardize for the lambda sequences, in standardize_data also checking the inputs X and y
   if(method == "lasso"){
@@ -102,66 +71,10 @@ lambda_cv <- function(X, y, M = 5, method){
     for (m in 1:M){
 
       # Assigning the data, whether train or test data, to the fold index
->>>>>>> 8100ff99e0d923920b1051ad321b552291231392
       X_train <- X[fold_index != m, , drop = FALSE]
       X_test <- X[fold_index == m, , drop =  FALSE]
       y_train <- y[fold_index != m]
       y_test <- y[fold_index == m]
-
-<<<<<<< HEAD
-      # Standardization on training data
-      std_train <- standardize_data(X_train, y_train)
-      X_train_scaled <- std_train$X
-      y_train_centered <- std_train$y
-
-      # Standardize test data with training parameters
-      X_test_scaled <- scale(X_test, center = std_train$X_means, scale = std_train$X_scales) #!sd nicht ganz gleich, wie bei jean chaque
-
-      #algorithm depending on the method
-      ## determination of the coefficients (beta) for LASSO or Ridge
-      if(method == "lasso"){
-       ## beta <- lasso_cd(X_train, y_train, lambda_seq[l])$beta
-        beta <- lasso_cd(X_train_scaled, y_train_centered, lambda_seq[l])$beta
-       ## intercept <- 0
-      }
-      if(method == "ridge"){
-        #ridge_data <- ridge(X_train, y_train, lambda_seq[l]) #Name?
-        #beta_orig <- ridge_data$coefficients
-        #intercept_orig <- ridge_data$intercept
-      ##  beta <- ridge_core(X_train, y_train, lambda_seq[l]) #!irgendwie Verschiebung um 10er Stelle in Beispielen (vllt. um p?)
-        beta <- ridge_core(X_train_scaled, y_train_centered, lambda_seq[l])
-       # beta <- ridge_core_own(X_train_scaled, y_train_centered, lambda_seq[l])
-        #print(intercept_orig)
-      }
-
-     ## intercept <-  std_train$y_mean - sum(beta * std_train$X_means)
-     ## intercept <- mean(y_train)
-
-      ## intercept is beta[0] and here nearly 0 since, y ist centered
-     # intercept <- 0  # meist 0 durch Zentrierung von y
-      #intercept_orig <- 0
-
-      # Back transformation from standardization to original data
-      beta_orig <- beta / std_train$X_scales
-      intercept_orig <- std_train$y_mean - sum(beta_orig * std_train$X_means) #intercept is beta[0]
-
-      ## Determining the prediction for the original data under the trainingdata through the algorithm of LASSO and Ridge (here the same one, just different coefficients)
-      #y_pred <- intercept + X_test %*% beta #f schlange aus Richter mit i als Index, also hier Vektor
-      y_pred <- intercept_orig + X_test %*% beta_orig
-
-      #cv_errror for m and summation over all m
-      res <- res + sum((y_test - y_pred)^2)
-      ###cv[l,m] <- sum((y_test - y_pred)^2)
-    }
-
-    #final cv_error for a lambda
-    cv[l] <- res/n
-  }
-  ##cv_error <- apply(cv, 1, mean)
-
-  return(list(
-    #lambda_opt is that lambda, where the cv_error is minimal
-=======
 
       # algorithm depending on the method
       ## determination of the coefficients (beta) for LASSO or Ridge
@@ -199,7 +112,6 @@ lambda_cv <- function(X, y, M = 5, method){
 
   return(list(
     # lambda_opt is that lambda, where the cv_error is minimal
->>>>>>> 8100ff99e0d923920b1051ad321b552291231392
     lambda_opt = lambda_seq[which.min(cv)],
     cv_values = cv,
     lambda_seq = lambda_seq
