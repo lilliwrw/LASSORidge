@@ -1,9 +1,17 @@
 Package: LASSORidge
-Title: What the Package Does (One Line, Title Case)
+Title: Variable Selection and Regularized Regression for Linear Models
 Version: 0.0.0.9000
-Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
+Authors@R:c(
+    person("Lilli", "Werwie", , "lilli.werwie@stud.uni-heidelberg.de", role = c("aut", "cre")),
+    person("Juliana", "Elwenn", , "juliana.elwenn@stud.uni-heidelberg.de", role = "aut"),
+    person("Felix", "Preu", , "felix.preu@stud.uni-heidelberg.de", role = "aut"),
+    person("Adina", "Göing", , "adina.goeing@stud.uni-heidelberg.de", role = "aut"))
+Description: Provides methods for variable selection and regularized
+    regression in linear models, including forward selection, backward
+    selection, least angle regression (LAR), LASSO, and Ridge regression.
+    The package also includes cross-validation tools for tuning parameter
+    selection, as well as utilities for extracting, summarizing, and
+    visualizing model results.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
