@@ -29,17 +29,29 @@
 #' pred_step3 <- predict(fit, X, step = 3)
 predict.lar_model <- function(object, newx, step = NULL, ...) {
   beta <- object$beta #Koeffizienten extrahieren
+  std <- object$standardization
 
   #Spaltenanzahl prüfen
   if (ncol(newx) != nrow(beta))stop("Number of columns of newx must match number of variables in model")
 
+  # Standardisierung rückrechnen, falls nötig
+  if(!is.null(std)) {
+    newx <- scale(newx, center = std$X_means, scale = std$X_scales)
+  }
+
   #Vorhersage für einen bestimmten Schritt
   if (!is.null(step)) {
     if (step < 1 || step > ncol(beta))stop("`step` must be between 1 and the number of steps in the path")
-    return(as.vector(newx %*% beta[, step]))
+    pred <- as.vector(newx %*% beta[, step])
+  } else {
+    # Vorhersage für alle Schritte
+    pred <- newx %*% beta
   }
 
-  #Vorhersage für alle Schritte
-  preds <- newx %*% beta
-  return(preds)
+  # Intercept hinzufügen, falls standardisiert wurde
+  if(!is.null(std)) {
+    pred <- pred + std$y_mean
+  }
+
+  return(pred)
 }
