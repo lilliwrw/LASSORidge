@@ -22,12 +22,9 @@ predict.lasso_model <- function(object, X_new, lambda_index = NULL, ...) {
   #S3 Methode, Objekt muss Klasse lasso_model haben
   if(!inherits(object, "lasso_model")) stop("Not a lasso_model object")
 
-<<<<<<< HEAD
-=======
   #letzte Lambda-Spalte
   if (is.null(lambda_index)) lambda_index <- length(object$lambda_seq)
 
->>>>>>> 8100ff99e0d923920b1051ad321b552291231392
   #kein generisches coef() verwenden, sondern coef.lasso_model
   beta <- coef.lasso_model(object, lambda_index) #Koeffizientenmatrix für gewünschte lambda-Spalte
 
@@ -37,9 +34,6 @@ predict.lasso_model <- function(object, X_new, lambda_index = NULL, ...) {
                    center = std$X_means,
                    scale  = std$X_scales)
   }
-<<<<<<< HEAD
-  as.numeric(X_new %*% beta) #Vorhersage als numerischen Vektor zurückgeben
-=======
 
   if(!is.null(std)) {
     pred <- as.numeric(X_new %*% beta)
@@ -49,5 +43,4 @@ predict.lasso_model <- function(object, X_new, lambda_index = NULL, ...) {
   }
 
   return(pred) #Vorhersage zurückgeben
->>>>>>> 8100ff99e0d923920b1051ad321b552291231392
 }
