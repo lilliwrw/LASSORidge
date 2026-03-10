@@ -30,14 +30,12 @@ In linear regression, we have a design matrix \(X\), a response vector \(y\), an
 Classical linear regression solves the optimization problem
 
 \[
-\hat\beta
-=
-\arg\min_\beta \|y - X\beta\|_2^2.
+\min_\beta\frac{1}{2n} \|y - X\beta\|_2^2.
 \]
 
 Thus, the aim is to minimize the squared deviation between the observed response and the fitted values. However, when predictors are strongly correlated or when some variables contribute little to the prediction problem, ordinary least squares estimates may become unstable or difficult to interpret. In such situations, regularization and variable selection methods are useful.
 
-For simplicity, the intercept is omitted from the notation below.
+For simplicity, the intercept is omitted from the notation below. In the implementation, it is treated separately and is not penalized.
 
 ## Dataset
 
@@ -55,7 +53,7 @@ y <- swiss$Fertility
 We begin with the LASSO (Least Absolute Shrinkage and Selection Operator), which extends linear regression by adding an \(\ell_1\)-penalty:
 
 \[
-\arg\min_\beta
+\min_\beta
 \left\{
 \frac{1}{2n}\|y - X\beta\|_2^2 + \lambda \|\beta\|_1
 \right\},
@@ -93,18 +91,19 @@ The coefficient path plot shows how the LASSO combines shrinkage and variable se
 
 ## Ridge regression
 
-Ridge regression replaces the \(\ell_1\)-penalty by an \(\ell_2\)-penalty:
+Ridge regression replaces the \(\ell_1\)-penalty by an \(\ell_2\)-penalty and uses a closed form solution:
 
 \[
-\arg\min_\beta
+\hat\beta_\lambda
+=
+\arg\min_{\beta \in \mathbb{R}^p}
 \left\{
-\frac{1}{2n}\|y - X\beta\|_2^2 + \lambda \|\beta\|_2^2
-\right\},
-\qquad
-\|\beta\|_2^2 = \sum_{j=1}^p \beta_j^2,
-\qquad
-\lambda \ge 0.
+\|y - X\beta\|_2^2 + \lambda \|\beta\|_2^2
+\right\}
 \]
+with solution
+\[
+\hat\beta_\lambda = (X^\top X + \lambda I_p)^{-1} X^\top y\]
 
 Ridge regression shrinks coefficients towards zero, but usually does not set them exactly to zero. In our package, Ridge regression is fitted using a closed-form solution on standardized data.
 
@@ -132,31 +131,39 @@ As expected for Ridge regression, all predictors remain in the model. The predic
 
 After examining the coefficient paths, the next practical question is: **which amount of regularization gives the best predictive performance for the `swiss` data?**
 
-We answer this by \(M\)-fold cross-validation. The observations are split into \(M\) folds; each fold is used once as validation data, while the remaining \(M-1\) folds are used for training. For a given \(\lambda\), the cross-validation error is the average mean squared prediction error across all folds:
+To select the regularization parameter \(\lambda\), we use \(M\)-fold cross-validation.  
+The data are randomly divided into \(M\) disjoint folds \(I_1, \dots, I_M\) of roughly equal size.  
+For each candidate value of \(\lambda\), the model is fitted \(M\) times, each time leaving out one fold for validation and using the remaining \(M-1\) folds for training.
 
-\[
-CV(\lambda)
+For a given \(\lambda\), the cross-validation criterion is the pooled mean squared prediction error over all validation observations:
+
+$$
+CV_n(\lambda)
 =
-\frac{1}{M}
-\sum_{m=1}^{M}
-\frac{1}{|I_m|}
+\frac{1}{n}
+\sum_{m=1}^M
 \sum_{i \in I_m}
-\left(y_i - \hat y_i^{(-m)}(\lambda)\right)^2,
-\]
+\left(
+y_i - \tilde f_{n,\lambda}^{(-m)}(X_i)
+\right)^2,
+$$
 
-where \(I_m\) denotes the \(m\)-th fold and \(\hat y_i^{(-m)}(\lambda)\) is the prediction for observation \(i\) from the model fitted without fold \(m\). The selected tuning parameter is
+where \(I_m\) denotes the \(m\)-th fold and \(\tilde f_{n,\lambda}^{(-m)}(X_i)\) is the prediction for observation \(i\) obtained from the model fitted without fold \(m\).
 
-\[
+The selected tuning parameter is
+
+$$
 \lambda_{\mathrm{opt}}
 =
-\arg\min_{\lambda \in \Lambda} CV(\lambda),
-\]
+\arg\min_{\lambda \in \Lambda} CV_n(\lambda),
+$$
 
-where \(\Lambda\) is the candidate sequence of penalty values.
+where \(\Lambda\) is the candidate sequence of tested regularization parameters.
 
 Because the `swiss` data set is relatively small, the selected value may vary somewhat across random splits. Setting a seed makes the result reproducible.
 
 ```{r cv, fig.show='hold', out.width='49%'}
+set.seed(1)
 cv_lasso <- lambda_cv(X, y, M = 5, method = "lasso")
 cv_ridge <- lambda_cv(X, y, M = 5, method = "ridge")
 
