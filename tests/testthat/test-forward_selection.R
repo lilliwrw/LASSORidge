@@ -143,7 +143,7 @@ test_that("forward selection input validation", {
 
   # Test for malformed input in nparam
   expect_error(forward_stepwise_selection(data, letters[1:3], "output", weights = NULL, nparam = TRUE, unlist_return_value = FALSE, interactions = FALSE, intercept = TRUE, return_lm = FALSE), regexp = "'nparam' must be numeric")
-  expect_warning(forward_stepwise_selection(data, letters[1:3], "output", weights = NULL, nparam = c(1,1,1,1), unlist_return_value = FALSE, interactions = FALSE, intercept = TRUE, return_lm = FALSE), regexp = "duplicate subset size present in 'nparam', dropping duplicates")
+  expect_error(forward_stepwise_selection(data, letters[1:3], "output", weights = NULL, nparam = c(1,1,1,1), unlist_return_value = FALSE, interactions = FALSE, intercept = TRUE, return_lm = FALSE), regexp = "duplicate subset size present in 'nparam', dropping duplicates")
   expect_error(forward_stepwise_selection(data, letters[1:3], "output", weights = NULL, nparam = -1:5, unlist_return_value = FALSE, interactions = FALSE, intercept = TRUE, return_lm = FALSE), regexp = "'nparam' contains negative subset size")
   expect_error(forward_stepwise_selection(data, letters[1:3], "output", weights = NULL, nparam = 1:5, unlist_return_value = FALSE, interactions = FALSE, intercept = TRUE, return_lm = FALSE), regexp = "'nparam' contains subset size greater than the number of coefficients")
 

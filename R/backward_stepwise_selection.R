@@ -72,7 +72,7 @@ backward_stepwise_selection <- function(
             "'output' must have length 1 (only one-dimensional outputs are supported)" = length(output)==1,
             "the column specified by 'output' doesn't exist in 'data'" = output %in% colnames(data)
   )
-  if(output %in% input) warning(paste0("Column ", output, "is used as input and output data"))
+  if(output %in% input) stop(paste0("Column ", output, "is used as input and output data"))
 
   # Check variable weights for malformed input
   if (!is.null(weights)) {
