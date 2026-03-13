@@ -1,6 +1,6 @@
 #' Transform Coefficients to Original Scale
 #'
-#' Recovers ridge regression coefficients obtained from
+#' Internal helper function. Recovers ridge regression coefficients obtained from
 #' standardized data back on the original data scale
 #' and computes the corresponding intercept.
 #'
@@ -17,14 +17,6 @@
 #'   \item \code{beta} — coefficients on the original scale
 #'   \item \code{intercept} — intercept on the original scale
 #' }
-#' @export
-#'
-#' @examples
-#' beta_scaled <- c(0.5, -1.2)
-#' X_means <- c(2, 3)
-#' X_sds <- c(1, 2)
-#' y_mean <- 5
-#' ridge_inverseTransform(beta_scaled, X_means, X_sds, y_mean)
 ridge_inverseTransform <- function(beta_scaled,
                                    X_means,
                                    X_sds,

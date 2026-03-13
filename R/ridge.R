@@ -23,7 +23,9 @@
 #' set.seed(1)
 #' X <- matrix(rnorm(100), 20, 5)
 #' y <- rnorm(20)
+#' #Fit the ridge model
 #' fit <- ridge(X, y, lambda = 1)
+#' #Extract information
 #' fit$coefficients
 ridge <- function(X, y, lambda, standardize = TRUE){
   X <- as.matrix(X)

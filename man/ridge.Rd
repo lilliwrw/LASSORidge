@@ -34,6 +34,8 @@ If \code{standardize = FALSE}, only \code{X} is centered.
 set.seed(1)
 X <- matrix(rnorm(100), 20, 5)
 y <- rnorm(20)
+#Fit the ridge model
 fit <- ridge(X, y, lambda = 1)
+#Extract information
 fit$coefficients
 }

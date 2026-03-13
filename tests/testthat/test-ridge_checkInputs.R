@@ -61,6 +61,7 @@ test_that("lambda must be single numeric value", {
   y <- rnorm(10)
 
   expect_error(ridge_checkInputs(X, y, c(1,2)))
+  expect_error(ridge_checkInputs(X, y, "a"))
 })
 
 test_that("lambda must be finite and non-negative", {

@@ -26,7 +26,9 @@
 #'  X <- matrix(rnorm(100), 20, 5)
 #'  y <- rnorm(20)
 #'  lambda_seq <- exp(seq(-2, 2, length.out = 10))
+#'  #Fit the ridge model
 #'  path <- ridge_path(X, y, lambda_seq)
+#'  #Plot the coefficient path
 #'  plot(path)
 plot.ridge_path <- function(x,
                             log.lambda = TRUE,

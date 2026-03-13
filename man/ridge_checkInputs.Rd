@@ -17,11 +17,5 @@ ridge_checkInputs(X, y, lambda)
 Invisible \code{TRUE} if all checks pass, else an informative error.
 }
 \description{
-Performs basic consistency checks for the ridge regression estimator.
-}
-\examples{
-set.seed(1)
-X <- matrix(rnorm(20), 10, 2)
-y <- rnorm(10)
-ridge_checkInputs(X, y, lambda = 1)
+Internal helper function. Performs basic consistency checks for the ridge regression estimator.
 }

@@ -22,11 +22,5 @@ A list containing:
 }
 }
 \description{
-Standardizes the design matrix \code{X} column-wise and centers the response vector \code{y}.
-}
-\examples{
-set.seed(1)
-X <- matrix(rnorm(20), 10, 2)
-y <- rnorm(10)
-ridge_standardizeData(X, y)
+Internal helper function. Standardizes the design matrix \code{X} column-wise and centers the response vector \code{y}.
 }

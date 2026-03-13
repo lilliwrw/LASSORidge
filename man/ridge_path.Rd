@@ -30,5 +30,6 @@ Computes ridge regression estimates over a sequence of regularization parameters
 set.seed(1)
 X <- matrix(rnorm(50), 10, 5)
 y <- rnorm(10)
+#Fit the ridge model
 ridge_path(X, y, lambda = c(0.1, 1, 10))
 }

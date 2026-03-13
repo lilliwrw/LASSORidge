@@ -1,6 +1,6 @@
 #' Standardize Design Matrix and Response
 #'
-#' Standardizes the design matrix \code{X} column-wise and centers the response vector \code{y}.
+#' Internal helper function. Standardizes the design matrix \code{X} column-wise and centers the response vector \code{y}.
 #'
 #' @param X A numeric design matrix of dimension \eqn{n \times d}.
 #' @param y A numeric response vector of length \eqn{n}.
@@ -15,14 +15,6 @@
 #' }
 #'
 #' @importFrom stats sd
-#'
-#' @export
-#'
-#' @examples
-#' set.seed(1)
-#' X <- matrix(rnorm(20), 10, 2)
-#' y <- rnorm(10)
-#' ridge_standardizeData(X, y)
 ridge_standardizeData <- function(X, y){
   #Standardize X
   X_means <- colMeans(X)
