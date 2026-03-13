@@ -1,5 +1,5 @@
 ---
-title: "Vignette_LassoRidge"
+title: "LASSORidge"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Vignette_LassoRidge}
@@ -23,7 +23,7 @@ set.seed(1)
 
 Our package `LASSORidge` implements methods for penalized and stepwise linear regression, including the LASSO, Ridge regression, Least Angle Regression (LAR), cross-validation for selecting tuning parameters, and forward and backward stepwise selection.
 
-## Setting
+## Model setup
 
 In linear regression, we have a design matrix \(X\), a response vector \(y\), and a regression coefficient vector \(\beta\). The goal is to explain or predict the response variable based on the observed predictors.
 
@@ -65,10 +65,10 @@ We begin with the LASSO (Least Absolute Shrinkage and Selection Operator), which
 
 The LASSO is useful because it shrinks coefficients towards zero and may set some coefficients exactly to zero, leading to a sparse and interpretable model.
 
-A typical workflow is to fit the coefficient path, inspect selected coefficient vectors, and visualize how the coefficients change across penalty values.
+We first fit a LASSO path for a sequence of penalty values \(\lambda\). The fitted object can be printed, coefficient vectors can be extracted with the S3 method `coef()`, predictions can be obtained with `predict()`, and the coefficient path can be visualized with `plot()`.
 
 ```{r lasso-fit}
-fit_lasso <- lasso(X, y, n_lambda = 10)
+fit_lasso <- lasso(X, y, n_lambda = 10) 
 print(fit_lasso)
 
 coef_last <- coef(fit_lasso)
@@ -80,18 +80,19 @@ rownames(coef_first) <- colnames(X)
 coef_first
 coef_last
 
-preds_lasso <- predict(fit_lasso, X[1:5, ])
+preds_lasso <- predict(fit_lasso, X[1:5, ]) 
 preds_lasso
 
-plot(fit_lasso)
+plot(fit_lasso) #S3 plot method
 ```
 
-The LASSO fit returns coefficient estimates for a sequence of penalty values. In this example, the first coefficient vector is the null model, with all coefficients equal to zero. This is the expected behaviour when the penalty is sufficiently large.
+In this example, the first coefficient vector is the null model, with all coefficients equal to zero. This is expected for sufficiently large penalty values.
 
-As the penalty becomes smaller, predictors enter the model and the coefficient estimates move away from zero. For the `swiss` data, the later coefficient vector has negative coefficients for `Agriculture`, `Examination`, and `Education`, and positive coefficients for `Catholic` and `Infant.Mortality`. Thus, conditional on the remaining predictors, higher values of `Education` are associated with lower `Fertility`, whereas higher values of `Catholic` and `Infant.Mortality` are associated with higher `Fertility`.
-The predicted values for the first five observations are fitted values for these regions under the selected point on the LASSO path. They are reported on the original scale of `Fertility`. Since these predictions are computed for observations already contained in the data set, they mainly illustrate how the fitted LASSO model is used for prediction and should not be interpreted as an out-of-sample performance assessment.
+As the penalty decreases, predictors enter the model and the coefficient estimates move away from zero. For the last value of `lambda` shown here, `Agriculture`, `Examination`, and `Education` have negative coefficients, whereas `Catholic` and `Infant.Mortality` have positive coefficients. These signs describe the fitted associations within the multivariable model and should be interpreted cautiously.
 
-The coefficient path plot shows how the LASSO combines shrinkage and variable selection in one framework.
+The predicted values for the first five observations are fitted values on the original scale of `Fertility`. Since these predictions are computed for observations already contained in the data set, they mainly illustrate the use of `predict()` and should not be interpreted as an out-of-sample performance assessment.
+
+The coefficient path plot shows how LASSO combines shrinkage and variable selection by shrinking coefficients toward zero and setting some of them exactly to zero for sufficiently large penalty values.
 
 ## Ridge regression
 
@@ -109,25 +110,25 @@ with solution
 \[
 \hat\beta_\lambda = (X^\top X + \lambda I_p)^{-1} X^\top y\]
 
-Ridge regression shrinks coefficients towards zero, but usually does not set them exactly to zero. In our package, Ridge regression is fitted using a closed-form solution on standardized data.
+Ridge regression shrinks coefficients towards zero, but usually does not set them exactly to zero.
 
-We now illustrate a typical Ridge workflow using the `swiss` data.
+We now illustrate a typical Ridge workflow using the `swiss` data. Therefore we illustrate the Ridge regression using a single penalty value \(\lambda = 1\) and a short coefficient path. As for the LASSO, the fitted object supports `print()`, `coef()`, `predict()`, and `plot()` S3 methods.
 
 ```{r ridge-fit}
 fit_ridge <- ridge(X, y, lambda = 1)
 print(fit_ridge)
 
-coef_ridge <- coef(fit_ridge)
+coef_ridge <- coef(fit_ridge) 
 coef_ridge
 
-preds_ridge <- predict(fit_ridge, X[1:5, ])
+preds_ridge <- predict(fit_ridge, X[1:5, ]) 
 preds_ridge
 
 ridge_path_fit <- ridge_path(X, y, lambda = c(0.01, 0.1, 1, 10, 100))
 plot(ridge_path_fit)
 ```
 
-For the `swiss` data, the Ridge model with `lambda = 1` estimates negative coefficients for `Agriculture`, `Examination`, and `Education`, and positive coefficients for `Catholic` and `Infant.Mortality`. Hence, conditional on the other predictors, higher values of `Education`, `Examination`, and `Agriculture` are associated with lower predicted `Fertility`, whereas higher values of `Catholic` and `Infant.Mortality` are associated with higher predicted `Fertility`.
+For the `swiss` data, the Ridge model with `lambda = 1` yields negative coefficients for `Agriculture`, `Examination`, and `Education`, and positive coefficients for `Catholic` and `Infant.Mortality`. Hence, conditional on the other predictors, higher values of `Education`, `Examination`, and `Agriculture` are associated with lower predicted `Fertility`, whereas higher values of `Catholic` and `Infant.Mortality` are associated with higher predicted `Fertility`.
 
 As expected for Ridge regression, all predictors remain in the model. The predicted values for the first five observations are fitted values for these regions in the original data set. The coefficient path plot further shows that increasing `lambda` leads to stronger shrinkage of all coefficients while keeping all predictors active.
 
@@ -214,23 +215,19 @@ pred_ridge_cv <- predict(fit_ridge_cv, X[1:5, ])
 pred_ridge_cv
 ```
 
-Before cross-validation, the LASSO and Ridge examples mainly illustrated how the methods work for user-specified penalty values. After cross-validation, the models are refitted using the selected values \(\lambda_{\mathrm{opt}}\), so the final fits are data-driven.
+For the `swiss` data, the Ridge fit changes only very little after cross-validation. The selected value is close to the previously used value `lambda = 1`, and the estimated coefficients remain almost unchanged.
 
-For the `swiss` data, the Ridge fit changes only very little after cross-validation. The selected value is close to the previously used value `lambda = 1`, and the estimated coefficients remain almost unchanged. In both cases, `Agriculture`, `Examination`, and `Education` have negative coefficients, whereas `Catholic` and `Infant.Mortality` have positive coefficients.
+For the LASSO, the cross-validated fit yields a sparse coefficient vector. In this example, the coefficient of `Agriculture` is set exactly to zero, whereas `Examination` and `Education` remain negative and `Catholic` and `Infant.Mortality` remain positive.
 
-Before cross-validation, the LASSO and Ridge examples mainly illustrated how the methods work for user-specified penalty values. After cross-validation, the models are refitted using the selected values \(\lambda_{\mathrm{opt}}\), so the final fits are data-driven.
-
-For the `swiss` data, the Ridge fit changes only very little after cross-validation. The selected value is close to the previously used value `lambda = 1`, and the estimated coefficients remain almost unchanged. In both cases, `Agriculture`, `Examination`, and `Education` have negative coefficients, whereas `Catholic` and `Infant.Mortality` have positive coefficients.
-
-For the LASSO, the cross-validated fit yields a sparse coefficient vector, with at least one coefficient equal to zero in this example. Thus, compared with the earlier illustrative path, cross-validation determines a final amount of penalization based on predictive performance.
-
-The predicted values for the first five observations are fitted values from the final models refitted with the cross-validated tuning parameters and are reported on the original scale of `Fertility`. They illustrate how the final data-driven models can be used for prediction once the tuning parameter has been selected. In this example, the LASSO predictions appear more strongly shrunk toward the overall mean than the Ridge predictions, which is consistent with the stronger shrinkage and sparsity induced by the cross-validated LASSO fit.
+This stronger shrinkage is also reflected in the predicted values. For the first five observations, the LASSO predictions are closer to the overall mean of `Fertility` than the Ridge predictions.
 
 ## Least Angle Regression (LAR)
 
 After fitting LASSO and Ridge models, there is a slightly different question: **how do predictors enter the model step by step?** Least Angle Regression (LAR) addresses this question by constructing a coefficient path geometrically.
 
 Unlike Ridge regression and the LASSO, LAR is not introduced here as a penalized model with a tuning parameter chosen by cross-validation. Instead, it provides a stepwise path that starts at zero and updates the coefficient vector according to the current correlations with the residual.
+
+The LAR fit provides a coefficient path indexed by steps rather than by a penalty parameter. Coefficients can be extracted for the full path or for a specific step, and predictions can be obtained for any selected step.
 
 ```{r lar-fit}
 fit_lar <- lar(X, y)
@@ -242,13 +239,13 @@ coef_all
 coef_step3 <- coef(fit_lar, step = 3)
 coef_step3
 
-pred_lar <- predict(fit_lar, X[1:5, ], step = 3)
+pred_lar <- predict(fit_lar, X[1:5, ], step = 3) 
 pred_lar
 
 plot(fit_lar)
 ```
 
-For the `swiss` data, the LAR path shows how predictors become active sequentially along the coefficient path. From the printed coefficient matrix, `Education` becomes active first and `Examination` enters next, while additional predictors are incorporated only in later steps. The predictions shown for `step = 3` are fitted values from an intermediate model on the LAR path, not from the final step. Since only a subset of predictors is active at this stage, the fitted values remain relatively close to the overall mean level of `Fertility`. Thus, the LAR output illustrates both the order in which information enters the model and how predictions are gradually refined as the path progresses.
+For the `swiss` data, the LAR path shows how predictors enter the model step by step.`Education` becomes active first, followed by `Examination`, while additional predictors enter only in later steps. The predictions for `step = 3` are therefore fitted values from an intermediate model rather than from the final step.
 
 ## Stepwise selection
 
@@ -272,10 +269,6 @@ fit_backward <- backward_stepwise_selection(
 print(fit_forward)
 print(fit_backward)
 ```
-
-For the `swiss` data, the forward and backward procedures lead to very similar selected models. In both outputs, `Education` is selected first, and `Catholic` is added next. Adding `Infant.Mortality` yields the corresponding three-variable model.
-
-At the four-variable stage, both procedures include `Agriculture` together with `Education`, `Catholic`, and `Infant.Mortality`, while `Examination` is still excluded. Only at the final five-variable stage does `Examination` enter the model as well.
 
 Thus, for the `swiss` data, `Education` appears to be the most important single predictor in these stepwise procedures, followed by `Catholic`. The close agreement between forward and backward selection also suggests that the smaller selected models are fairly stable for this data set.
 

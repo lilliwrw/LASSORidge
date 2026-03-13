@@ -11,20 +11,20 @@ lambda_cv(X, y, M = 5, method)
 
 \item{y}{Numeric response vector of length n.}
 
-\item{M}{Positive number, should be an integer, but it will be converted to an integer as long as possible.}
+\item{M}{Number of folds. Should be a positive integer. Default = 5.}
 
-\item{method}{character vector ("lasso" or "ridge")}
+\item{method}{character vector specifying the method. Must be either \code{"lasso"} or \code{"ridge"}.}
 }
 \value{
 A list with:
 \describe{
-\item{lambda_opt}{The regularization parameter with the lowest cv fault from all parameter through lambda_sequence}
-\item{cv_values}{CV faults for all tested regularization parameters.}
-\item{lambda_seq}{All testet regularization parameters.}
+\item{lambda_opt}{The regularization parameter with the smallest cross-validation error from all parameter through lambda_sequence}
+\item{cv_values}{Cross-validation error for all tested regularization parameters.}
+\item{lambda_seq}{All tested regularization parameters.}
 }
 }
 \description{
-Searching an optimal regularization parameter for the LASSO or Ridge Estimation
+Selects an optimal regularization parameter for the LASSO or Ridge regression using M-fold cross-validation.
 }
 \examples{
 set.seed(123)

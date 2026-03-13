@@ -2,28 +2,25 @@
 % Please edit documentation in R/lambda_sequence_ridge.R
 \name{lambda_sequence_ridge}
 \alias{lambda_sequence_ridge}
-\title{Generate a sequence of lambda values (for Ridge)}
+\title{Generate a sequence of lambda values for Ridge regression}
 \usage{
 lambda_sequence_ridge(X, n_lambda = 100, lambda_min_ratio = 1e-04)
 }
 \arguments{
-\item{X}{Numeric matrix of predictors (n x p), centered and standardized.}
+\item{X}{Numeric predictor matrix of dimension n x p. The matrix is assumed
+to be centered and standardized.}
 
-\item{n_lambda}{Number of lambda values to generate, default 100.}
+\item{n_lambda}{Positive integer giving the number of lambda values to
+generate. Default is 100.}
 
-\item{lambda_min_ratio}{Ratio of min lambda to max lambda, default 1e-4.}
+\item{lambda_min_ratio}{Positive numeric scalar giving the ratio of
+\code{lambda_min} to \code{lambda_max}. Default is \code{1e-4}.}
 }
 \value{
-Numeric vector of length n_lambda (descending from lambda_max to
-lambda_min)
+Numeric vector of length \code{n_lambda}, sorted in decreasing order
+from \code{lambda_max} to \code{lambda_min}.
 }
 \description{
-Creates a logarithmically spaced sequence of regularization parameters.
-}
-\examples{
-set.seed(1)
-X <- matrix(rnorm(20*5), nrow=20)
-y <- rnorm(20)
-std <- standardize_data(X, y)
-lambda_seq <- lambda_sequence_ridge(std$X)
+Creates a logarithmically spaced sequence of regularization parameters for
+Ridge regression.
 }

@@ -6,7 +6,7 @@
 #' @param step Optional lambda value or index.
 #' @param ... Additional arguments (ignored).
 #'
-#' @returns If \code{step} is NULL, the full coefficient matrix.
+#' @returns If \code{step} is \code{NULL}, the full coefficient matrix.
 #' Otherwise, a coefficient vector for the selected lambda.
 #' @export
 #'

@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_cv.R
 \name{plot_cv}
 \alias{plot_cv}
-\title{Plot Cross Validation}
+\title{Plot cross-validation results}
 \usage{
 plot_cv(
   lambda_seq,
@@ -28,7 +28,7 @@ TRUE.}
 None (invisible NULL). Produces a plot.
 }
 \description{
-Plots the cv_error for a sequence of lambda values and marks the optimal
+Plots the cross-validation error for a sequence of lambda values and marks the optimal
 lambda.
 }
 \examples{

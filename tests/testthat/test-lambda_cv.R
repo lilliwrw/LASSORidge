@@ -84,9 +84,16 @@ test_that("lambda_cv fails for invalid inputs", {
     # M positive
     expect_error(
       lambda_cv(X, y, M = 0, method = method),
-      "M must be a positive number",
+      "M must be a positive number.",
       fixed = TRUE,
       info = method)
+
+    expect_error(
+      lambda_cv(X, y, M = 2.5, method = method),
+      "M must be a positive number.",
+      fixed = TRUE,
+      info = method)
+  }
 
     # method
     expect_error(
@@ -94,5 +101,5 @@ test_that("lambda_cv fails for invalid inputs", {
       "method must bei lasso or ridge",
       fixed = TRUE,
       info = method)
-  }
+
 })

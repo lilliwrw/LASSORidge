@@ -5,7 +5,7 @@
 #' @param x An object of class \code{"ridge"}.
 #' @param ... Additional arguments (ignored).
 #'
-#' @returns The object \code{x} invisibly.
+#' @returns Provides a summary and returns the object \code{x} invisibly.
 #' @export
 #'
 #' @examples
