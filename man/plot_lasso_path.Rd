@@ -32,10 +32,3 @@ plot_lasso_path(
 \description{
 Plots the LASSO coefficient paths for a sequence of lambda values.
 }
-\examples{
-set.seed(1)
-X <- matrix(rnorm(50*5), nrow=50)
-y <- rnorm(50)
-fit <- lasso(X, y, n_lambda=20)
-plot_lasso_path(fit$beta, fit$lambda_seq)
-}

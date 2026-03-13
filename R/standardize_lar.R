@@ -20,24 +20,6 @@
 #'   \item{X_scales}{L2 norms of centered X columns}
 #'   \item{y_mean}{Mean of original y}
 #' }
-#'
-#' @export
-#'
-#' @examples
-#' set.seed(123)
-#' X <- matrix(rnorm(20), 5, 4)
-#' y <- rnorm(5)
-#' std <- standardize_lar(X, y)
-#' str(std)
-#'
-#' #X columns are centered
-#' colMeans(std$X) #about 0
-#'
-#' #X columns have L2 norm 1
-#' sqrt(colSums(std$X^2)) #1
-#'
-#' #y is centered
-#' mean(std$y) #0
 standardize_lar <- function(X, y) {
 
   if (!is.matrix(X)) X <- as.matrix(X)

@@ -35,16 +35,3 @@ Plots the coefficient path of a Least Angle Regression (LAR) model.
 Each line represents one predictor. The x-axis can be either
 the L1-norm of coefficients (classical LAR representation) or the step index.
 }
-\examples{
-set.seed(1)
-X <- matrix(rnorm(30 * 5), 30, 5)
-beta_true <- c(2, -1.5, 0, 0, 0)
-y <- X \%*\% beta_true + rnorm(30, sd = 0.5)
-fit <- lar(X, y)
-
-# Plot using L1-norm on x-axis
-plot_lar_path(fit$beta)
-
-# Plot using step index
-plot_lar_path(fit$beta, x_axis = "step")
-}

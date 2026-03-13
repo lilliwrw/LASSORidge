@@ -141,3 +141,6 @@ output: html_document
 
 - **10.03.26 — Adina**
   - `Vignette_LassoRidge` fertiggestellt
+  
+- **13.03.26 — Juliana**
+  - Ordnen von Funktionen, Hilftsunktionen nun intern, nur S3_methoden für den User zugänglich

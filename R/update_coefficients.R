@@ -15,20 +15,6 @@
 #' \item{beta}{Updated coefficient vector.}
 #' \item{r}{Updated residual vector.}
 #' }
-#'
-#' @export
-#'
-#' @examples
-#' set.seed(1)
-#' X <- matrix(rnorm(20), 5, 4)
-#' beta <- rep(0, 4)
-#' r <- rnorm(5)
-#' active <- c(2)
-#' corrs <- compute_correlations(X, r)
-#' eq <- equiangular_direction(X, active,corrs)
-#' out <- update_coefficients(beta, active, eq$w, 0.1, r, eq$u)
-#' out$beta
-#' out$r
 update_coefficients <- function(beta, active_indices, w, gamma, r, u) {
   if(length(w) != length(active_indices)) stop("length of w does not match active indices")
   gamma <- as.numeric(gamma)

@@ -27,9 +27,3 @@ c = X^T r
 This function assumes valid numeric inputs and is intended for internal
 use inside the LAR algorithm.
 }
-\examples{
-set.seed(1)
-X <- matrix(rnorm(20), 5, 4)
-r <- rnorm(5)
-compute_correlations(X, r)
-}

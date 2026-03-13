@@ -16,17 +16,6 @@
 #'   \item{X_scale}{The scaling factors used for each column of X.}
 #'   \item{y_mean}{The mean of the original response vector y.}
 #' }
-#'
-#' @export
-#'
-#' @examples
-#' set.seed(1)
-#' X <- matrix(rnorm(20*5), nrow = 20, ncol = 5)
-#' y <- rnorm(20)
-#' std <- standardize_data(X, y)
-#' colMeans(std$X)       # Should be about 0
-#' colSums(std$X^2)/20      # Should be 1
-#' mean(std$y)           # Should be about 0
 standardize_data <- function(X, y, center = TRUE, scale = TRUE){
   #Input checks
   if(!is.matrix(X))X <- as.matrix(X)

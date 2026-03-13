@@ -29,13 +29,3 @@ The function iteratively adds predictors to the active set, moves
 along the equiangular direction, updates coefficients, and stores
 the coefficient path until \code{max_steps} or convergence.
 }
-\examples{
-set.seed(1)
-X <- matrix(rnorm(30 * 5), 30, 5)
-beta_true <- c(2, -1.5, 0, 0, 0)
-y <- X \%*\% beta_true + rnorm(30, sd = 0.5)
-data_std <- standardize_lar(X, y)
-X_std <- data_std$X
-y_std <- data_std$y
-fit <- lar_path(X_std, y_std)
-}

@@ -28,12 +28,3 @@ A list with:
 \description{
 Fits a LASSO regression model using coordinate descent.
 }
-\examples{
-set.seed(1)
-X <- matrix(rnorm(20*5), nrow=20)
-beta <- c(1.5, -2, 1, -0.5, 0)
-y <- X \%*\% beta + rnorm(20, 0, 0.1)
-std <- standardize_data(X, y)
-fit <- lasso_cd(std$X, std$y, lambda = 0.1)
-fit$beta #smaller numbers then beta
-}

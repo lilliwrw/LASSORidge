@@ -24,10 +24,3 @@ to \code{lambda_min}.
 \description{
 Creates a logarithmically spaced sequence of regularization parameters.
 }
-\examples{
-set.seed(1)
-X <- matrix(rnorm(20*5), nrow=20)
-y <- rnorm(20)
-std <- standardize_data(X, y)
-lambda_seq <- lambda_sequence(std$X, std$y)
-}

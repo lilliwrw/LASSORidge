@@ -13,18 +13,6 @@
 #' \item{w}{Weights of active predictors.}
 #' \item{s}{Numeric vector. Sign vector of active correlations.}
 #' }
-#'
-#' @export
-#'
-#' @examples
-#' set.seed(1)
-#' X <- matrix(rnorm(20 * 3), 20, 3)
-#' y <- rnorm(20)
-#' beta <- rep(0, 3)
-#' r <- y - X %*% beta
-#' c_vec <- as.vector(crossprod(X, r))
-#' active <- which.max(abs(c_vec))
-#' equiangular_direction(X, active, c_vec)
 equiangular_direction <- function(X, active_indices,c_vec) {
   if(length(active_indices) == 0) stop("Active set is empty!")
 

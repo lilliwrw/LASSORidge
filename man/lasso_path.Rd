@@ -37,10 +37,3 @@ Each column corresponds to one λ in \code{lambda_seq}, each row corresponds to 
 \description{
 Computes LASSO estimates for a sequence of lambda values.
 }
-\examples{
-set.seed(1)
-X <- matrix(rnorm(50*5), nrow=50)
-y <- rnorm(50)
-std <- standardize_data(X, y)
-path <- lasso_path(std$X, std$y, n_lambda=10)
-}

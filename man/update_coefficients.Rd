@@ -30,15 +30,3 @@ A list with updated:
 Updates the coefficient vector and residual after moving along the equiangular
 direction by step size \code{gamma} in Least Angle Regression (LAR).
 }
-\examples{
-set.seed(1)
-X <- matrix(rnorm(20), 5, 4)
-beta <- rep(0, 4)
-r <- rnorm(5)
-active <- c(2)
-corrs <- compute_correlations(X, r)
-eq <- equiangular_direction(X, active,corrs)
-out <- update_coefficients(beta, active, eq$w, 0.1, r, eq$u)
-out$beta
-out$r
-}

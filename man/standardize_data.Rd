@@ -29,12 +29,3 @@ A list containing:
 Centers and optionally scales the columns of a predictor matrix X and the response vector y.
 This is a necessary preprocessing step for LASSO and other regularized regression methods.
 }
-\examples{
-set.seed(1)
-X <- matrix(rnorm(20*5), nrow = 20, ncol = 5)
-y <- rnorm(20)
-std <- standardize_data(X, y)
-colMeans(std$X)       # Should be about 0
-colSums(std$X^2)/20      # Should be 1
-mean(std$y)           # Should be about 0
-}

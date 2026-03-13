@@ -14,17 +14,6 @@
 #'   \item{iterations}{Number of iterations performed.}
 #'   \item{lambda}{The regularization parameter used.}
 #' }
-#'
-#' @export
-#'
-#' @examples
-#' set.seed(1)
-#' X <- matrix(rnorm(20*5), nrow=20)
-#' beta <- c(1.5, -2, 1, -0.5, 0)
-#' y <- X %*% beta + rnorm(20, 0, 0.1)
-#' std <- standardize_data(X, y)
-#' fit <- lasso_cd(std$X, std$y, lambda = 0.1)
-#' fit$beta #smaller numbers then beta
 lasso_cd <- function(X, y, lambda, tol = 1e-6, max_iter = 1000) {
   #Input check
   if(lambda < 0) stop('lambda must be non-negative')

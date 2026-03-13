@@ -32,19 +32,3 @@ in the \code{lars} package when using
 Note: Scaling is performed using the Euclidean (L2) norm,
 not the standard deviation.
 }
-\examples{
-set.seed(123)
-X <- matrix(rnorm(20), 5, 4)
-y <- rnorm(5)
-std <- standardize_lar(X, y)
-str(std)
-
-#X columns are centered
-colMeans(std$X) #about 0
-
-#X columns have L2 norm 1
-sqrt(colSums(std$X^2)) #1
-
-#y is centered
-mean(std$y) #0
-}

@@ -31,11 +31,3 @@ This function computes candidate step sizes for inactivated variables
 and selects the smallest positive step, ensuring the next variable reaches
 the maximum correlation with the current residual.
 }
-\examples{
-set.seed(1)
-X <- matrix(rnorm(20), 5, 4)
-active <- c(2)
-corrs <- compute_correlations(X, rnorm(5))
-eq <- equiangular_direction(X, active,corrs)
-step_size_gamma(X, eq$u, corrs, active)
-}

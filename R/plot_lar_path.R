@@ -13,21 +13,6 @@
 #' @param col Optional vector of colors, one per variable. Default uses `rainbow()`.
 #'
 #' @return Invisibly returns NULL
-#'
-#' @export
-#'
-#' @examples
-#' set.seed(1)
-#' X <- matrix(rnorm(30 * 5), 30, 5)
-#' beta_true <- c(2, -1.5, 0, 0, 0)
-#' y <- X %*% beta_true + rnorm(30, sd = 0.5)
-#' fit <- lar(X, y)
-#'
-#' # Plot using L1-norm on x-axis
-#' plot_lar_path(fit$beta)
-#'
-#' # Plot using step index
-#' plot_lar_path(fit$beta, x_axis = "step")
 plot_lar_path <- function(beta, x_axis = c("l1", "step"),main = "LAR Coefficient Path",
                           xlab = NULL, ylab = "Coefficients", col = NULL) {
 

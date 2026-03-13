@@ -15,12 +15,4 @@
 #'
 #' @return Numeric vector of length \eqn{p} containing
 #'   the predictor–residual correlations.
-#'
-#' @export
-#'
-#' @examples
-#' set.seed(1)
-#' X <- matrix(rnorm(20), 5, 4)
-#' r <- rnorm(5)
-#' compute_correlations(X, r)
 compute_correlations <- function(X, r) drop(crossprod(X, r))

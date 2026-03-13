@@ -11,15 +11,6 @@
 #' the sequence of lambda values for the LASSO regularization path.
 #' The values are logarithmically spaced and descend from \code{lambda_max}
 #' to \code{lambda_min}.
-#'
-#' @export
-#'
-#' @examples
-#' set.seed(1)
-#' X <- matrix(rnorm(20*5), nrow=20)
-#' y <- rnorm(20)
-#' std <- standardize_data(X, y)
-#' lambda_seq <- lambda_sequence(std$X, std$y)
 lambda_sequence <- function(X, y, n_lambda = 100, lambda_min_ratio = 0.01) {
   #Input checks
   if(!is.matrix(X)) stop('X must be a matrix')

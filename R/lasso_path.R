@@ -15,14 +15,6 @@
 #'   \item{beta}{A numeric matrix of dimension p x n_lambda containing the estimated coefficients.
 #'               Each column corresponds to one λ in \code{lambda_seq}, each row corresponds to a predictor.}
 #' }
-#' @export
-#'
-#' @examples
-#' set.seed(1)
-#' X <- matrix(rnorm(50*5), nrow=50)
-#' y <- rnorm(50)
-#' std <- standardize_data(X, y)
-#' path <- lasso_path(std$X, std$y, n_lambda=10)
 lasso_path <- function(X, y, n_lambda=100, lambda_min_ratio=0.01, tol=1e-6, max_iter=1000) {
   lambda_seq <- lambda_sequence(X, y, n_lambda, lambda_min_ratio) #Lambda-Sequenz erzeugen
   #Initialisierung

@@ -16,18 +16,6 @@
 #' \item{beta_path}{Matrix of dimension \eqn{p \times (K+1)} of coefficient estimates. Each column corresponds to a LAR step, first column is zero.}
 #' \item{active_sets}{List of length \eqn{K+1} containing the indices of active predictors at each step.}
 #' }
-#'
-#' @export
-#'
-#' @examples
-#' set.seed(1)
-#' X <- matrix(rnorm(30 * 5), 30, 5)
-#' beta_true <- c(2, -1.5, 0, 0, 0)
-#' y <- X %*% beta_true + rnorm(30, sd = 0.5)
-#' data_std <- standardize_lar(X, y)
-#' X_std <- data_std$X
-#' y_std <- data_std$y
-#' fit <- lar_path(X_std, y_std)
 lar_path <- function(X, y, max_steps = ncol(X)) {
 
   X <- as.matrix(X)

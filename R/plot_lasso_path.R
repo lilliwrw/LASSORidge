@@ -11,15 +11,6 @@
 #' @param col Color vector for the lines. Default NULL (R default palette).
 #' @importFrom grDevices rainbow
 #' @importFrom graphics plot lines abline legend
-#' @export
-#'
-#' @examples
-#' set.seed(1)
-#' X <- matrix(rnorm(50*5), nrow=50)
-#' y <- rnorm(50)
-#' fit <- lasso(X, y, n_lambda=20)
-#' plot_lasso_path(fit$beta, fit$lambda_seq)
-
 plot_lasso_path <- function(beta, lambda_seq, log_x=TRUE, main="LASSO Path",xlab="log(lambda)",
                             ylab="Coefficients", col=NULL) {
   p <- nrow(beta)
