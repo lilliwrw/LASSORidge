@@ -144,3 +144,6 @@ output: html_document
   
 - **13.03.26 — Juliana**
   - Ordnen von Funktionen, Hilftsunktionen nun intern, nur S3_methoden für den User zugänglich
+
+- **13.03.26 — Adina**
+  - Korrekturen oder kleine Verschönerungen bei der Vignette und Kreuzvalidierungsdateien
