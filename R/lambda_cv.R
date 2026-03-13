@@ -1,17 +1,17 @@
 #' Cross Validation for LASSO or Ridge
 #'
-#' Searching an optimal regularization parameter for the LASSO or Ridge Estimation
+#' Selects an optimal regularization parameter for the LASSO or Ridge regression using M-fold cross-validation.
 #'
 #' @param X Numeric matrix of predictors (n x p).
 #' @param y Numeric response vector of length n.
-#' @param M Positive number, should be an integer, but it will be converted to an integer as long as possible.
-#' @param method character vector ("lasso" or "ridge")
+#' @param M Number of folds. Should be a positive integer. Default = 5.
+#' @param method character vector specifying the method. Must be either \code{"lasso"} or \code{"ridge"}.
 #'
 #' @returns A list with:
 #' \describe{
-#'   \item{lambda_opt}{The regularization parameter with the lowest cv fault from all parameter through lambda_sequence}
-#'   \item{cv_values}{CV faults for all tested regularization parameters.}
-#'   \item{lambda_seq}{All testet regularization parameters.}
+#'   \item{lambda_opt}{The regularization parameter with the smallest cross-validation error from all parameter through lambda_sequence}
+#'   \item{cv_values}{Cross-validation error for all tested regularization parameters.}
+#'   \item{lambda_seq}{All tested regularization parameters.}
 #' }
 #'
 #' @export
@@ -28,8 +28,9 @@
 #'
 lambda_cv <- function(X, y, M = 5, method){
   # input checks
-  M <- as.integer(M)
-  if(M <= 0) stop("M must be a positive number")
+  if (length(M) != 1 || !is.numeric(M) || is.na(M) || M <= 0 || M != as.integer(M)) {
+    stop("M must be a positive number.")
+  }
   stopifnot("method must bei lasso or ridge" = (method %in% c("lasso","ridge")))
   if (!is.matrix(X)) {
     X <- tryCatch(as.matrix(X), error = function(e) {
@@ -45,15 +46,13 @@ lambda_cv <- function(X, y, M = 5, method){
   if (length(y) != n)stop("Length of y must match number of rows of X")
   if (M > n)  stop("M must be smaller or equal (leave-one-out cross validation) to nrow(X)")
 
-  # Index for spliting the data into K roughly equal-sized parts
+  # Index for splitting the data into K roughly equal-sized parts
   ## random assignment, but if M is no divisor of n, the first parts are a bit bigger
-  n <- nrow(X)
 
   fold_index <- sample(rep(1:M, length.out = n),
                        size = n, replace = FALSE)
 
-  # Determining th lambdas to be tested, depending on the method
-  ## Standardize for the lambda sequences, in standardize_data also checking the inputs X and y
+  # Determining the lambdas to be tested, depending on the method
   if(method == "lasso"){
     std_all <- standardize_data(X, y)
     lambda_seq <- lambda_sequence(std_all$X, std_all$y)
@@ -88,7 +87,7 @@ lambda_cv <- function(X, y, M = 5, method){
         X_test_scaled <- scale(X_test, center = std_train$X_means, scale = std_train$X_scales)
         beta <- lasso_cd(X_train_scaled, y_train_centered, lambda_seq[l])$beta
       }
-      if(method == "ridge"){
+      else if(method == "ridge"){
         # Standardization on training data
         std_train <- ridge_standardizeData(X_train, y_train)
         X_train_scaled <- std_train$Xs
@@ -102,7 +101,7 @@ lambda_cv <- function(X, y, M = 5, method){
       # Back transformation from standardization to original data
       y_pred <- std_train$y_mean + as.vector(X_test_scaled %*% beta)
 
-      # cv_errror for m and summation over all m
+      # cv_error for m and summation over all m
       res <- res + sum((y_test - y_pred)^2)
     }
 

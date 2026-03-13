@@ -1,6 +1,6 @@
-#' Plot Cross Validation
+#' Plot cross-validation results
 #'
-#' Plots the cv_error for a sequence of lambda values and marks the optimal
+#' Plots the cross-validation error for a sequence of lambda values and marks the optimal
 #' lambda.
 #'
 #' @param lambda_seq Numeric vector of lambda values used in cross-validation.
@@ -10,7 +10,7 @@
 #'   TRUE.
 #' @param main Character; main title of the plot. Default is "Cross Validation".
 #'
-#' @importFrom graphics plot abline text par points
+#' @importFrom graphics plot abline points
 #'
 #' @return None (invisible NULL). Produces a plot.
 #' @export
@@ -76,4 +76,6 @@ plot_cv <- function(lambda_seq, cv_values, lambda_opt,
   # Mark optimal lambda
   abline(v = x_opt, col = "red", lty = 2, lwd = 1.5)
   points(x_opt, y_opt, pch = 19, col = "red", cex = 1.2)
+
+  invisible(NULL)
 }
