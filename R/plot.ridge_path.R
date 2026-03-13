@@ -4,14 +4,14 @@
 #' of lambda or log(lambda).
 #'
 #' @param x An object of class \code{"ridge_path"}.
-#' @param log.lambda Logical; if TRUE (default), the horizontal
+#' @param log.lambda Logical; if \code{TRUE} (default), the horizontal
 #' axis shows \code{log(lambda)}.
-#' @param legend Logical; if TRUE (default), a legend is shown in the top right.
+#' @param legend Logical; if \code{TRUE} (default), a legend is shown in the top right.
 #' @param type Line type for plotting (default: "l").
 #' @param lty Line type specification (default: 1).
 #' @param col Optional vector of colors.
-#' @param xlab Label for x-axis. If NULL, a default is chosen.
-#' @param ylab Label for y-axis. If NULL, default is "Coefficients".
+#' @param xlab Label for x-axis. If \code{NULL}, a default is chosen.
+#' @param ylab Label for y-axis. If \code{NULL}, default is "Coefficients".
 #' @param main Plot title (default: "Ridge Path")
 #' @param ... Additional graphical parameters passed to \code{plot}.
 #'

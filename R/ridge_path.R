@@ -5,7 +5,7 @@
 #' @param X A numeric design matrix of dimension \eqn{n \times d}.
 #' @param y A numeric response vector of length \eqn{n}.
 #' @param lambda A numeric vector of non-negative regularization parameters.
-#' @param standardize Logical; if TRUE (default), the predictors are standardized before fitting, else only \code{X} is centered.
+#' @param standardize Logical; if \code{TRUE} (default), the predictors are standardized before fitting, else only \code{X} is centered.
 #'
 #' @returns An object of class \code{"ridge_path"} containing:
 #'  \itemize{

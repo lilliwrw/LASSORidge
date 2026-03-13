@@ -7,7 +7,7 @@
 #' @param X A numeric design matrix of dimension \eqn{n \times d}.
 #' @param y A numeric response vector of length \eqn{n}.
 #' @param lambda A non-negative regularization parameter.
-#' @param standardize Logical; if TRUE (default), the predictors are standardized before fitting, else only X is centered.
+#' @param standardize Logical; if \code{TRUE} (default), the predictors are standardized before fitting, else only X is centered.
 #'
 #' @returns An object of class \code{"ridge"} containing:
 #' \itemize{
