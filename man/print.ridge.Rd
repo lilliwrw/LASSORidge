@@ -12,7 +12,7 @@
 \item{...}{Additional arguments (ignored).}
 }
 \value{
-The object \code{x} invisibly.
+Provides a summary and returns the object \code{x} invisibly.
 }
 \description{
 Prints a summary of a ridge regression model.

@@ -6,11 +6,6 @@
 #' @param lambda Non-negative regularization parameter.
 #'
 #' @returns Numeric value or vector after soft-thresholding.
-#' @export
-#'
-#' @examples
-#' soft_threshold(3, 1)
-#' soft_threshold(c(-2, -0.5, 0.5, 2), 1)
 soft_threshold <- function(z, lambda) {
   #Safty check
   if (lambda < 0) stop('lambda must be non-negative')

@@ -17,7 +17,3 @@ Numeric value or vector after soft-thresholding.
 \description{
 Applies the soft-thresholding operator used in LASSO.
 }
-\examples{
-soft_threshold(3, 1)
-soft_threshold(c(-2, -0.5, 0.5, 2), 1)
-}

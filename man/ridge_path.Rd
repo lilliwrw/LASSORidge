@@ -13,7 +13,7 @@ ridge_path(X, y, lambda, standardize = TRUE)
 
 \item{lambda}{A numeric vector of non-negative regularization parameters.}
 
-\item{standardize}{Logical; if TRUE (default), the predictors are standardized before fitting, else only \code{X} is centered.}
+\item{standardize}{Logical; if \code{TRUE} (default), the predictors are standardized before fitting, else only \code{X} is centered.}
 }
 \value{
 An object of class \code{"ridge_path"} containing:

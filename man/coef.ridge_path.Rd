@@ -14,7 +14,7 @@
 \item{...}{Additional arguments (ignored).}
 }
 \value{
-If \code{step} is NULL, the full coefficient matrix.
+If \code{step} is \code{NULL}, the full coefficient matrix.
 Otherwise, a coefficient vector for the selected lambda.
 }
 \description{
