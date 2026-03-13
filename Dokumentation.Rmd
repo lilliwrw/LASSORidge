@@ -151,3 +151,4 @@ output: html_document
 - **13.03.26 — Lilli**
   - Verschönerungen im Roxygen
   - Helper Funktionen intern 
+  - GitHub readMe und Kurzbeschreibung hinzugefügt
