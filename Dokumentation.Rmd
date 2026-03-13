@@ -147,3 +147,7 @@ output: html_document
 
 - **13.03.26 — Adina**
   - Korrekturen oder kleine Verschönerungen bei der Vignette und Kreuzvalidierungsdateien
+  
+- **13.03.26 — Lilli**
+  - Verschönerungen im Roxygen
+  - Helper Funktionen intern 
