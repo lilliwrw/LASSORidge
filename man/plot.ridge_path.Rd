@@ -20,10 +20,10 @@
 \arguments{
 \item{x}{An object of class \code{"ridge_path"}.}
 
-\item{log.lambda}{Logical; if TRUE (default), the horizontal
+\item{log.lambda}{Logical; if \code{TRUE} (default), the horizontal
 axis shows \code{log(lambda)}.}
 
-\item{legend}{Logical; if TRUE (default), a legend is shown in the top right.}
+\item{legend}{Logical; if \code{TRUE} (default), a legend is shown in the top right.}
 
 \item{type}{Line type for plotting (default: "l").}
 
@@ -31,9 +31,9 @@ axis shows \code{log(lambda)}.}
 
 \item{col}{Optional vector of colors.}
 
-\item{xlab}{Label for x-axis. If NULL, a default is chosen.}
+\item{xlab}{Label for x-axis. If \code{NULL}, a default is chosen.}
 
-\item{ylab}{Label for y-axis. If NULL, default is "Coefficients".}
+\item{ylab}{Label for y-axis. If \code{NULL}, default is "Coefficients".}
 
 \item{main}{Plot title (default: "Ridge Path")}
 

@@ -15,7 +15,7 @@ ridge_core(X, y, lambda)
 }
 \value{
 A numeric vector of length \eqn{d} containing the ridge coefficients
-corresponding to the columns of \code{X}..
+corresponding to the columns of \code{X}.
 }
 \description{
 Computes the ridge regression estimator in closed form.

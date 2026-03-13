@@ -13,7 +13,7 @@ ridge(X, y, lambda, standardize = TRUE)
 
 \item{lambda}{A non-negative regularization parameter.}
 
-\item{standardize}{Logical; if TRUE (default), the predictors are standardized before fitting, else only X is centered.}
+\item{standardize}{Logical; if \code{TRUE} (default), the predictors are standardized before fitting, else only X is centered.}
 }
 \value{
 An object of class \code{"ridge"} containing:
