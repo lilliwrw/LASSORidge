@@ -13,11 +13,16 @@
 #' @param use_backward_selection_by_default If set to \code{FALSE} the function
 #' uses forward selection, if the theoretical complexities are approximatly equal.
 #' (default: \code{TRUE})
+#' @param only_return_faster_function Only returns the function, that is faster
+#' for the given problem without carrying out the calculation.
 #' @inheritParams backward_stepwise_selection
 #'
 #' @return A list of character vectors indexed by the number of coefficients used
 #' in the model. The character vectors contain the names of the coefficients not dropped.
 #' If the argument 'return_lm' is true, the function returns a list of models (lm-objects) instead.
+#' If the argument 'only_return_faster_function' is true, the function returns
+#' one of \code{backward_stepwise_selection} or \code{forward_stepwise_selection} as
+#' function.
 #'
 #' @references
 #' Drury, Matthew (2016, July 20). A Deep Dive Into How R Fits a Linear Model.
@@ -35,6 +40,7 @@ optimal_stepwise_selection <- function(data, input, output, subset, weights = NU
                                        nparam = NULL, unlist_return_value = FALSE,
                                        interactions = FALSE, intercept = TRUE,
                                        return_lm = FALSE, use_backward_selection_by_default = TRUE,
+                                       only_return_faster_function = FALSE,
                                        ...) {
   ##############################################################################
   # Input validation                                                           #
@@ -174,6 +180,11 @@ optimal_stepwise_selection <- function(data, input, output, subset, weights = NU
   ##############################################################################
   #  Function Call                                                             #
   ##############################################################################
+  if (only_return_faster_function) {
+    if (use_backward_selection) return(backward_stepwise_selection)
+    else return(forward_stepwise_selection)
+  }
+
   if (use_backward_selection) {
     return(backward_stepwise_selection(data, input, output, subset, weights = NULL,
                                        nparam = NULL, unlist_return_value = FALSE,

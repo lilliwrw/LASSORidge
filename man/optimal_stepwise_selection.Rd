@@ -16,6 +16,7 @@ optimal_stepwise_selection(
   intercept = TRUE,
   return_lm = FALSE,
   use_backward_selection_by_default = TRUE,
+  only_return_faster_function = FALSE,
   ...
 )
 }
@@ -54,12 +55,18 @@ subset size, return result as character vector. (default: \code{FALSE})}
 uses forward selection, if the theoretical complexities are approximatly equal.
 (default: \code{TRUE})}
 
+\item{only_return_faster_function}{Only returns the function, that is faster
+for the given problem without carrying out the calculation.}
+
 \item{...}{Additional arguments to be passed to the calls of \code{lm()}.}
 }
 \value{
 A list of character vectors indexed by the number of coefficients used
 in the model. The character vectors contain the names of the coefficients not dropped.
 If the argument 'return_lm' is true, the function returns a list of models (lm-objects) instead.
+If the argument 'only_return_faster_function' is true, the function returns
+one of \code{backward_stepwise_selection} or \code{forward_stepwise_selection} as
+function.
 }
 \description{
 \code{optimal_stepwise_selection} performs a short approximation of the
