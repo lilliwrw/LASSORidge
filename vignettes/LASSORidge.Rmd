@@ -268,9 +268,35 @@ fit_backward <- backward_stepwise_selection(
 
 print(fit_forward)
 print(fit_backward)
+
+fit_forward2 <- forward_stepwise_selection(
+  data = swiss,
+  input = c("Agriculture", "Examination", "Education", "Catholic", "Infant.Mortality"),
+  output = "Fertility",
+  return_lm = TRUE
+)
+
+plot_rss_stepwise_selection(fit_forward2)
 ```
 
 Thus, for the `swiss` data, `Education` appears to be the most important single predictor in these stepwise procedures, followed by `Catholic`. The close agreement between forward and backward selection also suggests that the smaller selected models are fairly stable for this data set.
+
+### Automatically choose forward or backward selection
+
+The package contains a function, to automatically choose backward or forward stepwise
+selection, by estimating the number of operations used by each function to reduce / 
+add coefficients until the wanted number of coefficients is reached.
+
+```{r stepwise optimal}
+fit <- optimal_stepwise_selection(
+  data = swiss,
+  input = c("Agriculture", "Examination", "Education", "Catholic", "Infant.Mortality"),
+  output = "Fertility",
+  nparam = 3
+)
+
+print(fit)
+```
 
 ## Summary
 
