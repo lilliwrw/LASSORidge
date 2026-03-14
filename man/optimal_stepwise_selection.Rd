@@ -80,7 +80,18 @@ C-wrappers, the speed difference can be negligible or even opposite for small
 problems. Therefore use this function only for large problems.
 }
 \examples{
-# TBD
+set.seed(18645)
+linear_coefficients <- 10^(1:10) * rnorm(10, 1, 0.1)
+data <- matrix(runif(1000, 0, 100), ncol=10)
+colnames(data) <- letters[1:10]
+data <- as.data.frame(data)
+# Synthesize test outputs
+data$output <- rowSums(t(t(data)*linear_coefficients))
+data$output <- data$output * rnorm(100, 1, 0.00001)
+# Using forward stepwise selection
+optimal_stepwise_selection(data, input=letters[1:10], output="output",nparam = 2)
+# Using backward stepwise selection
+optimal_stepwise_selection(data, input=letters[1:10], output="output",nparam = 9)
 
 }
 \references{
