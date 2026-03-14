@@ -2,7 +2,7 @@
 title: "LASSORidge"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{LassoRidge}
+  %\VignetteIndexEntry{LASSORidge}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
