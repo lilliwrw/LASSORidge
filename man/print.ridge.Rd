@@ -2,7 +2,7 @@
 % Please edit documentation in R/print.ridge.R
 \name{print.ridge}
 \alias{print.ridge}
-\title{Print Method for Ridge Objects (S3 Method)}
+\title{Print Method for Ridge Objects}
 \usage{
 \method{print}{ridge}(x, ...)
 }

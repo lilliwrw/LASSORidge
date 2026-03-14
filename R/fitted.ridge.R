@@ -1,4 +1,4 @@
-#' Extract Fitted Values from Ridge Model (S3 Method)
+#' Extract Fitted Values from Ridge Model
 #'
 #' Returns the fitted values of a ridge regression model.
 #'

@@ -2,7 +2,7 @@
 % Please edit documentation in R/print.ridge_path.R
 \name{print.ridge_path}
 \alias{print.ridge_path}
-\title{Print Method for Ridge Path (S3 Method)}
+\title{Print Method for Ridge Path}
 \usage{
 \method{print}{ridge_path}(x, ...)
 }

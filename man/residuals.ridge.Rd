@@ -2,7 +2,7 @@
 % Please edit documentation in R/residuals.ridge.R
 \name{residuals.ridge}
 \alias{residuals.ridge}
-\title{Extract Residuals from Ridge Model (S3 Method)}
+\title{Extract Residuals from Ridge Model}
 \usage{
 \method{residuals}{ridge}(object, ...)
 }
@@ -15,7 +15,7 @@
 A numeric vector of residuals.
 }
 \description{
-Extract Residuals from Ridge Model (S3 Method)
+Returns the residuals of a ridge regression model.
 }
 \examples{
 set.seed(1)

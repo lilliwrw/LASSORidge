@@ -1,4 +1,4 @@
-#' Extract Coefficients from Ridge Model (S3 Method)
+#' Extract Coefficients from Ridge Model
 #'
 #' Returns the estimated coefficients including the intercept.
 #'

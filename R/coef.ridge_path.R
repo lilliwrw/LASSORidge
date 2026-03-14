@@ -1,4 +1,4 @@
-#' Extract Coefficients from Ridge Path (S3 Method)
+#' Extract Coefficients from Ridge Path
 #'
 #' Returns the estimated coefficients including the intercepts.
 #'

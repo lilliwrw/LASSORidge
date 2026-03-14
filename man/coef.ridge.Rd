@@ -2,7 +2,7 @@
 % Please edit documentation in R/coef.ridge.R
 \name{coef.ridge}
 \alias{coef.ridge}
-\title{Extract Coefficients from Ridge Model (S3 Method)}
+\title{Extract Coefficients from Ridge Model}
 \usage{
 \method{coef}{ridge}(object, ...)
 }

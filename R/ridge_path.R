@@ -15,6 +15,9 @@
 #' }
 #' @export
 #'
+#' @seealso [ridge()] for fitting a ridge regression model for a single
+#' regularization parameter.
+#'
 #' @examples
 #' set.seed(1)
 #' X <- matrix(rnorm(50), 10, 5)

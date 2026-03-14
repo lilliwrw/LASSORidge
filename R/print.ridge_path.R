@@ -1,4 +1,4 @@
-#' Print Method for Ridge Path (S3 Method)
+#' Print Method for Ridge Path
 #'
 #' Prints a summary of a ridge regression path.
 #'

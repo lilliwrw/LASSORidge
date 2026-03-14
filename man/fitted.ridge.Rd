@@ -2,7 +2,7 @@
 % Please edit documentation in R/fitted.ridge.R
 \name{fitted.ridge}
 \alias{fitted.ridge}
-\title{Extract Fitted Values from Ridge Model (S3 Method)}
+\title{Extract Fitted Values from Ridge Model}
 \usage{
 \method{fitted}{ridge}(object, ...)
 }

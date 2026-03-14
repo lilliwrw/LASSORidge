@@ -1,4 +1,6 @@
-#' Extract Residuals from Ridge Model (S3 Method)
+#' Extract Residuals from Ridge Model
+#'
+#' Returns the residuals of a ridge regression model.
 #'
 #' @param object An object of class \code{"ridge"}
 #' @param ... Additional arguments (ignored).

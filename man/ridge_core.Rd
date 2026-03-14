@@ -28,3 +28,6 @@ X <- matrix(rnorm(100), 20, 5)
 y <- rnorm(20)
 ridge_core(X, y, lambda = 1)
 }
+\seealso{
+\code{\link[=ridge]{ridge()}} user-facing interface for ridge regression.
+}

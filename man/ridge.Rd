@@ -26,9 +26,14 @@ An object of class \code{"ridge"} containing:
 }
 }
 \description{
-Computes the ridge regression estimator. If \code{standardize = TRUE}, predictors are centered and scaled
-and the intercept is reconstructed afterwards.
-If \code{standardize = FALSE}, only \code{X} is centered.
+Computes the ridge regression estimator for a linear model using the
+closed-form solution.
+Ridge regression estimates regression coefficients by minimizing
+\deqn{
+\min_{\beta} \; \|y - X\beta\|_2^2 + \lambda \|\beta\|_2^2
+}
+where \eqn{\lambda \ge 0} is a regularization parameter controlling the
+amount of shrinkage applied to the coefficients.
 }
 \examples{
 set.seed(1)
@@ -38,4 +43,8 @@ y <- rnorm(20)
 fit <- ridge(X, y, lambda = 1)
 #Extract information
 fit$coefficients
+}
+\seealso{
+\code{\link[=ridge_path]{ridge_path()}} to compute the ridge solution path for a sequence
+of regularization parameters.
 }

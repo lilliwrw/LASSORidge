@@ -1,4 +1,4 @@
-#' Print Method for Ridge Objects (S3 Method)
+#' Print Method for Ridge Objects
 #'
 #' Prints a summary of a ridge regression model.
 #'

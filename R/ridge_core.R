@@ -12,6 +12,8 @@
 #' corresponding to the columns of \code{X}.
 #' @export
 #'
+#' @seealso [ridge()] user-facing interface for ridge regression.
+#'
 #' @examples
 #' set.seed(1)
 #' X <- matrix(rnorm(100), 20, 5)

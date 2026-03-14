@@ -33,3 +33,7 @@ y <- rnorm(10)
 #Fit the ridge model
 ridge_path(X, y, lambda = c(0.1, 1, 10))
 }
+\seealso{
+\code{\link[=ridge]{ridge()}} for fitting a ridge regression model for a single
+regularization parameter.
+}

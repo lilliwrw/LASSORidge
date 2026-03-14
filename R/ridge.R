@@ -1,8 +1,13 @@
 #' Ridge Regression Estimator
 #'
-#' Computes the ridge regression estimator. If \code{standardize = TRUE}, predictors are centered and scaled
-#' and the intercept is reconstructed afterwards.
-#' If \code{standardize = FALSE}, only \code{X} is centered.
+#' Computes the ridge regression estimator for a linear model using the
+#' closed-form solution.
+#' Ridge regression estimates regression coefficients by minimizing
+#' \deqn{
+#' \min_{\beta} \; \|y - X\beta\|_2^2 + \lambda \|\beta\|_2^2
+#' }
+#' where \eqn{\lambda \ge 0} is a regularization parameter controlling the
+#' amount of shrinkage applied to the coefficients.
 #'
 #' @param X A numeric design matrix of dimension \eqn{n \times d}.
 #' @param y A numeric response vector of length \eqn{n}.
@@ -18,6 +23,9 @@
 #'   \item \code{call} — matched function call
 #' }
 #' @export
+#'
+#' @seealso [ridge_path()] to compute the ridge solution path for a sequence
+#' of regularization parameters.
 #'
 #' @examples
 #' set.seed(1)
