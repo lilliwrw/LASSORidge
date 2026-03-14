@@ -1,3 +1,45 @@
+test_that("optimal selection basic functionality", {
+  # Generate testing data
+  set.seed(18645)
+  linear_coefficients <- 10^(1:10) * rnorm(10, 1, 0.1)
+  data <- matrix(runif(1000, 0, 100), ncol=10)
+  colnames(data) <- letters[1:10]
+  data <- as.data.frame(data)
+  data$output <- rowSums(t(t(data)*linear_coefficients))
+  data$output <- data$output * rnorm(100, 1, 0.00001)
+
+  # Calculate which function to use
+  res <- optimal_stepwise_selection(data, input=letters[1:10], output="output",nparam = 5)
+
+  # Check, if the result is correct
+  expect_true(all(res[[1]] == letters[10:6]))
+})
+
+test_that("optimal selection: choosing right function", {
+  # Generate testing data
+  set.seed(18645)
+  linear_coefficients <- 10^(1:10) * rnorm(10, 1, 0.1)
+  data <- matrix(runif(1000, 0, 100), ncol=10)
+  colnames(data) <- letters[1:10]
+  data <- as.data.frame(data)
+  data$output <- rowSums(t(t(data)*linear_coefficients))
+  data$output <- data$output * rnorm(100, 1, 0.00001)
+
+  # Calculate which function to use
+  res <- optimal_stepwise_selection(data, input=letters[1:10], output="output",nparam = 1, only_return_faster_function = TRUE)
+
+  # Check, if the result is correct
+  expect_identical(res, forward_stepwise_selection)
+
+  # Calculate which function to use
+  res <- optimal_stepwise_selection(data, input=letters[1:10], output="output",nparam = 9, only_return_faster_function = TRUE)
+
+  # Check, if the result is correct
+  expect_identical(res, backward_stepwise_selection)
+})
+
+
+
 test_that("optimal selection input validation", {
   # Generate testing data
   set.seed(18645)
