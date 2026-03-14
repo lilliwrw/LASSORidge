@@ -87,6 +87,10 @@ optimal_stepwise_selection <- function(data, input, output, subset, weights = NU
   stopifnot("'use_backward_selection_by_default' must be logical" = is.logical(use_backward_selection_by_default),
             "'use_backward_selection_by_default' must have length 1" = length(use_backward_selection_by_default) == 1)
 
+  # Check variable only_return_faster_function for malformed input
+  stopifnot("'only_return_faster_function' must be logical" = is.logical(only_return_faster_function),
+            "'only_return_faster_function' must have length 1" = length(only_return_faster_function) == 1)
+
   # Check variable nparam for malformed input and correct if possible, sort by subset size
   # default: return subset of coefficients for every size of subsets
   if(is.null(nparam)) nparam <- 1:length(input)
