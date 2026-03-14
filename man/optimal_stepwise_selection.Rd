@@ -84,5 +84,9 @@ problems. Therefore use this function only for large problems.
 
 }
 \references{
-https://madrury.github.io/jekyll/update/statistics/2016/07/20/lm-in-R.html
+Drury, Matthew (2016, July 20). A Deep Dive Into How R Fits a Linear Model.
+Scatterplot Smoothers. https://madrury.github.io/jekyll/update/statistics/2016/07/20/lm-in-R.html
+
+Winckelman, Thomas (2023, October 12). QR decomposition computational efficiency. CrossValidated.
+https://stats.stackexchange.com/questions/393691/qr-decomposition-computational-efficiency
 }
