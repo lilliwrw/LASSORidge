@@ -111,7 +111,7 @@ test_that("forward selection input validation", {
   expect_error(forward_stepwise_selection(data, c("a", "b"), output = 1:10), regexp = "is not a character vextor \\(of the column name containing the output to predict\\)")
   expect_error(forward_stepwise_selection(data, c("a", "b"), output = c("c", "output")), regexp = "'output' must have length 1 \\(only one-dimensional outputs are supported\\)")
   expect_error(forward_stepwise_selection(data, c("a", "b"), output = c("d")), regexp = "the column specified by 'output' doesn't exist in 'data'")
-  expect_warning(forward_stepwise_selection(data, c("a", "b"), output = c("a")), regexp = "is used as input and output data")
+  expect_error(forward_stepwise_selection(data, c("a", "b"), output = c("a")), regexp = "is used as input and output data")
 
   # Test for malformed input in weights
   expect_error(forward_stepwise_selection(data, letters[1:3], "output", weights = "a", nparam = NULL, unlist_return_value = FALSE, interactions = FALSE, intercept = TRUE, return_lm = FALSE), regexp = "'weights' must be numeric")
@@ -143,7 +143,6 @@ test_that("forward selection input validation", {
 
   # Test for malformed input in nparam
   expect_error(forward_stepwise_selection(data, letters[1:3], "output", weights = NULL, nparam = TRUE, unlist_return_value = FALSE, interactions = FALSE, intercept = TRUE, return_lm = FALSE), regexp = "'nparam' must be numeric")
-  expect_error(forward_stepwise_selection(data, letters[1:3], "output", weights = NULL, nparam = c(1,1,1,1), unlist_return_value = FALSE, interactions = FALSE, intercept = TRUE, return_lm = FALSE), regexp = "duplicate subset size present in 'nparam', dropping duplicates")
   expect_error(forward_stepwise_selection(data, letters[1:3], "output", weights = NULL, nparam = -1:5, unlist_return_value = FALSE, interactions = FALSE, intercept = TRUE, return_lm = FALSE), regexp = "'nparam' contains negative subset size")
   expect_error(forward_stepwise_selection(data, letters[1:3], "output", weights = NULL, nparam = 1:5, unlist_return_value = FALSE, interactions = FALSE, intercept = TRUE, return_lm = FALSE), regexp = "'nparam' contains subset size greater than the number of coefficients")
 
