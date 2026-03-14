@@ -190,14 +190,14 @@ optimal_stepwise_selection <- function(data, input, output, subset, weights = NU
   }
 
   if (use_backward_selection) {
-    return(backward_stepwise_selection(data, input, output, subset, weights = NULL,
-                                       nparam = NULL, unlist_return_value = FALSE,
-                                       interactions = FALSE, intercept = TRUE,
-                                       return_lm = FALSE, ...))
+    return(backward_stepwise_selection(data, input, output, subset, weights = weights,
+                                       nparam = nparam, unlist_return_value = unlist_return_value,
+                                       interactions = interactions, intercept = intercept,
+                                       return_lm = return_lm, ...))
   } else {
-    return(forward_stepwise_selection(data, input, output, subset, weights = NULL,
-                                      nparam = NULL, unlist_return_value = FALSE,
-                                      interactions = FALSE, intercept = TRUE,
-                                      return_lm = FALSE, ...))
+    return(forward_stepwise_selection(data, input, output, subset, weights = weights,
+                                      nparam = nparam, unlist_return_value = unlist_return_value,
+                                      interactions = interactions, intercept = intercept,
+                                      return_lm = return_lm, ...))
   }
 }
