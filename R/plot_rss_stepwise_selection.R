@@ -48,6 +48,6 @@ plot_rss_stepwise_selection <- function(selection) {
   # Plot                                                                       #
   ##############################################################################
   plot(number_of_coefficients, rss, type="b", main="Plot of the RSS for stepwise selection",
-       xlab="number of coefficients", ylab="RSS (logarithmic scale", log="y")
+       xlab="number of coefficients", ylab="RSS (logarithmic scale)", log="y")
 
 }
