@@ -47,7 +47,8 @@ subset size, return result as character vector. (default: \code{FALSE})}
 \item{intercept}{Toggle, if an intercept term should be used in the linear model.
 (default: \code{TRUE})}
 
-\item{return_lm}{If \code{TRUE}, return a list of models for each specified number of coefficients instead. (default: FALSE)}
+\item{return_lm}{If \code{TRUE}, return a list of models for each specified
+number of coefficients instead. (default: FALSE)}
 
 \item{...}{Additional arguments to be passed to the calls of \code{lm()}.}
 }
@@ -74,7 +75,7 @@ data <- as.data.frame(data)
 # Synthesize test outputs
 data$output <- rowSums(t(t(data)*linear_coefficients))
 data$output <- data$output * rnorm(100, 1, 0.00001)
-# Calculate which coeffiecients can be dropped with least influence on residual square sum
+# Calculate which coefficients can be dropped with least influence on residual square sum
 forward_stepwise_selection(data, input=letters[1:10], output="output",nparam = 10)
 
 }
