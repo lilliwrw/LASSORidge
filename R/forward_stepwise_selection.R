@@ -27,7 +27,8 @@
 #' @param interactions Use interaction terms for the coefficients. (default: \code{FALSE})
 #' @param intercept Toggle, if an intercept term should be used in the linear model.
 #' (default: \code{TRUE})
-#' @param return_lm If \code{TRUE}, return a list of models for each specified number of coefficients instead. (default: FALSE)
+#' @param return_lm If \code{TRUE}, return a list of models for each specified
+#' number of coefficients instead. (default: FALSE)
 #' @param ... Additional arguments to be passed to the calls of \code{lm()}.
 #'
 #'
@@ -47,7 +48,7 @@
 #' # Synthesize test outputs
 #' data$output <- rowSums(t(t(data)*linear_coefficients))
 #' data$output <- data$output * rnorm(100, 1, 0.00001)
-#' # Calculate which coeffiecients can be dropped with least influence on residual square sum
+#' # Calculate which coefficients can be dropped with least influence on residual square sum
 #' forward_stepwise_selection(data, input=letters[1:10], output="output",nparam = 10)
 #'
 forward_stepwise_selection <- function(

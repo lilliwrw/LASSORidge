@@ -74,7 +74,7 @@ data <- as.data.frame(data)
 # Synthesize test outputs
 data$output <- rowSums(t(t(data)*linear_coefficients))
 data$output <- data$output * rnorm(100, 1, 0.00001)
-# Calculate which coeffiecients can be dropped with least influence on residual square sum
+# Calculate which coefficients can be dropped with least influence on residual square sum
 backward_stepwise_selection(data, input=letters[1:10], output="output",nparam = 1:10)
 
 }
