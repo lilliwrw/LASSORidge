@@ -19,7 +19,12 @@
 #' in the model. The character vectors contain the names of the coefficients not dropped.
 #' If the argument 'return_lm' is true, the function returns a list of models (lm-objects) instead.
 #'
-#' @references https://madrury.github.io/jekyll/update/statistics/2016/07/20/lm-in-R.html
+#' @references
+#' Drury, Matthew (2016, July 20). A Deep Dive Into How R Fits a Linear Model.
+#' Scatterplot Smoothers. https://madrury.github.io/jekyll/update/statistics/2016/07/20/lm-in-R.html
+#'
+#' Winckelman, Thomas (2023, October 12). QR decomposition computational efficiency. CrossValidated.
+#' https://stats.stackexchange.com/questions/393691/qr-decomposition-computational-efficiency
 #'
 #' @export
 #'
