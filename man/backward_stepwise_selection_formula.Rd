@@ -7,8 +7,8 @@
 backward_stepwise_selection_formula(
   formula,
   data,
-  subset,
-  weights = NULL,
+  .subset,
+  .weights = NULL,
   nparam = NULL,
   unlist_return_value = FALSE,
   interactions = FALSE,
@@ -23,15 +23,15 @@ backward_stepwise_selection_formula(
 
 \item{data}{data frame containing the data to be used for the linear regression}
 
-\item{subset}{Optionally specify, which rows of the data frame should be used
+\item{.subset}{Optionally specify, which rows of the data frame should be used
 for the calculation. This argument is passed directly to \code{lm()}, details can be
 found in its man page. \code{subset} can be given as logical vector with a value
 for each row or a numerical vector with the number of the rows, that should be
 used (default: Use all rows)}
 
-\item{weights}{Optionally use weights for the rows in the data frame. This
+\item{.weights}{Optionally use weights for the rows in the data frame. This
 argument is passed directly to \code{lm()}, details can be found in its man page. If
-provided as non-NULL, \code{weights} must be a numerical vector containing the weights.
+provided as non-NULL, \code{.weights} must be a numerical vector containing the weights.
 (default: \code{NULL}, i.e. all weights equal \eqn{1})}
 
 \item{nparam}{Numeric vector of the sizes of the subsets, that should be returned,
