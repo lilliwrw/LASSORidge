@@ -1,19 +1,20 @@
 #' Plot Ridge Coefficient Path
 #'
 #' Plots the ridge regression coefficient paths as a function
-#' of lambda or log(lambda).
+#' of decreasing lambda or log(lambda).
 #'
 #' @param x An object of class \code{"ridge_path"}.
 #' @param log.lambda Logical; if \code{TRUE} (default), the horizontal
 #' axis shows \code{log(lambda)}.
 #' @param legend Logical; if \code{TRUE} (default), a legend is shown in the top right.
+#' @param intercept Logical; if \code{FALSE} (default), the intercept is not plotted.
 #' @param type Line type for plotting (default: "l").
 #' @param lty Line type specification (default: 1).
 #' @param col Optional vector of colors.
 #' @param xlab Label for x-axis. If \code{NULL}, a default is chosen.
 #' @param ylab Label for y-axis. If \code{NULL}, default is "Coefficients".
 #' @param main Plot title (default: "Ridge Path")
-#' @param ... Additional graphical parameters passed to \code{plot}.
+#' @param ... Additional graphical parameters passed to \code{plot} (ignored).
 #'
 #' @returns Produces a plot and returns \code{NULL} invisibly.
 #'
@@ -33,6 +34,7 @@
 plot.ridge_path <- function(x,
                             log.lambda = TRUE,
                             legend = TRUE,
+                            intercept = FALSE,
                             type = "l",
                             lty = 1,
                             col = NULL,
@@ -40,12 +42,20 @@ plot.ridge_path <- function(x,
                             ylab = NULL,
                             main = "Ridge Path",
                             ...){
+  # Lambda values for x-axis
   lambda_vals <- if (log.lambda) log(x$lambda) else x$lambda
   if (log.lambda && any(x$lambda <= 0)) {
     stop("Cannot use log scale when lambda contains non-positive values.")
   }
 
   coef_mat <- x$coefficients
+
+  # Remove intercept if requested
+  if (!intercept) {
+    if ("(Intercept)" %in% rownames(coef_mat)) {
+      coef_mat <- coef_mat[rownames(coef_mat) != "(Intercept)", , drop = FALSE]
+    }
+  }
 
   #Set defaults
   if (is.null(col)) {
@@ -69,8 +79,12 @@ plot.ridge_path <- function(x,
        xlab = xlab,
        ylab = ylab,
        main = main,
+       xlim = rev(range(lambda_vals)),
        ylim = range(coef_mat),
        ...)
+
+  # Add horizontal reference line at 0
+  abline(h = 0, lty = 2, col = "grey50")
 
   #Plot other lines
   if (nrow(coef_mat) > 1) {

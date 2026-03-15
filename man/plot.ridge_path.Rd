@@ -8,6 +8,7 @@
   x,
   log.lambda = TRUE,
   legend = TRUE,
+  intercept = FALSE,
   type = "l",
   lty = 1,
   col = NULL,
@@ -25,6 +26,8 @@ axis shows \code{log(lambda)}.}
 
 \item{legend}{Logical; if \code{TRUE} (default), a legend is shown in the top right.}
 
+\item{intercept}{Logical; if \code{FALSE} (default), the intercept is not plotted.}
+
 \item{type}{Line type for plotting (default: "l").}
 
 \item{lty}{Line type specification (default: 1).}
@@ -37,14 +40,14 @@ axis shows \code{log(lambda)}.}
 
 \item{main}{Plot title (default: "Ridge Path")}
 
-\item{...}{Additional graphical parameters passed to \code{plot}.}
+\item{...}{Additional graphical parameters passed to \code{plot} (ignored).}
 }
 \value{
 Produces a plot and returns \code{NULL} invisibly.
 }
 \description{
 Plots the ridge regression coefficient paths as a function
-of lambda or log(lambda).
+of decreasing lambda or log(lambda).
 }
 \examples{
  set.seed(1)
