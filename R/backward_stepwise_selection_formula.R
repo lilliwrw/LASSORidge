@@ -11,14 +11,14 @@
 #' @param formula A model formula, from which one coefficient is removed each step.
 #' (See \code{remove_variable()} for details)
 #' @param data data frame containing the data to be used for the linear regression
-#' @param subset Optionally specify, which rows of the data frame should be used
+#' @param .subset Optionally specify, which rows of the data frame should be used
 #' for the calculation. This argument is passed directly to \code{lm()}, details can be
 #' found in its man page. \code{subset} can be given as logical vector with a value
 #' for each row or a numerical vector with the number of the rows, that should be
 #' used (default: Use all rows)
-#' @param weights Optionally use weights for the rows in the data frame. This
+#' @param .weights Optionally use weights for the rows in the data frame. This
 #' argument is passed directly to \code{lm()}, details can be found in its man page. If
-#' provided as non-NULL, \code{weights} must be a numerical vector containing the weights.
+#' provided as non-NULL, \code{.weights} must be a numerical vector containing the weights.
 #' (default: \code{NULL}, i.e. all weights equal \eqn{1})
 #' @param nparam Numeric vector of the sizes of the subsets, that should be returned,
 #' (default: \code{NULL}, i.e. all subset sizes are returned)
@@ -51,7 +51,7 @@
 #' backward_stepwise_selection_formula(output~log(a)+b:c+d+e+f+g+h+i+j,data,nparam = 1:10)
 #'
 backward_stepwise_selection_formula <- function(
-    formula, data, subset, weights = NULL,
+    formula, data, .subset, .weights = NULL,
     nparam = NULL, unlist_return_value = FALSE, interactions = FALSE, intercept = TRUE, return_lm = FALSE, ...
 ) {
   ##############################################################################
@@ -67,22 +67,22 @@ backward_stepwise_selection_formula <- function(
   variables <- extract_variables(formula, skip_output = TRUE)
 
   # Check variable weights for malformed input
-  if (!is.null(weights)) {
-    stopifnot("'weights' must be numeric" = is.numeric(weights),
-              "'weights' must have length equal to the number of rows in 'data" = length(weights)==nrow(data))
+  if (!is.null(.weights)) {
+    stopifnot("'.weights' must be numeric" = is.numeric(.weights),
+              "'.weights' must have length equal to the number of rows in 'data" = length(.weights)==nrow(data))
   }
 
   # Check variable subset for malformed input
-  if (!missing(subset)) {
-    stopifnot("'subset' must be logical or numeric" = is.logical(subset) || is.numeric(subset),
-              "If 'subset' is provided as logical, it must have length equal to the number of rows in 'data'" = is.numeric(subset) || length(subset)==nrow(data),
-              "If 'subset' is provided as numeric, it cannot contain nonpositive numbers" = is.logical(subset) || min(subset)>0,
-              "If 'subset' is provided as numeric, it cannot contain numbers greater than the number of rows in 'data'" = is.logical(subset) || max(subset)<=nrow(data))
-    if (is.numeric(subset) && length(unique(as.integer(subset))) != length(subset)) {
-      warning("'subset' was provided as numeric vector, but contains duplicate values. Duplicate values will be dropped.")
+  if (!missing(.subset)) {
+    stopifnot("'.subset' must be logical or numeric" = is.logical(.subset) || is.numeric(.subset),
+              "If '.subset' is provided as logical, it must have length equal to the number of rows in 'data'" = is.numeric(.subset) || length(.subset)==nrow(data),
+              "If '.subset' is provided as numeric, it cannot contain nonpositive numbers" = is.logical(.subset) || min(.subset)>0,
+              "If '.subset' is provided as numeric, it cannot contain numbers greater than the number of rows in 'data'" = is.logical(.subset) || max(.subset)<=nrow(data))
+    if (is.numeric(.subset) && length(unique(as.integer(.subset))) != length(.subset)) {
+      warning("'.subset' was provided as numeric vector, but contains duplicate values. Duplicate values will be dropped.")
     }
   } else {
-    subset <- 1:nrow(data)
+    .subset <- 1:nrow(data)
   }
 
   # Check variable interactions for malformed input
@@ -135,8 +135,8 @@ backward_stepwise_selection_formula <- function(
 
   # Initialize output for full model
   if (return_lm) {
-    res[[length(undropped_params)]] <- stats::lm(formula, data, subset = subset,
-                                      weights = weights, ...)
+    res[[length(undropped_params)]] <- stats::lm(stats::as.formula(deparse1(formula)), data, subset = .subset,
+                                      weights = .weights, ...)
   } else {
     res[[length(undropped_params)]] <- undropped_params
   }
@@ -152,12 +152,13 @@ backward_stepwise_selection_formula <- function(
       # For every parameter not already dropped calculate the regression without that parameter,
       # then test against the previous best parameter to drop an overwrite, if it has lower RSS
       for (param in 1:length(undropped_params)) {
-        model <- stats::lm(stats::as.formula(deparse1(remove_variable(formula, undropped_params[param]))),
-                           data, subset = subset, weights = weights, ...)
-        if (is.null(weights)) {
+        fm <- stats::as.formula(deparse1(remove_variable(formula, undropped_params[param])))
+        model <- stats::lm(fm,
+                           data, subset = .subset, weights = .weights, ...)
+        if (is.null(.weights)) {
           rss <- sum(stats::residuals(model)^2)
         } else {
-          rss <- sum(weights * stats::residuals(model)^2)
+          rss <- sum(.weights * stats::residuals(model)^2)
         }
 
         if (rss < best_rss) {
