@@ -132,6 +132,11 @@ output: html_document
   
 - **03.03.26 — Juliana**
   - Überarbeiten der Roxygen-Sceleton und Komentare des Codes
+  
+- **06.03.26 - Felix**
+  - Github Fehler behoben
+  - Funktionen `forward_stepwise_selection.R` und `backward_stepwise_selection.R` inkl. Dokumentation     fertiggestellt
+  - Test für `forward_stepwise_selection.R` und `backward_stepwise_selection.R` erstellt
 
 - **09.03.26 — Adina**
   - Arbeiten an der `Vignette_LassoRidge`
@@ -141,6 +146,15 @@ output: html_document
 
 - **10.03.26 — Adina**
   - `Vignette_LassoRidge` fertiggestellt
+  
+- **10.03.26 — Felix**
+  - Beheben verschiedener Merge-Konflikte
+  - Recherche für die Funktion `optimal_stepwise_selection.R`
+  
+- **12.03.26 — Felix**
+  - Kleine Fehlerbehebungen
+  - Implementation der Funktion `plot_rss_stepwise_selection.R`
+  - Recherche und Implementation für die Funktion `optimal_stepwise_selection.R`
   
 - **13.03.26 — Juliana**
   - Ordnen von Funktionen, Hilftsunktionen nun intern, nur S3_methoden für den User zugänglich
@@ -152,6 +166,14 @@ output: html_document
   - Verschönerungen im Roxygen
   - Helper Funktionen intern 
   - GitHub readMe und Kurzbeschreibung hinzugefügt
+  
+- **14.03.26 — Felix**
+  - Intensive Beschäftigung mit formula-Objekten und Implementation der Funktionen `remove_variable.R`, `contains_variable.R` und `extract_variables.R` inkl. Tests und Dokumentation
+  - Erste Implementierung der Funktion `backward_stepwise_selection_formula.R`
+  - Anpassung der Vignette
 
 - **15.03.26 — Lilli**
   - `plot.ridge_path` überarbeitet: intercept nur optional geplottet, x-Achse absteigend
+  
+- **15.03.26 — Felix**
+  - Vollständige Implementierung der Funktion `backward_stepwise_selection_formula.R` inkl. Tests und Dokumentation
