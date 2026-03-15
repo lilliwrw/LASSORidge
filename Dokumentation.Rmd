@@ -152,3 +152,6 @@ output: html_document
   - Verschönerungen im Roxygen
   - Helper Funktionen intern 
   - GitHub readMe und Kurzbeschreibung hinzugefügt
+
+- **15.03.26 — Lilli**
+  - `plot.ridge_path` überarbeitet: intercept nur optional geplottet, x-Achse absteigend
